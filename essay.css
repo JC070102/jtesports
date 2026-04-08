@@ -160,6 +160,26 @@
   line-height: 1.45;
 }
 
+/* ── YOUTUBE EMBED ── */
+.essay-youtube {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  margin: 2rem 0;
+  background: #000;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.essay-youtube iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
 /* ── FOOTER LINK FIX ── */
 .footer-logo {
   text-decoration: none;
