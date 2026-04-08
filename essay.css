@@ -1,0 +1,166 @@
+/* ============================================================
+   JTE — essay.css
+   Styles for individual essay pages
+   ============================================================ */
+
+.essay-wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 4rem 2.5rem 6rem;
+}
+
+/* ── HEADER ── */
+.essay-header {
+  margin-bottom: 3rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.essay-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.essay-date {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.essay-hed {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+
+.essay-dek {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.essay-byline {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.essay-byline span {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* ── BODY ── */
+.essay-body {
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: #2a2926;
+}
+
+.essay-body p {
+  margin-bottom: 1.5rem;
+}
+
+.essay-body em {
+  font-style: italic;
+}
+
+.essay-body strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ── RULE DIVIDER ── */
+.essay-rule {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+
+/* ── CALLOUT BLOCK ── */
+.essay-callout {
+  border-left: 3px solid var(--accent);
+  padding: 1rem 1.5rem;
+  margin: 2rem 0;
+  background: rgba(200, 55, 45, 0.04);
+}
+
+.essay-callout p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #3a3935;
+  margin-bottom: 0;
+  line-height: 1.65;
+}
+
+/* ── CLIP EMBED ── */
+.essay-clip {
+  margin: 2rem 0;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+
+.clip-link {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.clip-link:hover {
+  background: rgba(13, 13, 13, 0.03);
+}
+
+.clip-icon {
+  font-size: 1.25rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clip-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.3rem;
+}
+
+.clip-desc {
+  display: block;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+/* ── FOOTER LINK FIX ── */
+.footer-logo {
+  text-decoration: none;
+}
