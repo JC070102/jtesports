@@ -84,13 +84,16 @@ nav .nav-cta {
 
 /* ── HERO ── */
 .hero {
-  padding: 5rem 2.5rem 4rem;
   border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.hero-columns {
+  padding: 3rem 2.5rem 4rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
   align-items: start;
-  overflow: hidden;
 }
 
 .hero-left {
@@ -614,13 +617,8 @@ footer a:hover { color: var(--ink); }
 }
 
 .hero-image-block {
-  position: relative;
   width: 100%;
-  max-width: 100%;
-  margin-bottom: 2rem;
-  border-radius: 3px;
   overflow: hidden;
-  container-type: inline-size;
 }
 
 .hero-team-img {
