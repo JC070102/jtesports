@@ -640,17 +640,17 @@ footer a:hover { color: var(--ink); }
   inset: 0;
   background: linear-gradient(
     to bottom,
-    transparent 60%,
+    transparent 75%,
     var(--paper) 100%
   ),
   linear-gradient(
     to right,
     var(--paper) 0%,
-    transparent 25%,
-    transparent 75%,
+    transparent 10%,
+    transparent 90%,
     var(--paper) 100%
   );
-  opacity: 0.25;
+  opacity: 0.35;
   pointer-events: none;
 }
 
