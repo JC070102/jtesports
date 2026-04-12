@@ -95,6 +95,7 @@ nav .nav-cta {
 
 .hero-left {
   min-width: 0;
+  max-width: 100%;
   overflow: hidden;
 }
 
@@ -624,10 +625,12 @@ footer a:hover { color: var(--ink); }
 
 .hero-team-img {
   width: 100%;
+  max-width: 100%;
   height: 220px;
   object-fit: cover;
   object-position: center 20%;
   display: block;
+  overflow: hidden;
 }
 
 .hero-img-credit {
