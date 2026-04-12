@@ -16,6 +16,7 @@
   <ul>
     <li><a onclick="showPage('home')">Home</a></li>
     <li><a onclick="showPage('archive')">Writing</a></li>
+    <li><a onclick="showPage('notes')">Notes</a></li>
     <li><a onclick="showPage('about')">About</a></li>
     <li><a href="https://twitter.com/jt_esports" class="nav-cta" target="_blank">Twitter / X ↗</a></li>
   </ul>
@@ -157,7 +158,6 @@
     <button class="filter-btn" data-filter="data">Data</button>
   </div>
   <div class="archive-list">
-    <!-- Add new essays here as you publish them -->
     <div class="archive-row" data-category="league broadcast" onclick="window.location='writing/casting-has-not-evolved.html'">
       <span class="piece-date">— Apr 2026</span>
       <span class="piece-tag league">League</span>
@@ -165,12 +165,59 @@
       <span class="archive-row-arrow">→</span>
     </div>
     <div class="archive-row" data-category="league gameplay" onclick="window.location='writing/bfx-identity-crisis.html'">
-  <span class="piece-date">— Apr 2026</span>
-  <span class="piece-tag league">League</span>
-  <span class="archive-row-title">BFX is Collapsing. Here's How to Fix It.</span>
-  <span class="archive-row-arrow">→</span>
-</div>
+      <span class="piece-date">— Apr 2026</span>
+      <span class="piece-tag league">League</span>
+      <span class="archive-row-title">BFX is Collapsing. Here's How to Fix It.</span>
+      <span class="archive-row-arrow">→</span>
+    </div>
   </div>
+</div>
+
+<!-- NOTES PAGE -->
+<div class="page" id="page-notes">
+
+  <!-- CALENDAR VIEW -->
+  <div id="notes-calendar">
+    <div class="notes-header">
+      <div class="notes-header-left">
+        <h1 class="notes-hed">Notes</h1>
+        <p class="notes-sub">Quick reads, game notes, and daily takes.</p>
+      </div>
+    </div>
+    <div class="cal-controls">
+      <button class="cal-btn" id="cal-prev">← Prev</button>
+      <span class="cal-month-label" id="cal-month-label"></span>
+      <button class="cal-btn" id="cal-next">Next →</button>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+    <div class="notes-recent" id="notes-recent">
+      <div class="section-header" style="padding-left:0;padding-right:0;">
+        <span class="section-label">Recent notes</span>
+      </div>
+      <div id="recent-list"></div>
+    </div>
+  </div>
+
+  <!-- NOTE READER VIEW -->
+  <div id="notes-reader" style="display:none;">
+    <div class="reader-nav">
+      <a class="reader-arrow reader-arrow-left disabled" id="reader-prev">← <span class="reader-arrow-label"></span></a>
+      <span class="reader-date-center" id="reader-date"></span>
+      <a class="reader-arrow reader-arrow-right disabled" id="reader-next"><span class="reader-arrow-label"></span> →</a>
+    </div>
+    <div class="reader-card">
+      <div class="reader-inner">
+        <span class="note-tag" id="reader-tag">League</span>
+        <h1 class="reader-title" id="reader-title"></h1>
+        <div class="reader-body" id="reader-body"></div>
+        <div class="reader-footer">
+          <a class="reader-back" id="reader-back">← Back to calendar</a>
+          <span class="reader-read-time" id="reader-read-time"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ABOUT PAGE -->
@@ -194,7 +241,7 @@
       </tr>
       <tr>
         <td>Format</td>
-        <td>Long-form essays with data · Short takes on Twitter / X</td>
+        <td>Long-form essays with data · Notes &amp; daily takes · Short takes on Twitter / X</td>
       </tr>
       <tr>
         <td>Contact</td>
@@ -212,18 +259,24 @@
   <ul>
     <li><a onclick="showPage('home')">Home</a></li>
     <li><a onclick="showPage('archive')">Writing</a></li>
+    <li><a onclick="showPage('notes')">Notes</a></li>
     <li><a onclick="showPage('about')">About</a></li>
     <li><a href="https://twitter.com/jt_esports" target="_blank">Twitter ↗</a></li>
   </ul>
 </footer>
 
 <script>
+  /* ── Page switching ── */
   function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + id).classList.add('active');
     window.scrollTo(0, 0);
+    if (id === 'notes') {
+      showCalendar();
+    }
   }
 
+  /* ── Writing filter ── */
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -238,6 +291,273 @@
       });
     });
   });
+
+  /* ══════════════════════════════════════════════
+     NOTES SYSTEM — Calendar + Reader
+     ══════════════════════════════════════════════ */
+
+  let notesData = [];
+  let notesByDate = {};
+  let calYear = 2026;
+  let calMonth = 3; // April (0-indexed)
+  let currentNoteIdx = -1;
+
+  const MONTHS = ['January','February','March','April','May','June',
+                  'July','August','September','October','November','December'];
+  const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  /* ── Load notes.json ── */
+  async function loadNotes() {
+    try {
+      const res = await fetch('notes/notes.json');
+      notesData = await res.json();
+      notesData.sort((a, b) => a.date.localeCompare(b.date));
+      notesByDate = {};
+      notesData.forEach((n, i) => { notesByDate[n.date] = i; });
+    } catch (e) {
+      console.warn('Could not load notes.json:', e);
+      notesData = [];
+      notesByDate = {};
+    }
+  }
+
+  /* ── Calendar renderer ── */
+  function renderCalendar() {
+    const grid = document.getElementById('cal-grid');
+    grid.innerHTML = '';
+
+    document.getElementById('cal-month-label').textContent = MONTHS[calMonth] + ' ' + calYear;
+
+    // Day headers
+    DAYS.forEach(d => {
+      const h = document.createElement('div');
+      h.className = 'cal-day-header';
+      h.textContent = d;
+      grid.appendChild(h);
+    });
+
+    const firstDay = new Date(calYear, calMonth, 1).getDay();
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+    const today = new Date();
+    const isCurrentMonth = today.getFullYear() === calYear && today.getMonth() === calMonth;
+
+    // Empty cells before month starts
+    for (let i = 0; i < firstDay; i++) {
+      const c = document.createElement('div');
+      c.className = 'cal-cell cal-empty';
+      grid.appendChild(c);
+    }
+
+    let openDate = null;
+    let dropdownEl = null;
+
+    function closeDropdown() {
+      if (dropdownEl) { dropdownEl.remove(); dropdownEl = null; }
+      grid.querySelectorAll('.cal-cell.cal-active').forEach(c => c.classList.remove('cal-active'));
+    }
+
+    function openDropdown(dateStr, cellEl) {
+      const idx = notesByDate[dateStr];
+      if (idx === undefined) return;
+      const note = notesData[idx];
+
+      if (openDate === dateStr) { closeDropdown(); openDate = null; return; }
+      closeDropdown();
+      openDate = dateStr;
+      cellEl.classList.add('cal-active');
+
+      const dd = document.createElement('div');
+      dd.className = 'cal-dropdown';
+
+      const tagClass = (note.tag || 'League').toLowerCase() === 'cs' ? 'note-tag cs-tag' : 'note-tag';
+      dd.innerHTML = `
+        <div class="cal-dd-left">
+          <span class="cal-dd-date">${dateStr}</span>
+          <span class="cal-dd-title">${note.title}</span>
+          <span class="${tagClass}">${note.tag || 'League'}</span>
+        </div>
+        <a class="cal-dd-link" data-date="${dateStr}">Read →</a>
+      `;
+
+      dd.querySelector('.cal-dd-link').addEventListener('click', () => {
+        openReader(dateStr);
+      });
+
+      // Insert after the row
+      const day = parseInt(dateStr.split('-')[2]);
+      const row = Math.ceil((firstDay + day) / 7);
+      const rowEndIndex = 7 + (row * 7); // 7 headers + row cells
+      const cells = grid.children;
+      if (rowEndIndex < cells.length) {
+        grid.insertBefore(dd, cells[rowEndIndex]);
+      } else {
+        grid.appendChild(dd);
+      }
+      dropdownEl = dd;
+    }
+
+    // Day cells
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateStr = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const hasNote = notesByDate[dateStr] !== undefined;
+      const isToday = isCurrentMonth && d === today.getDate();
+
+      const c = document.createElement('div');
+      c.className = 'cal-cell' + (hasNote ? ' cal-has-note' : '') + (isToday ? ' cal-today' : '');
+      c.innerHTML = `<span class="cal-num">${d}</span>` + (hasNote ? '<span class="cal-dot"></span>' : '');
+
+      if (hasNote) {
+        c.addEventListener('click', () => openDropdown(dateStr, c));
+      }
+
+      grid.appendChild(c);
+    }
+
+    // Trailing empty cells
+    const remaining = (7 - ((firstDay + daysInMonth) % 7)) % 7;
+    for (let i = 0; i < remaining; i++) {
+      const c = document.createElement('div');
+      c.className = 'cal-cell cal-empty';
+      grid.appendChild(c);
+    }
+  }
+
+  /* ── Recent notes list ── */
+  function renderRecent() {
+    const list = document.getElementById('recent-list');
+    list.innerHTML = '';
+    const recent = notesData.slice().reverse().slice(0, 5);
+    recent.forEach(note => {
+      const row = document.createElement('div');
+      row.className = 'recent-row';
+      row.innerHTML = `
+        <span class="piece-date">— ${formatDateShort(note.date)}</span>
+        <span class="note-tag${(note.tag || '').toLowerCase() === 'cs' ? ' cs-tag' : ''}">${note.tag || 'League'}</span>
+        <span class="recent-row-title">${note.title}</span>
+        <span class="archive-row-arrow">→</span>
+      `;
+      row.addEventListener('click', () => openReader(note.date));
+      list.appendChild(row);
+    });
+  }
+
+  function formatDateShort(dateStr) {
+    const d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
+
+  function formatDateFull(dateStr) {
+    const d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+
+  /* ── Calendar navigation ── */
+  document.getElementById('cal-prev').addEventListener('click', () => {
+    calMonth--;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    renderCalendar();
+  });
+
+  document.getElementById('cal-next').addEventListener('click', () => {
+    calMonth++;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCalendar();
+  });
+
+  /* ── Show/hide views ── */
+  function showCalendar() {
+    document.getElementById('notes-calendar').style.display = 'block';
+    document.getElementById('notes-reader').style.display = 'none';
+  }
+
+  /* ── Note reader ── */
+  async function openReader(dateStr) {
+    const idx = notesByDate[dateStr];
+    if (idx === undefined) return;
+    currentNoteIdx = idx;
+
+    document.getElementById('notes-calendar').style.display = 'none';
+    document.getElementById('notes-reader').style.display = 'block';
+    window.scrollTo(0, 0);
+
+    await renderNote();
+  }
+
+  async function renderNote() {
+    const note = notesData[currentNoteIdx];
+
+    // Load note HTML
+    try {
+      const res = await fetch(note.file);
+      const html = await res.text();
+      document.getElementById('reader-body').innerHTML = html;
+    } catch (e) {
+      document.getElementById('reader-body').innerHTML = '<p style="color:var(--muted);">Could not load note.</p>';
+    }
+
+    // Title, tag, date
+    document.getElementById('reader-title').textContent = note.title;
+    document.getElementById('reader-date').textContent = formatDateFull(note.date);
+    const tagEl = document.getElementById('reader-tag');
+    tagEl.textContent = note.tag || 'League';
+    tagEl.className = 'note-tag' + ((note.tag || '').toLowerCase() === 'cs' ? ' cs-tag' : '');
+
+    // Read time
+    const text = document.getElementById('reader-body').textContent || '';
+    const words = text.trim().split(/\s+/).length;
+    document.getElementById('reader-read-time').textContent = '~' + Math.max(1, Math.round(words / 200)) + ' min read';
+
+    // Nav arrows
+    const prevBtn = document.getElementById('reader-prev');
+    const nextBtn = document.getElementById('reader-next');
+
+    if (currentNoteIdx > 0) {
+      prevBtn.classList.remove('disabled');
+      prevBtn.querySelector('.reader-arrow-label').textContent = formatDateShort(notesData[currentNoteIdx - 1].date);
+      prevBtn.onclick = () => { currentNoteIdx--; renderNote(); window.scrollTo(0, 0); };
+    } else {
+      prevBtn.classList.add('disabled');
+      prevBtn.querySelector('.reader-arrow-label').textContent = '';
+      prevBtn.onclick = null;
+    }
+
+    if (currentNoteIdx < notesData.length - 1) {
+      nextBtn.classList.remove('disabled');
+      nextBtn.querySelector('.reader-arrow-label').textContent = formatDateShort(notesData[currentNoteIdx + 1].date);
+      nextBtn.onclick = () => { currentNoteIdx++; renderNote(); window.scrollTo(0, 0); };
+    } else {
+      nextBtn.classList.add('disabled');
+      nextBtn.querySelector('.reader-arrow-label').textContent = '';
+      nextBtn.onclick = null;
+    }
+
+    // Animate
+    const card = document.querySelector('.reader-card');
+    card.style.animation = 'none';
+    card.offsetHeight;
+    card.style.animation = 'noteIn 0.25s ease-out';
+  }
+
+  /* ── Back to calendar ── */
+  document.getElementById('reader-back').addEventListener('click', () => {
+    showCalendar();
+    window.scrollTo(0, 0);
+  });
+
+  /* ── Init ── */
+  async function initNotes() {
+    await loadNotes();
+    // Set calendar to the most recent note's month, or current month
+    if (notesData.length > 0) {
+      const latest = notesData[notesData.length - 1].date;
+      calYear = parseInt(latest.substring(0, 4));
+      calMonth = parseInt(latest.substring(5, 7)) - 1;
+    }
+    renderCalendar();
+    renderRecent();
+  }
+
+  initNotes();
 </script>
 
 </body>
