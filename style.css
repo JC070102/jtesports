@@ -99,7 +99,7 @@ nav .nav-cta {
 .hero-left {
   min-width: 0;
   max-width: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .hero-tag {
