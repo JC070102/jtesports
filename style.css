@@ -1024,3 +1024,69 @@ footer a:hover { color: var(--ink); }
   color: var(--muted);
   letter-spacing: 0.04em;
 }
+
+/* ── NOTES TEASER (hero) ── */
+.notes-teaser {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  margin-top: 0.25rem;
+}
+
+.notes-teaser-label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.notes-teaser-desc {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.notes-teaser-latest {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-bottom: 1rem;
+}
+
+.notes-teaser-latest:hover { background: rgba(13,13,13,0.025); }
+
+.notes-teaser-date {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.notes-teaser-title {
+  font-family: var(--display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  flex: 1;
+}
+
+.notes-teaser-cta {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  cursor: pointer;
+  display: block;
+}
+
+.notes-teaser-cta:hover { text-decoration: underline; }
