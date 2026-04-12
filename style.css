@@ -606,6 +606,32 @@ footer a:hover { color: var(--ink); }
   transition: background 0.15s;
 }
 
+.hero-image-block {
+  position: relative;
+  width: 100%;
+  margin-bottom: 2rem;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.hero-team-img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.hero-img-credit {
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.04em;
+}
+
 .hero-cta:hover {
   background: var(--accent);
 }
