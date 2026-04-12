@@ -115,10 +115,10 @@ nav .nav-cta {
   font-family: var(--display);
   font-size: clamp(2.8rem, 4vw, 3.5rem);
   font-weight: 800;
-  line-height: 0.95;
+  line-height: 0.88;
   letter-spacing: -0.03em;
   color: var(--ink);
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .hero-sub {
