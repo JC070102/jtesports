@@ -85,7 +85,6 @@ nav .nav-cta {
 /* ── HERO ── */
 .hero {
   border-bottom: 1px solid var(--border);
-  overflow: hidden;
 }
 
 .hero-columns {
@@ -618,7 +617,7 @@ footer a:hover { color: var(--ink); }
 
 .hero-image-block {
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
   margin-top: 2rem;
   position: relative;
   border-radius: 3px;
