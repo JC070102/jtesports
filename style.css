@@ -609,9 +609,11 @@ footer a:hover { color: var(--ink); }
 .hero-image-block {
   position: relative;
   width: 100%;
+  max-width: 100%;
   margin-bottom: 2rem;
   border-radius: 3px;
   overflow: hidden;
+  container-type: inline-size;
 }
 
 .hero-team-img {
