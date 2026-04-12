@@ -667,3 +667,360 @@ footer a:hover { color: var(--ink); }
 .hero-cta:hover {
   background: var(--accent);
 }
+
+/* ============================================================
+   NOTES SYSTEM — Calendar + Reader
+   ============================================================ */
+
+/* ── Notes page header ── */
+.notes-header {
+  padding: 4rem 2.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.notes-hed {
+  font-family: var(--display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.notes-sub {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--muted);
+}
+
+/* ── Calendar controls ── */
+.cal-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.cal-month-label {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.cal-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+
+.cal-btn:hover {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+/* ── Calendar grid ── */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin: 0 2.5rem;
+}
+
+.cal-day-header {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+  padding: 1rem 0 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.cal-cell {
+  min-height: 72px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  padding: 8px 10px;
+  position: relative;
+  cursor: default;
+  transition: background 0.12s;
+}
+
+.cal-cell:nth-child(7n+7) { border-right: none; }
+
+.cal-empty { background: transparent; opacity: 0.35; }
+
+.cal-has-note { cursor: pointer; }
+.cal-has-note:hover { background: rgba(13, 13, 13, 0.025); }
+.cal-active { background: rgba(200, 55, 45, 0.04); }
+
+.cal-num {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.cal-today {
+  border-top: 2px solid var(--accent);
+}
+
+.cal-today .cal-num {
+  color: var(--accent);
+}
+
+.cal-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ── Calendar dropdown ── */
+.cal-dropdown {
+  grid-column: 1 / -1;
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(200, 55, 45, 0.03);
+  border-left: 3px solid var(--accent);
+  animation: calDrop 0.15s ease-out;
+}
+
+@keyframes calDrop {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cal-dd-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cal-dd-date {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.cal-dd-title {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.cal-dd-link {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.cal-dd-link:hover { text-decoration: underline; }
+
+/* ── Note tags (shared) ── */
+.note-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--accent);
+  padding: 2px 8px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.note-tag.cs-tag { background: #1a5fa8; }
+
+/* ── Recent notes list ── */
+.notes-recent {
+  padding: 0 2.5rem 2rem;
+}
+
+.recent-row {
+  display: grid;
+  grid-template-columns: 80px 70px 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.recent-row:hover { background: rgba(13, 13, 13, 0.025); margin: 0 -1rem; padding: 1rem; }
+
+.recent-row-title {
+  font-family: var(--display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+/* ── Note reader ── */
+.reader-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.reader-arrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+  min-width: 90px;
+}
+
+.reader-arrow:hover { color: var(--ink); }
+.reader-arrow-right { justify-content: flex-end; }
+.reader-arrow.disabled { opacity: 0.25; pointer-events: none; }
+
+.reader-date-center {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-align: center;
+}
+
+.reader-card {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 3rem 2.5rem 4rem;
+}
+
+@keyframes noteIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reader-inner {
+  border-left: 3px solid var(--accent);
+  padding-left: 1.75rem;
+}
+
+.reader-title {
+  font-family: var(--display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  margin-top: 1rem;
+  color: var(--ink);
+}
+
+.reader-body {
+  font-family: var(--serif);
+  font-size: 1.08rem;
+  line-height: 1.72;
+  color: #3a3935;
+}
+
+.reader-body p + p { margin-top: 1.15rem; }
+
+.reader-body em { color: var(--accent); }
+
+.reader-body a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(200, 55, 45, 0.3);
+  transition: border-color 0.15s;
+}
+
+.reader-body a:hover { border-color: var(--accent); }
+
+/* Embedded video / clip styling */
+.reader-body .clip-embed {
+  margin: 1.5rem 0;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.reader-body .clip-embed iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
+  display: block;
+  border: none;
+}
+
+.reader-body .clip-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.reader-footer {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.reader-back {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.reader-back:hover { color: var(--ink); }
+
+.reader-read-time {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
