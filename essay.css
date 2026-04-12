@@ -34,7 +34,7 @@
 .essay-hed {
   font-family: var(--display);
   font-size: clamp(1.5rem, 3.5vw, 2.75rem);
-  white-space: nowrap;
+  white-space: normal;
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: -0.03em;
