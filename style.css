@@ -90,6 +90,12 @@ nav .nav-cta {
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
   align-items: start;
+  overflow: hidden;
+}
+
+.hero-left {
+  min-width: 0;
+  overflow: hidden;
 }
 
 .hero-tag {
