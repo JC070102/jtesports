@@ -216,14 +216,6 @@
   <!-- PLAYERS VIEW -->
   <div id="car-players-view">
     <div class="filter-bar car-filter-bar">
-      <div class="car-filter-group" data-field="region">
-        <span class="car-filter-label">Region</span>
-        <button class="filter-btn car-fb active" data-val="All">All</button>
-        <button class="filter-btn car-fb" data-val="Korea">Korea</button>
-        <button class="filter-btn car-fb" data-val="Europe">Europe</button>
-        <button class="filter-btn car-fb" data-val="Americas">Americas</button>
-        <button class="filter-btn car-fb" data-val="Pacific">Pacific</button>
-      </div>
       <div class="car-filter-group" data-field="league">
         <span class="car-filter-label">League</span>
         <button class="filter-btn car-fb active" data-val="All">All</button>
@@ -251,6 +243,13 @@
         <button class="filter-btn car-fb" data-val="ADC">ADC</button>
         <button class="filter-btn car-fb" data-val="Support">Support</button>
       </div>
+      <div class="car-filter-group" data-field="minGp">
+        <span class="car-filter-label">Min GP</span>
+        <button class="filter-btn car-fb active" data-val="0">All</button>
+        <button class="filter-btn car-fb" data-val="10">10+</button>
+        <button class="filter-btn car-fb" data-val="25">25+</button>
+        <button class="filter-btn car-fb" data-val="50">50+</button>
+      </div>
       <input type="text" class="car-search" id="car-search" placeholder="Search player...">
       <button class="car-reset" id="car-reset">Reset</button>
     </div>
@@ -267,14 +266,6 @@
   <!-- TEAMS VIEW -->
   <div id="car-teams-view" style="display:none;">
     <div class="filter-bar car-filter-bar">
-      <div class="car-filter-group" data-field="region">
-        <span class="car-filter-label">Region</span>
-        <button class="filter-btn car-fb active" data-val="All">All</button>
-        <button class="filter-btn car-fb" data-val="Korea">Korea</button>
-        <button class="filter-btn car-fb" data-val="Europe">Europe</button>
-        <button class="filter-btn car-fb" data-val="Americas">Americas</button>
-        <button class="filter-btn car-fb" data-val="Pacific">Pacific</button>
-      </div>
       <div class="car-filter-group" data-field="league">
         <span class="car-filter-label">League</span>
         <button class="filter-btn car-fb active" data-val="All">All</button>
@@ -776,9 +767,9 @@
 
   const DASH_PAGE_SIZE = 25;
 
-  let dashFilters     = { region: 'All', league: 'All', year: 'All', role: 'All', search: '' };
+  let dashFilters     = { league: 'All', year: 'All', role: 'All', minGp: '0', search: '' };
   let dashSort        = { col: 'WAR_per_game', dir: 'desc' };
-  let dashTeamFilters = { region: 'All', league: 'All', year: 'All' };
+  let dashTeamFilters = { league: 'All', year: 'All' };
   let dashTeamSort    = { col: 'WAR_per_Game', dir: 'desc' };
   let dashTab         = 'players';
   let expandedPlayer  = null;
@@ -883,12 +874,16 @@
   function filterPlayers() {
     const f = dashFilters;
     const q = (f.search || '').trim().toLowerCase();
+    const minGp = Number(f.minGp) || 0;
     return carPlayers.filter(r => {
       if (!r.Player) return false;
-      if (f.region !== 'All' && String(r.Region) !== f.region) return false;
       if (f.league !== 'All' && String(r.League) !== f.league) return false;
       if (f.year   !== 'All' && String(r.Year)   !== f.year)   return false;
       if (f.role   !== 'All' && String(r.Pos)    !== f.role)   return false;
+      if (minGp > 0) {
+        const gp = Number(r.GP);
+        if (!isFinite(gp) || gp < minGp) return false;
+      }
       if (q && !String(r.Player).toLowerCase().includes(q))    return false;
       return true;
     });
@@ -897,7 +892,6 @@
     const f = dashTeamFilters;
     return carTeams.filter(r => {
       if (!r.Team) return false;
-      if (f.region !== 'All' && String(r.Region) !== f.region) return false;
       if (f.league !== 'All' && String(r.League) !== f.league) return false;
       if (f.year   !== 'All' && String(r.Year)   !== f.year)   return false;
       return true;
@@ -1258,11 +1252,15 @@
     const reset = document.getElementById('car-reset');
     if (reset) {
       reset.addEventListener('click', () => {
-        dashFilters = { region: 'All', league: 'All', year: 'All', role: 'All', search: '' };
+        dashFilters = { league: 'All', year: 'All', role: 'All', minGp: '0', search: '' };
         dashPage = 0; expandedPlayer = null;
         if (search) search.value = '';
-        document.querySelectorAll('#car-players-view .car-fb').forEach(b => {
-          b.classList.toggle('active', b.dataset.val === 'All');
+        document.querySelectorAll('#car-players-view .car-filter-group').forEach(grp => {
+          const field = grp.dataset.field;
+          const defaultVal = dashFilters[field];
+          grp.querySelectorAll('.car-fb').forEach(b => {
+            b.classList.toggle('active', b.dataset.val === String(defaultVal));
+          });
         });
         renderPlayers();
       });
