@@ -1102,3 +1102,697 @@ footer a:hover { color: var(--ink); }
   border-radius: 3px;
 }
 .notes-teaser-cta:hover { text-decoration: underline; }
+
+/* ============================================================
+   CAR DASHBOARD
+   ============================================================ */
+
+/* ── Hero teaser (home page, right column) ── */
+.car-hero {
+  display: flex;
+  flex-direction: column;
+}
+
+.car-hero-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.car-hero-desc {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 1.5rem;
+  max-width: 380px;
+}
+
+.car-hero-preview {
+  border-top: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+}
+
+.car-leaderboard-row {
+  display: grid;
+  grid-template-columns: 24px 1fr 52px;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.car-lb-rank {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.car-lb-player {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.car-lb-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.car-lb-team {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+.car-lb-value {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  text-align: right;
+}
+
+.car-hero-count {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 1.5rem;
+}
+
+/* Modifier on .hero-cta so it behaves as a full-width block
+   inside the right column. Base .hero-cta styling is preserved. */
+.car-hero-cta {
+  display: block;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+}
+
+.car-hero-note {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ── Shared skeleton animation (used by dashboard loading states) ── */
+.car-skeleton {
+  animation: carPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes carPulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+
+/* ── Page header note ── */
+.car-page-note {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
+  max-width: 680px;
+  line-height: 1.55;
+}
+
+/* ── Tab bar ── */
+.car-tab-bar {
+  display: flex;
+  gap: 0;
+  padding: 0 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.car-tab {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 1rem 1.5rem;
+  border: none;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.car-tab:hover { color: var(--ink); }
+
+.car-tab.active {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+}
+
+/* ── Filter bar (extends .filter-bar) ── */
+.car-filter-bar {
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+}
+
+.car-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.car-filter-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-right: 0.35rem;
+}
+
+/* CAR filter buttons — inherit .filter-btn styling, .car-fb is the
+   scoping hook for the dashboard's own JS listeners. */
+
+.car-search {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink);
+  padding: 4px 2px;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  outline: none;
+  min-width: 160px;
+  margin-left: auto;
+  transition: border-color 0.15s;
+}
+.car-search:focus { border-bottom-color: var(--accent); }
+.car-search::placeholder { color: var(--muted); }
+
+.car-reset {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  transition: color 0.15s;
+}
+.car-reset:hover { color: var(--ink); }
+
+/* ── Table (shared) ── */
+.car-table-wrapper {
+  overflow-x: auto;
+}
+
+.car-table { display: block; }
+
+.car-thead,
+.car-row {
+  display: grid;
+  gap: 1rem;
+  align-items: center;
+}
+
+.car-row-players {
+  grid-template-columns:
+    32px
+    minmax(140px, 1.4fr)
+    56px
+    minmax(100px, 1.2fr)
+    76px
+    52px
+    52px
+    64px
+    68px
+    44px;
+  min-width: 900px;
+}
+
+.car-row-teams {
+  grid-template-columns:
+    32px
+    minmax(140px, 1.6fr)
+    76px
+    52px
+    76px
+    68px
+    42px
+    42px
+    52px
+    64px
+    minmax(180px, 2.2fr);
+  min-width: 1100px;
+}
+
+.car-thead {
+  padding: 0.85rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+  background: rgba(13, 13, 13, 0.02);
+}
+
+.car-th {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  user-select: none;
+}
+.car-th-right  { text-align: right; }
+.car-th-center { text-align: center; }
+.car-th-sort   { cursor: pointer; transition: color 0.15s; }
+.car-th-sort:hover { color: var(--ink); }
+.car-th-arrow  { color: var(--accent); margin-left: 0.35rem; }
+
+.car-row {
+  padding: 0.85rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.car-row:hover { background: rgba(13, 13, 13, 0.025); }
+
+.car-row-teams { cursor: default; }
+.car-row-teams:hover { background: transparent; }
+
+.car-td {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.car-td-right  { text-align: right; }
+.car-td-center { text-align: center; }
+
+.car-td-rank { color: var(--muted); font-size: 11px; }
+
+.car-td-player,
+.car-td-team-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.car-td-team,
+.car-td-year,
+.car-td-starters { color: var(--muted); font-size: 11px; }
+
+.car-td-carg { font-weight: 700; font-size: 13px; }
+
+.car-gp-tilde { color: var(--muted); margin-left: 2px; }
+
+/* ── Value coloring ──
+   Analytics contrast: green for positive differentials,
+   accent red for negative. Muted for near-zero. */
+.car-val-pos  { color: #2a7a3a; }
+.car-val-neg  { color: var(--accent); }
+.car-val-mute { color: var(--muted); }
+
+.car-wpct-high { color: #2a7a3a; }
+.car-wpct-low  { color: var(--muted); }
+
+/* ── Badges ── */
+.car-pos-badge,
+.car-league-badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 2px;
+  color: var(--paper);
+  white-space: nowrap;
+}
+
+.car-pos-top { background: #1a5fa8; }
+.car-pos-jgl { background: #2a7a3a; }
+.car-pos-mid { background: var(--ink); }
+.car-pos-adc { background: var(--accent); }
+.car-pos-sup { background: var(--muted); }
+
+.car-lg-lck   { background: var(--accent); }
+.car-lg-lec   { background: #1a5fa8; }
+.car-lg-lcs   { background: #2a7a3a; }
+.car-lg-other { background: var(--ink); }
+
+.car-rel-badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  background: rgba(13, 13, 13, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0 5px;
+  line-height: 1.4;
+}
+
+/* ── Empty / error states ── */
+.car-empty {
+  padding: 3rem 2.5rem;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--muted);
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.car-error {
+  padding: 1.25rem 2.5rem;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Skeleton row cells */
+.car-row.car-skeleton {
+  cursor: default;
+}
+.car-row.car-skeleton .car-td {
+  background: rgba(13, 13, 13, 0.06);
+  color: transparent;
+  border-radius: 2px;
+  height: 12px;
+}
+
+/* ── Pagination ── */
+.car-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.car-page-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+.car-page-btn:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.car-page-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.car-page-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ── Expansion panel ── */
+.car-expansion-panel {
+  padding: 1.5rem 2.5rem 1.75rem;
+  border-bottom: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  background: rgba(200, 55, 45, 0.02);
+  animation: carExpIn 0.18s ease-out;
+  min-width: 900px;
+}
+
+@keyframes carExpIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.car-exp-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.car-exp-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.car-exp-name {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+
+.car-exp-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+.car-exp-close {
+  font-family: var(--mono);
+  font-size: 18px;
+  line-height: 1;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+.car-exp-close:hover {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.car-stat-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.25rem;
+  max-width: 520px;
+}
+
+.car-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.car-stat-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.car-stat-val {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+/* ── Z-score bars ── */
+.car-zbar-heading {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.85rem;
+}
+
+.car-zbar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  max-width: 640px;
+}
+
+.car-zbar {
+  display: grid;
+  grid-template-columns: 180px 1fr 52px;
+  gap: 1rem;
+  align-items: center;
+}
+
+.car-zbar-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.car-zbar-viz {
+  position: relative;
+  height: 6px;
+  background: rgba(13, 13, 13, 0.04);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.car-zbar-zero {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: var(--border);
+  z-index: 1;
+}
+
+.car-zbar-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  transition: width 0.5s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+.car-zbar-pos { left: 50%;  background: var(--accent); }
+.car-zbar-neg { right: 50%; background: rgba(200, 55, 45, 0.7); }
+
+.car-zbar-value {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-align: right;
+}
+
+.car-exp-warn {
+  margin-top: 1rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--muted);
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.car-exp-note {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--muted);
+  padding: 0.5rem 0;
+}
+
+/* ── Analytical callout (Teams tab) ── */
+.car-callout {
+  margin: 1.25rem 2.5rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.55;
+  background: rgba(200, 55, 45, 0.02);
+  border-radius: 2px;
+}
+
+/* ── Methodology ── */
+.car-method {
+  padding: 2rem 2.5rem 3rem;
+  border-top: 1px solid var(--border);
+}
+
+.car-method-toggle {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: color 0.15s;
+}
+.car-method-toggle:hover { color: var(--ink); }
+
+.car-method-toggle-sym {
+  font-family: var(--mono);
+  font-size: 14px;
+  width: 16px;
+  text-align: center;
+  color: var(--accent);
+}
+
+.car-method-body {
+  margin-top: 1.25rem;
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 720px;
+}
+
+.car-method-body p { margin-bottom: 1rem; }
+
+.car-method-body p strong {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink);
+}
+
+.car-method-ref {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(200, 55, 45, 0.3);
+  transition: border-color 0.15s;
+}
+.car-method-ref:hover { border-color: var(--accent); }
