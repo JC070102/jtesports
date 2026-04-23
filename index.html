@@ -8,6 +8,7 @@
 <meta name="description" content="Long-form essays, data, and gameplay breakdowns on League of Legends and Counter-Strike.">
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 <body>
 
@@ -17,6 +18,7 @@
     <li><a onclick="showPage('home')">Home</a></li>
     <li><a onclick="showPage('archive')">Writing</a></li>
     <li><a onclick="showPage('notes')">Notes</a></li>
+    <li><a onclick="showPage('car')">CAR</a></li>
     <li><a onclick="showPage('about')">About</a></li>
     <li><a href="https://twitter.com/jt_esports" class="nav-cta" target="_blank">Twitter / X ↗</a></li>
   </ul>
@@ -38,39 +40,15 @@
   </div>
 </div>
       <div class="hero-right">
-  <div class="takes-label">Recent takes</div>
-  <div class="take-card">
-    <div class="take-header">
-      <span class="take-handle">@jt_esports</span>
-      <span class="take-date">— April 2026</span>
-    </div>
-    <p class="take-body">history has told us that early bloomers don't go far enough to worlds, that's why there's no golden road. I wouldn't be surprised if early dominance from BLG or LYON = burnout = out in groups stage at worlds.</p>
-    <div class="take-footer">
-      <a class="take-x-link" href="https://twitter.com/jt_esports" target="_blank">View on X ↗</a>
-    </div>
-  </div>
-  <div class="take-card">
-    <div class="take-header">
-      <span class="take-handle">@jt_esports</span>
-      <span class="take-date">— April 2026</span>
-    </div>
-    <p class="take-body">LCK is most interesting. GenG just lost to KT, and KT actually look good I guess idk hard to say since drafts were pretty troll from GenG side. Ive always loved BFX but cant in good faith say Clear or Vicla throw. Short version: GenG sure, but it's like top 4 roulette come summer</p>
-    <div class="take-footer">
-      <a class="take-x-link" href="https://twitter.com/jt_esports" target="_blank">View on X ↗</a>
-    </div>
-  </div>
-
-  <div class="notes-teaser">
-    <div class="notes-teaser-label">Notes</div>
-    <p class="notes-teaser-desc">Day-to-day thoughts. Game reactions, roster moves, things that don't need an essay. Simplified content to sip through.</p>
-    <div class="notes-teaser-latest" onclick="showPage('notes')">
-      <span class="notes-teaser-date">— Apr 16</span>
-      <span class="notes-teaser-title">TES Dismantles BLG and ZUIAN Announces Himself</span>
-      <span class="archive-row-arrow">→</span>
-    </div>
-    <a class="notes-teaser-cta" onclick="showPage('notes')">Browse all notes →</a>
-  </div>
-</div>
+        <div class="car-hero">
+          <div class="car-hero-label">Contribution Above Replacement</div>
+          <p class="car-hero-desc">A wins-based model for evaluating professional League of Legends players across every major league.</p>
+          <div class="car-hero-preview" id="car-hero-preview"></div>
+          <div class="car-hero-count" id="car-hero-count">Showing top 4 of 501 players across 9 datasets →</div>
+          <a class="hero-cta car-hero-cta" onclick="showPage('car')">Explore the full CAR index →</a>
+          <p class="car-hero-note">League-relative figures — not cross-comparable between regions.</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -221,6 +199,129 @@
 
 </div>
 
+<!-- CAR DASHBOARD PAGE -->
+<div class="page" id="page-car">
+
+  <div class="archive-header">
+    <h1 class="archive-hed">CAR Index</h1>
+    <p class="archive-sub">Contribution Above Replacement — league-relative player evaluation across professional LoL.</p>
+    <p class="car-page-note">CAR measures wins contributed above a freely replaceable player at the same position. Figures are not cross-league comparable. WAR/Game is the primary ranking metric.</p>
+  </div>
+
+  <div class="car-tab-bar">
+    <button class="car-tab active" data-tab="players">Players</button>
+    <button class="car-tab" data-tab="teams">Teams</button>
+  </div>
+
+  <!-- PLAYERS VIEW -->
+  <div id="car-players-view">
+    <div class="filter-bar car-filter-bar">
+      <div class="car-filter-group" data-field="region">
+        <span class="car-filter-label">Region</span>
+        <button class="filter-btn car-fb active" data-val="All">All</button>
+        <button class="filter-btn car-fb" data-val="Korea">Korea</button>
+        <button class="filter-btn car-fb" data-val="Europe">Europe</button>
+        <button class="filter-btn car-fb" data-val="Americas">Americas</button>
+        <button class="filter-btn car-fb" data-val="Pacific">Pacific</button>
+      </div>
+      <div class="car-filter-group" data-field="league">
+        <span class="car-filter-label">League</span>
+        <button class="filter-btn car-fb active" data-val="All">All</button>
+        <button class="filter-btn car-fb" data-val="LCK">LCK</button>
+        <button class="filter-btn car-fb" data-val="LCK CL">LCK CL</button>
+        <button class="filter-btn car-fb" data-val="LEC">LEC</button>
+        <button class="filter-btn car-fb" data-val="LCS">LCS</button>
+        <button class="filter-btn car-fb" data-val="LCP">LCP</button>
+        <button class="filter-btn car-fb" data-val="CBLOL">CBLOL</button>
+      </div>
+      <div class="car-filter-group" data-field="year">
+        <span class="car-filter-label">Year</span>
+        <button class="filter-btn car-fb active" data-val="All">All</button>
+        <button class="filter-btn car-fb" data-val="2026">2026</button>
+        <button class="filter-btn car-fb" data-val="2025">2025</button>
+        <button class="filter-btn car-fb" data-val="2024">2024</button>
+        <button class="filter-btn car-fb" data-val="2023">2023</button>
+      </div>
+      <div class="car-filter-group" data-field="role">
+        <span class="car-filter-label">Role</span>
+        <button class="filter-btn car-fb active" data-val="All">All</button>
+        <button class="filter-btn car-fb" data-val="Top">Top</button>
+        <button class="filter-btn car-fb" data-val="Jungle">Jungle</button>
+        <button class="filter-btn car-fb" data-val="Middle">Middle</button>
+        <button class="filter-btn car-fb" data-val="ADC">ADC</button>
+        <button class="filter-btn car-fb" data-val="Support">Support</button>
+      </div>
+      <input type="text" class="car-search" id="car-search" placeholder="Search player...">
+      <button class="car-reset" id="car-reset">Reset</button>
+    </div>
+
+    <div class="car-table-wrapper">
+      <div class="car-table car-players-table">
+        <div class="car-thead car-row-players" id="car-players-thead"></div>
+        <div class="car-tbody" id="car-players-tbody"></div>
+      </div>
+    </div>
+    <div class="car-pagination" id="car-players-pagination"></div>
+  </div>
+
+  <!-- TEAMS VIEW -->
+  <div id="car-teams-view" style="display:none;">
+    <div class="filter-bar car-filter-bar">
+      <div class="car-filter-group" data-field="region">
+        <span class="car-filter-label">Region</span>
+        <button class="filter-btn car-fb active" data-val="All">All</button>
+        <button class="filter-btn car-fb" data-val="Korea">Korea</button>
+        <button class="filter-btn car-fb" data-val="Europe">Europe</button>
+        <button class="filter-btn car-fb" data-val="Americas">Americas</button>
+        <button class="filter-btn car-fb" data-val="Pacific">Pacific</button>
+      </div>
+      <div class="car-filter-group" data-field="league">
+        <span class="car-filter-label">League</span>
+        <button class="filter-btn car-fb active" data-val="All">All</button>
+        <button class="filter-btn car-fb" data-val="LCK">LCK</button>
+        <button class="filter-btn car-fb" data-val="LCK CL">LCK CL</button>
+        <button class="filter-btn car-fb" data-val="LEC">LEC</button>
+        <button class="filter-btn car-fb" data-val="LCS">LCS</button>
+        <button class="filter-btn car-fb" data-val="LCP">LCP</button>
+        <button class="filter-btn car-fb" data-val="CBLOL">CBLOL</button>
+      </div>
+      <div class="car-filter-group" data-field="year">
+        <span class="car-filter-label">Year</span>
+        <button class="filter-btn car-fb active" data-val="All">All</button>
+        <button class="filter-btn car-fb" data-val="2026">2026</button>
+        <button class="filter-btn car-fb" data-val="2025">2025</button>
+        <button class="filter-btn car-fb" data-val="2024">2024</button>
+        <button class="filter-btn car-fb" data-val="2023">2023</button>
+      </div>
+    </div>
+
+    <div class="car-callout">
+      Teams with high CAR but lower win rates indicate strong individual players underconverting — often due to macro systems and team coordination factors this model cannot capture. The gap between CAR rank and win rank is as analytically meaningful as the CAR figure itself.
+    </div>
+
+    <div class="car-table-wrapper">
+      <div class="car-table car-teams-table">
+        <div class="car-thead car-row-teams" id="car-teams-thead"></div>
+        <div class="car-tbody" id="car-teams-tbody"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- METHODOLOGY -->
+  <div class="car-method">
+    <button class="car-method-toggle" id="car-method-toggle" aria-expanded="false">
+      <span class="car-method-toggle-sym">+</span><span>Methodology</span>
+    </button>
+    <div class="car-method-body" id="car-method-body" style="display:none;">
+      <p><strong>What CAR measures.</strong> CAR quantifies how many wins a player contributes above a freely available replacement-level player at their position and league. It combines role-specific individual statistics — each adjusted for team context to reduce inflation from winning or losing environments — into a single number expressed in wins.</p>
+      <p><strong>Replacement level.</strong> The baseline is the 25th percentile of qualifying players (minimum 10 GP) at each role within the dataset. A player at exactly replacement level scores 0. The replacement baseline is recalculated per dataset, so figures from different leagues and years reflect different competitive environments and should not be directly compared.</p>
+      <p><strong>Limitations.</strong> The model cannot capture strategic coordination, draft execution, communication, or macro decision-making that doesn't manifest in individual statistics. Players in system-oriented roles (e.g. utility junglers, facilitating supports) may read lower than their actual contribution. CAR/Game is the preferred ranking metric for players with different game counts.</p>
+      <a class="car-method-ref" href="#" onclick="return false;">Full formula reference →</a>
+    </div>
+  </div>
+
+</div>
+
 <!-- ABOUT PAGE -->
 <div class="page" id="page-about">
   <div class="about-page">
@@ -261,6 +362,7 @@
     <li><a onclick="showPage('home')">Home</a></li>
     <li><a onclick="showPage('archive')">Writing</a></li>
     <li><a onclick="showPage('notes')">Notes</a></li>
+    <li><a onclick="showPage('car')">CAR</a></li>
     <li><a onclick="showPage('about')">About</a></li>
     <li><a href="https://twitter.com/jt_esports" target="_blank">Twitter ↗</a></li>
   </ul>
@@ -277,13 +379,14 @@
     }
   }
 
-  /* ── Writing filter ── */
-  document.querySelectorAll('.filter-btn').forEach(btn => {
+  /* ── Writing filter (scoped to #page-archive so it doesn't
+        collide with the CAR dashboard's own filter buttons) ── */
+  document.querySelectorAll('#page-archive .filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#page-archive .filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const filter = btn.dataset.filter;
-      document.querySelectorAll('.archive-row').forEach(row => {
+      document.querySelectorAll('#page-archive .archive-row').forEach(row => {
         if (filter === 'all' || row.dataset.category.includes(filter)) {
           row.style.display = 'grid';
         } else {
@@ -559,6 +662,658 @@
   }
 
   initNotes();
+
+  /* ══════════════════════════════════════════════
+     CAR DASHBOARD — data loading + hero teaser
+     ══════════════════════════════════════════════ */
+
+  const CAR_PLAYERS_URL = 'https://raw.githubusercontent.com/JC070102/CARmodel/refs/heads/main/CARV4%20-%20master_players(1).csv';
+  const CAR_TEAMS_URL   = 'https://raw.githubusercontent.com/JC070102/CARmodel/refs/heads/main/CARV4%20-%20master_teams.csv';
+
+  let carPlayers = [];
+  let carTeams = [];
+  let carLoaded = false;
+
+  /* Fallback rows — shown before data resolves, or on fetch failure,
+     so the hero is never empty. Values are representative, not live. */
+  const CAR_FALLBACK = [
+    { Player: 'Keria',  Team: 'T1',    League: 'LCK', WAR_per_game: 0.40 },
+    { Player: 'Chovy',  Team: 'Gen.G', League: 'LCK', WAR_per_game: 0.39 },
+    { Player: 'Bdd',    Team: 'KT',    League: 'LCK', WAR_per_game: 0.34 },
+    { Player: 'Zeus',   Team: 'T1',    League: 'LCK', WAR_per_game: 0.26 }
+  ];
+
+  function formatCarValue(v) {
+    const n = Number(v);
+    if (!isFinite(n)) return '—';
+    const sign = n >= 0 ? '+' : '−';
+    return sign + Math.abs(n).toFixed(2);
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function renderCarHeroPreview(rows) {
+    const el = document.getElementById('car-hero-preview');
+    if (!el) return;
+    el.innerHTML = rows.slice(0, 4).map((r, i) => `
+      <div class="car-leaderboard-row">
+        <span class="car-lb-rank">${i + 1}</span>
+        <span class="car-lb-player">
+          <span class="car-lb-name">${escapeHtml(r.Player)}</span>
+          <span class="car-lb-team">${escapeHtml(r.Team)} · ${escapeHtml(r.League)}</span>
+        </span>
+        <span class="car-lb-value">${formatCarValue(r.WAR_per_game)}</span>
+      </div>
+    `).join('');
+  }
+
+  function renderCarHeroCount() {
+    const el = document.getElementById('car-hero-count');
+    if (!el) return;
+    if (!carLoaded || !carPlayers.length) return; // keep static default
+    const datasetKey = r => `${r.League || ''}|${r.Year || ''}|${r.Dataset || ''}`;
+    const datasets = new Set(carPlayers.map(datasetKey));
+    const total = carPlayers.filter(r => r.Player).length;
+    el.textContent = `Showing top 4 of ${total} players across ${datasets.size} datasets →`;
+  }
+
+  async function loadCarData() {
+    if (typeof Papa === 'undefined') {
+      console.warn('PapaParse not loaded — CAR data unavailable.');
+      return;
+    }
+    try {
+      const [playersRes, teamsRes] = await Promise.all([
+        fetch(CAR_PLAYERS_URL),
+        fetch(CAR_TEAMS_URL)
+      ]);
+      if (!playersRes.ok || !teamsRes.ok) throw new Error('fetch failed');
+      const [playersText, teamsText] = await Promise.all([
+        playersRes.text(),
+        teamsRes.text()
+      ]);
+      const players = Papa.parse(playersText, {
+        header: true, dynamicTyping: true, skipEmptyLines: true
+      });
+      const teams = Papa.parse(teamsText, {
+        header: true, dynamicTyping: true, skipEmptyLines: true
+      });
+      carPlayers = (players.data || []).filter(r => r && r.Player);
+      carTeams   = (teams.data   || []).filter(r => r && r.Team);
+      carLoaded = true;
+    } catch (e) {
+      console.warn('Could not load CAR data:', e);
+      carLoaded = false;
+    }
+  }
+
+  function getCarHeroRows() {
+    if (!carLoaded || !carPlayers.length) return CAR_FALLBACK;
+    const candidates = carPlayers.filter(r =>
+      String(r.Year) === '2026' &&
+      r.Player &&
+      isFinite(Number(r.WAR_per_game))
+    );
+    const pool = candidates.length ? candidates : carPlayers.filter(r =>
+      r.Player && isFinite(Number(r.WAR_per_game))
+    );
+    return pool
+      .slice()
+      .sort((a, b) => Number(b.WAR_per_game) - Number(a.WAR_per_game))
+      .slice(0, 4);
+  }
+
+  /* ══════════════════════════════════════════════
+     CAR DASHBOARD — Full page (Players + Teams)
+     ══════════════════════════════════════════════ */
+
+  const DASH_PAGE_SIZE = 25;
+
+  let dashFilters     = { region: 'All', league: 'All', year: 'All', role: 'All', search: '' };
+  let dashSort        = { col: 'WAR_per_game', dir: 'desc' };
+  let dashTeamFilters = { region: 'All', league: 'All', year: 'All' };
+  let dashTeamSort    = { col: 'WAR_per_Game', dir: 'desc' };
+  let dashTab         = 'players';
+  let expandedPlayer  = null;
+  let dashPage        = 0;
+
+  /* Map raw z-score columns to human-readable labels. */
+  const Z_FRIENDLY = {
+    z_DMG_GOLD_ratio: 'Damage Efficiency',
+    z_CSPM:           'CS Rate',
+    z_DPM_adj:        'Damage Output',
+    z_neg_DTH:        'Survival',
+    z_EGPM_adj:       'Gold Efficiency',
+    z_GD10_adj:       'Lane Gold Diff',
+    z_XPD10_adj:      'XP Differential',
+    z_KP_residual:    'Kill Participation (adj.)',
+    z_TLDPS:          'Damage Pressure',
+    z_CTR_adj_GD10:   'Counterpick-adj Gold',
+    z_D_P15_adj:      'Late-Game Damage Share',
+    z_WCPM_type3:     'Ward Clears',
+    z_WPM_type3:      'Vision Created',
+    z_CWPM_type3:     'Control Wards',
+    z_JSAD:           'Style-adj Damage',
+    z_CSD10_adj:      'Early Pathing (CS)',
+    z_neg_DTH_adj:    'Survival (map-adj)'
+  };
+
+  /* Role → z-components to show in the expansion panel, in display order.
+     Only components the CAR formula actually weights for that role. */
+  const ROLE_COMPONENTS = {
+    Top:     ['z_XPD10_adj', 'z_TLDPS', 'z_CTR_adj_GD10', 'z_D_P15_adj', 'z_neg_DTH_adj'],
+    Jungle:  ['z_EGPM_adj', 'z_CSD10_adj', 'z_KP_residual', 'z_JSAD', 'z_neg_DTH_adj'],
+    Middle:  ['z_GD10_adj', 'z_KP_residual', 'z_DMG_GOLD_ratio', 'z_EGPM_adj', 'z_DPM_adj'],
+    ADC:     ['z_DMG_GOLD_ratio', 'z_DPM_adj', 'z_CSPM', 'z_neg_DTH'],
+    Support: ['z_WCPM_type3', 'z_WPM_type3', 'z_CWPM_type3', 'z_KP_residual', 'z_GD10_adj']
+  };
+
+  /* ── Small formatters / classifiers ── */
+  function fmtNum(v, dp) {
+    const n = Number(v);
+    if (!isFinite(n)) return '—';
+    return dp == null ? String(n) : n.toFixed(dp);
+  }
+  function fmtSigned(v, dp) {
+    const n = Number(v);
+    if (!isFinite(n)) return '—';
+    const sign = n >= 0 ? '+' : '−';
+    return sign + Math.abs(n).toFixed(dp == null ? 2 : dp);
+  }
+  function fmtPct(v) {
+    const n = Number(v);
+    if (!isFinite(n)) return '—';
+    return n.toFixed(1) + '%';
+  }
+
+  /* Coloring rules from the brief.
+     CAR (raw):  |x|<2 muted, else pos=accent, neg=red@0.7
+     CAR/G:      >0.15 pos, <-0.10 neg, else muted */
+  function carColorClass(v) {
+    const n = Number(v);
+    if (!isFinite(n)) return 'car-val-mute';
+    if (n > 2)  return 'car-val-pos';
+    if (n < -2) return 'car-val-neg';
+    return 'car-val-mute';
+  }
+  function cargColorClass(v) {
+    const n = Number(v);
+    if (!isFinite(n)) return 'car-val-mute';
+    if (n > 0.15)  return 'car-val-pos';
+    if (n < -0.10) return 'car-val-neg';
+    return 'car-val-mute';
+  }
+
+  function roleBadgeClass(pos) {
+    const k = String(pos || '').toLowerCase();
+    if (k === 'top')                         return 'car-pos-top';
+    if (k === 'jungle' || k === 'jgl')       return 'car-pos-jgl';
+    if (k === 'middle' || k === 'mid')       return 'car-pos-mid';
+    if (k === 'adc' || k === 'bot')          return 'car-pos-adc';
+    if (k === 'support' || k === 'sup')      return 'car-pos-sup';
+    return 'car-pos-mid';
+  }
+  function shortRole(pos) {
+    const k = String(pos || '');
+    if (k === 'Middle')  return 'MID';
+    if (k === 'Jungle')  return 'JGL';
+    if (k === 'Support') return 'SUP';
+    return k.toUpperCase();
+  }
+  function leagueBadgeClass(lg) {
+    const k = String(lg || '').toUpperCase();
+    if (k.startsWith('LCK')) return 'car-lg-lck';
+    if (k.startsWith('LEC')) return 'car-lg-lec';
+    if (k === 'LCS')         return 'car-lg-lcs';
+    return 'car-lg-other';
+  }
+
+  function playerKey(r) {
+    return [r.Player, r.Team, r.League, r.Year, r.Dataset].join('|');
+  }
+
+  /* ── Filter + sort ── */
+  function filterPlayers() {
+    const f = dashFilters;
+    const q = (f.search || '').trim().toLowerCase();
+    return carPlayers.filter(r => {
+      if (!r.Player) return false;
+      if (f.region !== 'All' && String(r.Region) !== f.region) return false;
+      if (f.league !== 'All' && String(r.League) !== f.league) return false;
+      if (f.year   !== 'All' && String(r.Year)   !== f.year)   return false;
+      if (f.role   !== 'All' && String(r.Pos)    !== f.role)   return false;
+      if (q && !String(r.Player).toLowerCase().includes(q))    return false;
+      return true;
+    });
+  }
+  function filterTeams() {
+    const f = dashTeamFilters;
+    return carTeams.filter(r => {
+      if (!r.Team) return false;
+      if (f.region !== 'All' && String(r.Region) !== f.region) return false;
+      if (f.league !== 'All' && String(r.League) !== f.league) return false;
+      if (f.year   !== 'All' && String(r.Year)   !== f.year)   return false;
+      return true;
+    });
+  }
+  function sortRows(rows, col, dir) {
+    const mult = dir === 'asc' ? 1 : -1;
+    return rows.slice().sort((a, b) => {
+      const va = a[col], vb = b[col];
+      const na = Number(va), nb = Number(vb);
+      const aNum = isFinite(na), bNum = isFinite(nb);
+      if (aNum && bNum) return (na - nb) * mult;
+      if (aNum) return -1 * mult;
+      if (bNum) return  1 * mult;
+      return String(va == null ? '' : va).localeCompare(String(vb == null ? '' : vb)) * mult;
+    });
+  }
+
+  /* ── Column schemas ── */
+  const PLAYER_COLS = [
+    { key: 'rank',         label: '#',      sort: false, align: 'right'  },
+    { key: 'Player',       label: 'Player', sort: true,  align: 'left'   },
+    { key: 'Pos',          label: 'Pos',    sort: true,  align: 'left'   },
+    { key: 'Team',         label: 'Team',   sort: true,  align: 'left'   },
+    { key: 'League',       label: 'League', sort: true,  align: 'left'   },
+    { key: 'Year',         label: 'Year',   sort: true,  align: 'right'  },
+    { key: 'GP',           label: 'GP',     sort: true,  align: 'right'  },
+    { key: 'WAR',          label: 'CAR',    sort: true,  align: 'right'  },
+    { key: 'WAR_per_game', label: 'CAR/G',  sort: true,  align: 'right'  },
+    { key: 'reliability',  label: 'Rel',    sort: false, align: 'center' }
+  ];
+  const TEAM_COLS = [
+    { key: 'rank',         label: '#',        sort: false, align: 'right' },
+    { key: 'Team',         label: 'Team',     sort: true,  align: 'left'  },
+    { key: 'League',       label: 'League',   sort: true,  align: 'left'  },
+    { key: 'Year',         label: 'Year',     sort: true,  align: 'right' },
+    { key: 'Team_WAR',     label: 'Team CAR', sort: true,  align: 'right' },
+    { key: 'WAR_per_Game', label: 'CAR/G',    sort: true,  align: 'right' },
+    { key: 'W',            label: 'W',        sort: true,  align: 'right' },
+    { key: 'L',            label: 'L',        sort: true,  align: 'right' },
+    { key: 'GP',           label: 'GP',       sort: true,  align: 'right' },
+    { key: 'W_pct',        label: 'W%',       sort: true,  align: 'right' },
+    { key: 'Players',      label: 'Starters', sort: false, align: 'left'  }
+  ];
+
+  function renderHead(cols, sortState, onSort, elId) {
+    const thead = document.getElementById(elId);
+    if (!thead) return;
+    thead.innerHTML = cols.map(c => {
+      const active   = sortState.col === c.key;
+      const arrow    = active ? (sortState.dir === 'desc' ? '↓' : '↑') : '';
+      const sortable = c.sort ? 'car-th-sort' : '';
+      const align    = 'car-th-' + c.align;
+      const arrowHtml = active ? `<span class="car-th-arrow">${arrow}</span>` : '';
+      return `<div class="car-th ${sortable} ${align}" data-col="${escapeHtml(c.key)}">${escapeHtml(c.label)}${arrowHtml}</div>`;
+    }).join('');
+    thead.querySelectorAll('.car-th-sort').forEach(th => {
+      th.addEventListener('click', () => onSort(th.dataset.col));
+    });
+  }
+
+  /* ── Players table ── */
+  function renderPlayers() {
+    if (!document.getElementById('car-players-tbody')) return;
+
+    renderHead(PLAYER_COLS, dashSort, (col) => {
+      if (dashSort.col === col) {
+        dashSort.dir = dashSort.dir === 'desc' ? 'asc' : 'desc';
+      } else {
+        dashSort.col = col;
+        const stringy = ['Player', 'Team', 'League', 'Pos'].includes(col);
+        dashSort.dir = stringy ? 'asc' : 'desc';
+      }
+      dashPage = 0;
+      expandedPlayer = null;
+      renderPlayers();
+    }, 'car-players-thead');
+
+    const filtered = filterPlayers();
+    const sorted   = sortRows(filtered, dashSort.col, dashSort.dir);
+    const total    = sorted.length;
+    const start    = Math.min(dashPage * DASH_PAGE_SIZE, Math.max(0, total - 1));
+    dashPage       = Math.floor(start / DASH_PAGE_SIZE);
+    const slice    = sorted.slice(start, start + DASH_PAGE_SIZE);
+
+    const tbody = document.getElementById('car-players-tbody');
+    tbody.innerHTML = '';
+
+    if (!slice.length) {
+      tbody.innerHTML = `<div class="car-empty">No players match these filters.</div>`;
+      renderPlayersPagination(total, 0);
+      return;
+    }
+
+    slice.forEach((r, i) => {
+      const rank  = start + i + 1;
+      const gp    = Number(r.GP);
+      const lowGp = isFinite(gp) && gp < 25;
+      const row   = document.createElement('div');
+      row.className = 'car-row car-row-players';
+      row.dataset.key = playerKey(r);
+      row.innerHTML = `
+        <div class="car-td car-td-right car-td-rank">${rank}</div>
+        <div class="car-td car-td-player">${escapeHtml(r.Player)}</div>
+        <div class="car-td"><span class="car-pos-badge ${roleBadgeClass(r.Pos)}">${escapeHtml(shortRole(r.Pos))}</span></div>
+        <div class="car-td car-td-team">${escapeHtml(r.Team || '—')}</div>
+        <div class="car-td"><span class="car-league-badge ${leagueBadgeClass(r.League)}">${escapeHtml(r.League || '—')}</span></div>
+        <div class="car-td car-td-right car-td-year">${escapeHtml(String(r.Year == null ? '—' : r.Year))}</div>
+        <div class="car-td car-td-right car-td-gp">${fmtNum(r.GP)}${lowGp ? '<span class="car-gp-tilde">~</span>' : ''}</div>
+        <div class="car-td car-td-right ${carColorClass(r.WAR)}">${fmtSigned(r.WAR, 1)}</div>
+        <div class="car-td car-td-right car-td-carg ${cargColorClass(r.WAR_per_game)}">${fmtSigned(r.WAR_per_game, 2)}</div>
+        <div class="car-td car-td-center">${lowGp ? '<span class="car-rel-badge" title="Fewer than 25 GP — directional only">~</span>' : ''}</div>
+      `;
+      row.addEventListener('click', (e) => {
+        if (e.target.closest('.car-exp-close')) return;
+        togglePlayerExpansion(r);
+      });
+      tbody.appendChild(row);
+
+      if (expandedPlayer === playerKey(r)) {
+        tbody.appendChild(buildExpansionPanel(r));
+      }
+    });
+
+    renderPlayersPagination(total, start);
+  }
+
+  function togglePlayerExpansion(r) {
+    const key = playerKey(r);
+    expandedPlayer = (expandedPlayer === key) ? null : key;
+    renderPlayers();
+  }
+
+  function buildExpansionPanel(r) {
+    const panel = document.createElement('div');
+    panel.className = 'car-expansion-panel';
+
+    const role  = String(r.Pos || 'Middle');
+    const comps = (ROLE_COMPONENTS[role] || []).filter(k => {
+      const v = r[k];
+      return v !== null && v !== undefined && v !== '' && isFinite(Number(v));
+    });
+    const lowGp = isFinite(Number(r.GP)) && Number(r.GP) < 25;
+
+    panel.innerHTML = `
+      <div class="car-exp-top">
+        <div class="car-exp-title">
+          <span class="car-exp-name">${escapeHtml(r.Player)}</span>
+          <span class="car-pos-badge ${roleBadgeClass(r.Pos)}">${escapeHtml(shortRole(r.Pos))}</span>
+          <span class="car-exp-meta">${escapeHtml(r.Team || '')} · ${escapeHtml(r.League || '')} · ${escapeHtml(String(r.Year || ''))}</span>
+        </div>
+        <button class="car-exp-close" aria-label="Close">×</button>
+      </div>
+      <div class="car-stat-strip">
+        <div class="car-stat"><span class="car-stat-label">CAR</span><span class="car-stat-val ${carColorClass(r.WAR)}">${fmtSigned(r.WAR, 1)}</span></div>
+        <div class="car-stat"><span class="car-stat-label">CAR / G</span><span class="car-stat-val ${cargColorClass(r.WAR_per_game)}">${fmtSigned(r.WAR_per_game, 2)}</span></div>
+        <div class="car-stat"><span class="car-stat-label">GP</span><span class="car-stat-val">${fmtNum(r.GP)}</span></div>
+        <div class="car-stat"><span class="car-stat-label">CPS</span><span class="car-stat-val">${fmtNum(r.CPS, 2)}</span></div>
+      </div>
+      ${comps.length ? `
+        <div class="car-zbar-section">
+          <div class="car-zbar-heading">Component breakdown · ${escapeHtml(role)}</div>
+          <div class="car-zbar-list">
+            ${comps.map(k => zbarHtml(k, Number(r[k]))).join('')}
+          </div>
+        </div>
+      ` : `<div class="car-exp-note">No role-weighted component data available for this player.</div>`}
+      ${lowGp ? `<div class="car-exp-warn">~ Fewer than 25 games played. Readings are directional; small samples can exaggerate both peaks and dips.</div>` : ''}
+    `;
+
+    panel.querySelector('.car-exp-close').addEventListener('click', (e) => {
+      e.stopPropagation();
+      expandedPlayer = null;
+      renderPlayers();
+    });
+
+    // Animate bars on mount
+    requestAnimationFrame(() => {
+      panel.querySelectorAll('.car-zbar-fill').forEach(f => {
+        const target = f.dataset.width;
+        f.style.width = target + '%';
+      });
+    });
+
+    return panel;
+  }
+
+  function zbarHtml(key, v) {
+    const n = isFinite(v) ? v : 0;
+    const clamped = Math.max(-3, Math.min(3, n));      // clamp to ±3σ
+    const pct     = Math.abs(clamped) / 3 * 50;        // up to 50% of container
+    const dir     = clamped >= 0 ? 'pos' : 'neg';
+    const name    = Z_FRIENDLY[key] || key;
+    const sign    = clamped >= 0 ? '+' : '−';
+    const valStr  = sign + Math.abs(clamped).toFixed(2);
+    const valCls  = dir === 'pos' ? 'car-val-pos' : 'car-val-neg';
+    return `
+      <div class="car-zbar">
+        <span class="car-zbar-label">${escapeHtml(name)}</span>
+        <div class="car-zbar-viz">
+          <div class="car-zbar-zero"></div>
+          <div class="car-zbar-fill car-zbar-${dir}" data-width="${pct}"></div>
+        </div>
+        <span class="car-zbar-value ${valCls}">${valStr}</span>
+      </div>
+    `;
+  }
+
+  function renderPlayersPagination(total, start) {
+    const el = document.getElementById('car-players-pagination');
+    if (!el) return;
+    if (!total) { el.innerHTML = ''; return; }
+    const end     = Math.min(start + DASH_PAGE_SIZE, total);
+    const hasPrev = dashPage > 0;
+    const hasNext = end < total;
+    el.innerHTML = `
+      <button class="car-page-btn" id="car-prev-btn" ${hasPrev ? '' : 'disabled'}>← Prev</button>
+      <span class="car-page-count">Showing ${start + 1}–${end} of ${total} players</span>
+      <button class="car-page-btn" id="car-next-btn" ${hasNext ? '' : 'disabled'}>Next →</button>
+    `;
+    const prev = document.getElementById('car-prev-btn');
+    const next = document.getElementById('car-next-btn');
+    if (prev && hasPrev) prev.addEventListener('click', () => { dashPage--; expandedPlayer = null; renderPlayers(); window.scrollTo({ top: document.getElementById('page-car').offsetTop, behavior: 'smooth' }); });
+    if (next && hasNext) next.addEventListener('click', () => { dashPage++; expandedPlayer = null; renderPlayers(); window.scrollTo({ top: document.getElementById('page-car').offsetTop, behavior: 'smooth' }); });
+  }
+
+  /* ── Teams table ── */
+  function renderTeams() {
+    if (!document.getElementById('car-teams-tbody')) return;
+
+    renderHead(TEAM_COLS, dashTeamSort, (col) => {
+      if (dashTeamSort.col === col) {
+        dashTeamSort.dir = dashTeamSort.dir === 'desc' ? 'asc' : 'desc';
+      } else {
+        dashTeamSort.col = col;
+        const stringy = ['Team', 'League'].includes(col);
+        dashTeamSort.dir = stringy ? 'asc' : 'desc';
+      }
+      renderTeams();
+    }, 'car-teams-thead');
+
+    const filtered = filterTeams();
+    const sorted   = sortRows(filtered, dashTeamSort.col, dashTeamSort.dir);
+    const tbody    = document.getElementById('car-teams-tbody');
+
+    if (!sorted.length) {
+      tbody.innerHTML = `<div class="car-empty">No teams match these filters.</div>`;
+      return;
+    }
+
+    tbody.innerHTML = sorted.map((r, i) => {
+      const wpct = Number(r.W_pct);
+      let wpctCls = '';
+      if (isFinite(wpct)) {
+        if (wpct > 60)      wpctCls = 'car-wpct-high';
+        else if (wpct < 35) wpctCls = 'car-wpct-low';
+      }
+      const starters = r.Players || '';
+      return `
+        <div class="car-row car-row-teams">
+          <div class="car-td car-td-right car-td-rank">${i + 1}</div>
+          <div class="car-td car-td-team-name">${escapeHtml(r.Team)}</div>
+          <div class="car-td"><span class="car-league-badge ${leagueBadgeClass(r.League)}">${escapeHtml(r.League || '—')}</span></div>
+          <div class="car-td car-td-right car-td-year">${escapeHtml(String(r.Year == null ? '—' : r.Year))}</div>
+          <div class="car-td car-td-right ${carColorClass(r.Team_WAR)}">${fmtSigned(r.Team_WAR, 1)}</div>
+          <div class="car-td car-td-right car-td-carg ${cargColorClass(r.WAR_per_Game)}">${fmtSigned(r.WAR_per_Game, 2)}</div>
+          <div class="car-td car-td-right">${fmtNum(r.W)}</div>
+          <div class="car-td car-td-right">${fmtNum(r.L)}</div>
+          <div class="car-td car-td-right">${fmtNum(r.GP)}</div>
+          <div class="car-td car-td-right ${wpctCls}">${fmtPct(r.W_pct)}</div>
+          <div class="car-td car-td-starters" title="${escapeHtml(starters)}">${escapeHtml(starters)}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  /* ── Tab switching ── */
+  function switchTab(tab) {
+    dashTab = tab;
+    document.querySelectorAll('#page-car .car-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.tab === tab);
+    });
+    document.getElementById('car-players-view').style.display = tab === 'players' ? '' : 'none';
+    document.getElementById('car-teams-view').style.display   = tab === 'teams'   ? '' : 'none';
+    if (tab === 'players') renderPlayers();
+    else renderTeams();
+  }
+
+  /* ── Filter bar binding ── */
+  function bindFilterBar(viewId, filterState, onChange) {
+    const view = document.getElementById(viewId);
+    if (!view) return;
+    view.querySelectorAll('.car-filter-group').forEach(group => {
+      const field = group.dataset.field;
+      group.querySelectorAll('.car-fb').forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterState[field] = btn.dataset.val;
+          group.querySelectorAll('.car-fb').forEach(b => b.classList.toggle('active', b === btn));
+          onChange();
+        });
+      });
+    });
+  }
+
+  /* ── Skeleton + error states ── */
+  function renderCarSkeleton() {
+    const tbody = document.getElementById('car-players-tbody');
+    if (!tbody) return;
+    const cells = PLAYER_COLS.map(() => '<div class="car-td">&nbsp;</div>').join('');
+    tbody.innerHTML = Array.from({ length: 8 }).map(() =>
+      `<div class="car-row car-row-players car-skeleton">${cells}</div>`
+    ).join('');
+  }
+  function renderCarError() {
+    const msg = `<div class="car-error">Could not load CAR data. Check back shortly.</div>`;
+    const pb = document.getElementById('car-players-tbody');
+    const tb = document.getElementById('car-teams-tbody');
+    if (pb) pb.innerHTML = msg;
+    if (tb) tb.innerHTML = msg;
+  }
+
+  function ensureCarRendered() {
+    if (!document.getElementById('page-car')) return;
+    if (!carLoaded) { renderCarSkeleton(); return; }
+    if (dashTab === 'players') renderPlayers();
+    else renderTeams();
+  }
+
+  /* ── One-time dashboard init (listeners + methodology toggle) ── */
+  function initCarDash() {
+    const root = document.getElementById('page-car');
+    if (!root) return;
+
+    // Tabs
+    root.querySelectorAll('.car-tab').forEach(t => {
+      t.addEventListener('click', () => switchTab(t.dataset.tab));
+    });
+
+    // Filter bars
+    bindFilterBar('car-players-view', dashFilters, () => {
+      dashPage = 0; expandedPlayer = null; renderPlayers();
+    });
+    bindFilterBar('car-teams-view', dashTeamFilters, () => {
+      renderTeams();
+    });
+
+    // Search (players)
+    const search = document.getElementById('car-search');
+    if (search) {
+      search.addEventListener('input', () => {
+        dashFilters.search = search.value;
+        dashPage = 0; expandedPlayer = null;
+        renderPlayers();
+      });
+    }
+
+    // Reset (players)
+    const reset = document.getElementById('car-reset');
+    if (reset) {
+      reset.addEventListener('click', () => {
+        dashFilters = { region: 'All', league: 'All', year: 'All', role: 'All', search: '' };
+        dashPage = 0; expandedPlayer = null;
+        if (search) search.value = '';
+        document.querySelectorAll('#car-players-view .car-fb').forEach(b => {
+          b.classList.toggle('active', b.dataset.val === 'All');
+        });
+        renderPlayers();
+      });
+    }
+
+    // Methodology toggle
+    const mToggle = document.getElementById('car-method-toggle');
+    const mBody   = document.getElementById('car-method-body');
+    if (mToggle && mBody) {
+      const sym = mToggle.querySelector('.car-method-toggle-sym');
+      mToggle.addEventListener('click', () => {
+        const open = mBody.style.display !== 'none';
+        mBody.style.display = open ? 'none' : 'block';
+        mToggle.setAttribute('aria-expanded', String(!open));
+        if (sym) sym.textContent = open ? '+' : '−';
+      });
+    }
+  }
+
+  /* ── Hook showPage so the dashboard renders on activation ── */
+  const _carOrigShowPage = window.showPage;
+  window.showPage = function(id) {
+    _carOrigShowPage(id);
+    if (id === 'car') ensureCarRendered();
+  };
+
+  /* ── Orchestrator: hero fallback → bind dash → fetch → render ── */
+  async function initCar() {
+    renderCarHeroPreview(CAR_FALLBACK);   // never let the hero be empty
+    initCarDash();
+
+    // If the user deep-linked or refreshed onto /#car (not currently supported
+    // by the router, but harmless) or loaded the page while #page-car is
+    // active, show a skeleton until data resolves.
+    const carPage = document.getElementById('page-car');
+    if (carPage && carPage.classList.contains('active')) renderCarSkeleton();
+
+    await loadCarData();
+
+    if (carLoaded) {
+      renderCarHeroPreview(getCarHeroRows());
+      renderCarHeroCount();
+      // Pre-render both tables in memory so switching the CAR page is instant.
+      renderPlayers();
+      renderTeams();
+    } else {
+      renderCarError();
+    }
+  }
+
+  initCar();
 </script>
 
 </body>
