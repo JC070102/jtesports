@@ -1423,9 +1423,11 @@ footer a:hover { color: var(--ink); }
 
 .car-gp-tilde { color: var(--muted); margin-left: 2px; }
 
-/* ── Value coloring ── */
-.car-val-pos  { color: var(--accent); }
-.car-val-neg  { color: rgba(200, 55, 45, 0.7); }
+/* ── Value coloring ──
+   Green for positive differentials (above replacement),
+   accent red for negative. Muted for near-zero. */
+.car-val-pos  { color: #2a7a3a; }
+.car-val-neg  { color: var(--accent); }
 .car-val-mute { color: var(--muted); }
 
 .car-wpct-high { color: #2a7a3a; }
