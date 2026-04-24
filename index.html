@@ -205,7 +205,7 @@
   <div class="archive-header">
     <h1 class="archive-hed">CAR Index</h1>
     <p class="archive-sub">Contribution Above Replacement — league-relative player evaluation across professional LoL.</p>
-    <p class="car-page-note">CAR measures wins contributed above a freely replaceable player at the same position. Figures are not cross-league comparable. WAR/Game is the primary ranking metric.</p>
+    <p class="car-page-note">CAR measures wins contributed above a freely replaceable player at the same position. Figures are not cross-league comparable.</p>
   </div>
 
   <div class="car-tab-bar">
@@ -306,8 +306,7 @@
     <div class="car-method-body" id="car-method-body" style="display:none;">
       <p><strong>What CAR measures.</strong> CAR quantifies how many wins a player contributes above a freely available replacement-level player at their position and league. It combines role-specific individual statistics — each adjusted for team context to reduce inflation from winning or losing environments — into a single number expressed in wins.</p>
       <p><strong>Replacement level.</strong> The baseline is the 25th percentile of qualifying players (minimum 10 GP) at each role within the dataset. A player at exactly replacement level scores 0. The replacement baseline is recalculated per dataset, so figures from different leagues and years reflect different competitive environments and should not be directly compared.</p>
-      <p><strong>Limitations.</strong> The model cannot capture strategic coordination, draft execution, communication, or macro decision-making that doesn't manifest in individual statistics. Players in system-oriented roles (e.g. utility junglers, facilitating supports) may read lower than their actual contribution. CAR/Game is the preferred ranking metric for players with different game counts.</p>
-      <a class="car-method-ref" href="#" onclick="return false;">Full formula reference →</a>
+      <p><strong>Limitations.</strong> The model cannot capture strategic coordination, draft execution, communication, or macro decision-making that doesn't manifest in individual statistics. Players in system-oriented roles (e.g. utility junglers, facilitating supports) may read lower than their actual contribution.</p>
     </div>
   </div>
 
@@ -761,9 +760,9 @@
   const DASH_PAGE_SIZE = 25;
 
   let dashFilters     = { league: 'All', year: 'All', role: 'All', minGp: '0', search: '' };
-  let dashSort        = { col: 'WAR_per_game', dir: 'desc' };
+  let dashSort        = { col: 'WAR', dir: 'desc' };
   let dashTeamFilters = { league: 'All', year: 'All' };
-  let dashTeamSort    = { col: 'WAR_per_Game', dir: 'desc' };
+  let dashTeamSort    = { col: 'Team_WAR', dir: 'desc' };
   let dashTab         = 'players';
   let expandedPlayer  = null;
   let dashPage        = 0;
