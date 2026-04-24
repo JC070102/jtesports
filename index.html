@@ -287,7 +287,7 @@
     </div>
 
     <div class="car-callout">
-      Teams with high CAR but lower win rates indicate strong individual players underconverting — often due to macro systems and team coordination factors this model cannot capture. The gap between CAR rank and win rank is as analytically meaningful as the CAR figure itself.
+      Sorting by team CAR is more effective in showing general strength, as some high CAR/G teams reflect incomplete rosters or mid-season changes.
     </div>
 
     <div class="car-table-wrapper">
@@ -668,17 +668,17 @@
   /* Fallback rows — shown before data resolves, or on fetch failure,
      so the hero is never empty. Values are representative, not live. */
   const CAR_FALLBACK = [
-    { Player: 'Keria',  Team: 'T1',    League: 'LCK', WAR_per_game: 0.40 },
-    { Player: 'Chovy',  Team: 'Gen.G', League: 'LCK', WAR_per_game: 0.39 },
-    { Player: 'Bdd',    Team: 'KT',    League: 'LCK', WAR_per_game: 0.34 },
-    { Player: 'Zeus',   Team: 'T1',    League: 'LCK', WAR_per_game: 0.26 }
+    { Player: 'Zeus',    Team: 'T1',          League: 'LCK', Year: 2023, WAR: 43.97 },
+    { Player: 'Kiin',    Team: 'KT Rolster',  League: 'LCK', Year: 2023, WAR: 41.75 },
+    { Player: 'Chovy',   Team: 'Gen.G',       League: 'LCK', Year: 2024, WAR: 40.12 },
+    { Player: 'Canyon',  Team: 'Gen.G',       League: 'LCK', Year: 2024, WAR: 38.50 }
   ];
 
   function formatCarValue(v) {
     const n = Number(v);
     if (!isFinite(n)) return '—';
     const sign = n >= 0 ? '+' : '−';
-    return sign + Math.abs(n).toFixed(2);
+    return sign + Math.abs(n).toFixed(1);
   }
 
   function escapeHtml(s) {
@@ -698,9 +698,9 @@
         <span class="car-lb-rank">${i + 1}</span>
         <span class="car-lb-player">
           <span class="car-lb-name">${escapeHtml(r.Player)}</span>
-          <span class="car-lb-team">${escapeHtml(r.Team)} · ${escapeHtml(r.League)}</span>
+          <span class="car-lb-team">${escapeHtml(r.Team)} · ${escapeHtml(r.League)} · ${escapeHtml(String(r.Year == null ? '' : r.Year))}</span>
         </span>
-        <span class="car-lb-value">${formatCarValue(r.WAR_per_game)}</span>
+        <span class="car-lb-value">${formatCarValue(r.WAR)}</span>
       </div>
     `).join('');
   }
@@ -747,17 +747,10 @@
 
   function getCarHeroRows() {
     if (!carLoaded || !carPlayers.length) return CAR_FALLBACK;
-    const candidates = carPlayers.filter(r =>
-      String(r.Year) === '2026' &&
-      r.Player &&
-      isFinite(Number(r.WAR_per_game))
-    );
-    const pool = candidates.length ? candidates : carPlayers.filter(r =>
-      r.Player && isFinite(Number(r.WAR_per_game))
-    );
-    return pool
+    return carPlayers
+      .filter(r => r.Player && isFinite(Number(r.WAR)))
       .slice()
-      .sort((a, b) => Number(b.WAR_per_game) - Number(a.WAR_per_game))
+      .sort((a, b) => Number(b.WAR) - Number(a.WAR))
       .slice(0, 4);
   }
 
@@ -818,8 +811,32 @@
     const sign = n >= 0 ? '+' : '−';
     return sign + Math.abs(n).toFixed(dp == null ? 2 : dp);
   }
-  function fmtPct(v) {
+  function normalizeWpct(v) {
     const n = Number(v);
+    if (!isFinite(n)) return NaN;
+    return n <= 1 ? n * 100 : n;
+  }
+  /* Rewrite a team's comma-separated starter list in descending CAR order.
+     Falls back to the raw string if no player matches are found. */
+  function sortStartersByCAR(team) {
+    const raw = String(team.Players || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (!raw.length) return '';
+    if (!carPlayers.length) return raw.join(', ');
+    const ranked = raw.map(name => {
+      const match = carPlayers.find(p =>
+        p && p.Player === name &&
+        p.Team === team.Team &&
+        String(p.Year) === String(team.Year) &&
+        p.Dataset === team.Dataset
+      );
+      const war = match ? Number(match.WAR) : NaN;
+      return { name, war: isFinite(war) ? war : -Infinity };
+    });
+    ranked.sort((a, b) => b.war - a.war);
+    return ranked.map(p => p.name).join(', ');
+  }
+  function fmtPct(v) {
+    const n = normalizeWpct(v);
     if (!isFinite(n)) return '—';
     return n.toFixed(1) + '%';
   }
@@ -934,7 +951,7 @@
     { key: 'L',            label: 'L',        sort: true,  align: 'right' },
     { key: 'GP',           label: 'GP',       sort: true,  align: 'right' },
     { key: 'W_pct',        label: 'W%',       sort: true,  align: 'right' },
-    { key: 'Players',      label: 'Starters', sort: false, align: 'left'  }
+    { key: 'Players',      label: 'Starters (by CAR)', sort: false, align: 'left'  }
   ];
 
   function renderHead(cols, sortState, onSort, elId) {
@@ -1143,13 +1160,13 @@
     }
 
     tbody.innerHTML = sorted.map((r, i) => {
-      const wpct = Number(r.W_pct);
+      const wpct = normalizeWpct(r.W_pct);
       let wpctCls = '';
       if (isFinite(wpct)) {
         if (wpct > 60)      wpctCls = 'car-wpct-high';
         else if (wpct < 35) wpctCls = 'car-wpct-low';
       }
-      const starters = r.Players || '';
+      const starters = sortStartersByCAR(r);
       return `
         <div class="car-row car-row-teams">
           <div class="car-td car-td-right car-td-rank">${i + 1}</div>
