@@ -1,0 +1,708 @@
+/* ============================================================
+   JTE — SP1 visual system · "THE DATA ALMANAC"
+   A warm-paper analytical instrument: editorial gravitas
+   (serif) fused with terminal precision (tabular mono),
+   red reserved strictly as the SIGNAL colour.
+   Loaded after style.css — overrides + new surfaces only.
+   ============================================================ */
+
+:root {
+  /* — layered warm paper — */
+  --paper:      #ece4d6;   /* base field            */
+  --paper-2:    #e3d9c7;   /* recessed / instrument panels */
+  --card:       #f5efe3;   /* raised cards (lift above paper) */
+  --ink:        #17130b;   /* warm near-black       */
+  --ink-2:      #4c4537;   /* secondary text        */
+  --muted:      #8b8270;   /* tertiary / metadata   */
+
+  /* — signal palette (red = "this matters") — */
+  --accent:     #c2302a;
+  --accent-deep:#9c1f18;
+  --pos:        #2f7a4c;   /* over-replacement / good */
+  --pos-deep:   #1f5e38;
+
+  /* — structure — */
+  --border:       rgba(23, 19, 11, 0.13);
+  --rule:         rgba(23, 19, 11, 0.13);
+  --rule-strong:  rgba(23, 19, 11, 0.55);
+  --hair:         rgba(23, 19, 11, 0.08);
+
+  /* — type — */
+  --display: 'Big Shoulders Display', 'Syne', sans-serif;
+  --serif:   'Instrument Serif', Georgia, serif;
+  --mono:    'DM Mono', ui-monospace, monospace;
+
+  /* — motion — */
+  --ease:      cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── atmosphere: a faint paper grain so fields never read flat ── */
+body { position: relative; }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* keep real content above the grain */
+nav, .page, footer { position: relative; z-index: 2; }
+
+/* tabular numerals everywhere numbers live */
+.car-td, .car-th, .car-stat-val, .car-zbar-value, .car-lb-value, .car-lb-rank,
+.car-page-count, .car-hero-count, .car-exp-name, .pcar-val, .pcar-meta-val {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ============================================================
+   MOTION — the "instrument boot": staggered reveal per page
+   ============================================================ */
+@keyframes sp1RevealUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page.sp1-enter > * {
+  animation: sp1RevealUp 0.62s var(--ease) both;
+}
+.page.sp1-enter > *:nth-child(1) { animation-delay: 0.02s; }
+.page.sp1-enter > *:nth-child(2) { animation-delay: 0.09s; }
+.page.sp1-enter > *:nth-child(3) { animation-delay: 0.16s; }
+.page.sp1-enter > *:nth-child(4) { animation-delay: 0.23s; }
+.page.sp1-enter > *:nth-child(5) { animation-delay: 0.30s; }
+.page.sp1-enter > *:nth-child(n+6) { animation-delay: 0.36s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .page.sp1-enter > * { animation: none; }
+  body::before { display: none; }
+}
+
+/* ============================================================
+   NAV / MASTHEAD WORDMARK
+   ============================================================ */
+nav {
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--rule-strong);
+  backdrop-filter: saturate(1.05);
+}
+.wordmark {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 1.7rem;
+  letter-spacing: 0.01em;
+}
+nav a {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  position: relative;
+}
+/* underline that wipes in on hover */
+nav ul li a:not(.nav-cta)::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -4px;
+  height: 1px; width: 0;
+  background: var(--accent);
+  transition: width 0.28s var(--ease);
+}
+nav ul li a:not(.nav-cta):hover::after { width: 100%; }
+
+/* ============================================================
+   PAGE MASTHEADS (Index / Stories) — almanac headline
+   ============================================================ */
+.archive-hed {
+  font-family: var(--display);
+  font-weight: 800;
+  letter-spacing: 0.005em;
+  line-height: 0.92;
+  font-size: clamp(3rem, 7vw, 5.4rem);
+  text-transform: uppercase;
+}
+.archive-sub {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  color: var(--ink-2);
+  letter-spacing: 0.01em;
+  max-width: 60ch;
+}
+.car-page-note {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  border-left: 2px solid var(--accent);
+  padding-left: 0.75rem;
+  margin-top: 1rem;
+}
+.car-whatis {
+  color: var(--accent);
+  cursor: pointer;
+  margin-left: 0.5rem;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.18s var(--ease);
+}
+.car-whatis:hover { border-bottom-color: var(--accent); }
+/* a thin "instrument" rule under the index masthead */
+#page-car .archive-header,
+#page-archive .archive-header {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1.5rem;
+  position: relative;
+}
+#page-car .archive-header::after {
+  content: "CONTRIBUTION ABOVE REPLACEMENT — LIVE INDEX";
+  position: absolute;
+  right: 2.5rem; bottom: 1.5rem;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+}
+@media (max-width: 760px){ #page-car .archive-header::after { display:none; } }
+
+/* ============================================================
+   TABS
+   ============================================================ */
+.car-tab {
+  font-family: var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.car-tab.active { color: var(--ink); }
+.car-tab.active::after {
+  background: var(--accent);
+  height: 2px;
+}
+
+/* ============================================================
+   FILTER BAR — the instrument panel
+   ============================================================ */
+.car-filter-bar {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 1rem 1.1rem;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.car-filter-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.filter-btn.car-fb {
+  font-family: var(--mono);
+  font-size: 11px;
+  border: 1px solid transparent;
+  border-radius: 1px;
+  transition: background 0.16s, color 0.16s, border-color 0.16s;
+}
+.filter-btn.car-fb:hover { border-color: var(--rule-strong); }
+.filter-btn.car-fb.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+.car-search {
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.car-reset {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   THE TABLE — framed live readout
+   ============================================================ */
+.car-table-wrapper {
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--card);
+}
+.car-thead {
+  background: var(--ink);
+  border: none;
+}
+.car-th {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245,239,227,0.62);
+  padding-block: 0.85rem;
+}
+.car-th-sort:hover { color: var(--paper); }
+.car-th-arrow { color: #ff7a52; }
+
+.car-row {
+  border-bottom: 1px solid var(--hair);
+  position: relative;
+  transition: background 0.16s var(--ease);
+}
+/* the signal bar — slides in from the left on hover */
+.car-row-players::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.22s var(--ease);
+}
+.car-row-players:hover { background: rgba(194,48,42,0.045); }
+.car-row-players:hover::before { transform: scaleY(1); }
+.car-row-players:hover .car-td-rank { color: var(--accent); }
+
+.car-td { font-family: var(--mono); }
+.car-td-player, .car-td-team-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.01em;
+}
+.car-td-rank {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.car-td-carg { font-weight: 500; }
+.car-val-pos { color: var(--pos); }
+.car-val-neg { color: var(--accent); }
+
+/* role / league badges → crisp, monospace ticket style */
+.car-pos-badge, .car-league-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  border-radius: 1px;
+  text-transform: uppercase;
+}
+.car-rel-badge {
+  font-family: var(--mono);
+  border-radius: 1px;
+}
+
+/* ============================================================
+   EXPANSION PANEL → PLAYER CARD (hub node)
+   ============================================================ */
+.car-expansion-panel {
+  background: var(--card);
+  border-left: 3px solid var(--accent);
+  box-shadow: 0 14px 40px -28px rgba(23,19,11,0.55);
+}
+.car-exp-name {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.9rem;
+  letter-spacing: 0.01em;
+}
+.car-exp-meta { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.car-stat-strip {
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper-2);
+}
+.car-stat-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.car-stat-val {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+.car-zbar-heading {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.car-zbar-label { font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); }
+.car-zbar-viz { background: var(--paper-2); border-radius: 1px; }
+.car-zbar-fill { transition: width 0.7s var(--ease-out); }
+.car-zbar-pos, .car-zbar-fill.car-zbar-pos { background: var(--pos); }
+.car-zbar-neg, .car-zbar-fill.car-zbar-neg { background: var(--accent); }
+.car-zbar-value { font-family: var(--mono); font-size: 11px; }
+.car-exp-warn {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--accent-deep);
+  background: rgba(194,48,42,0.06);
+  border-left: 2px solid var(--accent);
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.75rem;
+  letter-spacing: 0.01em;
+}
+
+/* ── pCAR callout (Phase 4 markup hook; styled now) ── */
+.pcar-callout {
+  margin-top: 0.9rem;
+  padding: 0.9rem 1rem;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--ink);
+  border-radius: 2px;
+}
+.pcar-head {
+  display: flex; align-items: baseline; gap: 0.6rem;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+}
+.pcar-val {
+  font-family: var(--display); font-weight: 800; font-size: 1.6rem; color: var(--ink);
+}
+.pcar-gap { font-family: var(--mono); font-size: 11px; }
+.pcar-gap.up   { color: var(--pos); }
+.pcar-gap.down { color: var(--accent); }
+.pcar-note { font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: var(--ink-2); margin-top: 0.4rem; }
+.pcar-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin-top: 0.55rem; }
+.pcar-meta-item { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.02em; }
+.pcar-meta-val { color: var(--ink-2); }
+.pcar-tentative { color: var(--accent-deep); }
+
+/* ── "notable because…" hooks (Phase 4 hook) ── */
+.pcar-hooks { margin-top: 0.8rem; display: flex; flex-direction: column; gap: 0.35rem; }
+.pcar-hook {
+  font-family: var(--mono); font-size: 11px; color: var(--ink-2);
+  padding-left: 1rem; position: relative;
+}
+.pcar-hook::before { content: "▸"; position: absolute; left: 0; color: var(--accent); }
+
+/* ============================================================
+   CHARTS — positioning lenses
+   ============================================================ */
+#page-charts { padding-bottom: 4rem; }
+.chart-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2.5rem;
+  align-items: flex-end;
+  padding: 1rem 2.5rem;
+  background: var(--paper-2);
+  border-block: 1px solid var(--rule);
+  margin-bottom: 1.5rem;
+}
+.chart-controls .car-filter-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.chart-controls .car-filter-label { margin-bottom: 0.15rem; }
+.chart-controls .car-filter-group > div,
+.chart-controls .car-filter-group { /* buttons sit in a row */ }
+.chart-controls .car-filter-group { flex-direction: row; flex-wrap: wrap; align-items: center; }
+.chart-controls .car-filter-label { width: 100%; }
+
+.chart-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 2.5rem 1rem;
+}
+.chart-switch-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 0.5rem 0.9rem;
+  background: transparent;
+  border: 1px solid var(--rule-strong);
+  border-radius: 1px;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: background 0.16s, color 0.16s;
+}
+.chart-switch-btn:hover:not(:disabled) { background: rgba(23,19,11,0.05); }
+.chart-switch-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.chart-switch-btn.is-soon { opacity: 0.45; cursor: not-allowed; border-style: dashed; }
+
+.chart-card {
+  margin: 0 2.5rem;
+  background: var(--card);
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  box-shadow: 0 18px 50px -36px rgba(23,19,11,0.5);
+  overflow: hidden;
+}
+.chart-cap {
+  padding: 1.25rem 1.5rem 0.5rem;
+  border-bottom: 1px solid var(--hair);
+}
+.chart-cap-title {
+  display: block;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+}
+.chart-cap-sub {
+  display: block;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.02rem;
+  color: var(--ink-2);
+  margin-top: 0.35rem;
+  max-width: 70ch;
+}
+.chart-plot {
+  width: 100%;
+  height: clamp(420px, 58vh, 640px);
+  cursor: crosshair;
+}
+.chart-empty {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  padding: 4rem;
+}
+
+/* ============================================================
+   PAGINATION
+   ============================================================ */
+.car-page-btn {
+  font-family: var(--mono);
+  border: 1px solid var(--rule-strong);
+  border-radius: 1px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 10px;
+}
+.car-page-btn:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+.car-page-count { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+/* ============================================================
+   HOME — hero, CAR teaser, ticker, writing, about-band
+   ============================================================ */
+.hero-headline {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(3.2rem, 6vw, 5rem);
+  letter-spacing: 0.005em;
+  line-height: 0.9;
+}
+.hero-sub { font-family: var(--serif); font-style: italic; }
+.hero-tag, .about-scope-label, .section-label {
+  font-family: var(--mono);
+  letter-spacing: 0.16em;
+}
+
+/* CAR teaser on home → reads like a live leaderboard chip */
+.car-hero {
+  background: var(--card);
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  box-shadow: 0 18px 50px -34px rgba(23,19,11,0.5);
+}
+.car-hero-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.car-hero-desc { font-family: var(--serif); font-style: italic; font-size: 1.05rem; color: var(--ink-2); }
+.car-lb-rank { font-family: var(--display); font-weight: 800; color: var(--muted); }
+.car-lb-name { font-family: var(--display); font-weight: 700; font-size: 15px; }
+.car-lb-team { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.car-lb-value { font-family: var(--mono); font-weight: 500; color: var(--pos); }
+.car-leaderboard-row {
+  border-bottom: 1px solid var(--hair);
+  transition: padding-left 0.18s var(--ease);
+}
+.car-leaderboard-row:hover { padding-left: 4px; }
+.car-hero-count { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+.ticker {
+  background: var(--ink);
+  color: var(--paper);
+  border-block: 1px solid var(--rule-strong);
+}
+.ticker .dot { color: var(--accent); }
+.ticker span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; }
+
+.about-hed { font-family: var(--display); font-weight: 800; line-height: 0.95; }
+.about-hed em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--accent); }
+.scope-item { font-family: var(--mono); font-size: 12px; }
+.scope-item::before { content: "// "; color: var(--accent); }
+
+.featured-piece .piece-title { font-family: var(--display); font-weight: 800; }
+.piece-excerpt { font-family: var(--serif); font-size: 1.1rem; color: var(--ink-2); }
+.piece-tag {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; border-radius: 1px;
+}
+.piece-tag.data { background: var(--ink); color: var(--paper); }
+.sidebar-piece--placeholder {
+  border: 1px dashed var(--rule-strong);
+  background: transparent;
+  border-radius: 2px;
+}
+.read-link { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; }
+
+/* ============================================================
+   EXPLAINER — "What CAR is — and isn't"
+   ============================================================ */
+.xpl { max-width: 56rem; margin: 0 auto; padding: 1rem 2.5rem 5rem; }
+.xpl-section {
+  padding: 2.4rem 0;
+  border-top: 1px solid var(--rule);
+}
+.xpl-section:first-child { border-top: none; }
+.xpl-kicker {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.8rem;
+}
+.xpl-h {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.8rem, 3.6vw, 2.6rem);
+  line-height: 0.98;
+  letter-spacing: 0.005em;
+  margin-bottom: 1rem;
+}
+.xpl-p {
+  font-family: var(--serif);
+  font-size: 1.32rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 62ch;
+  margin-bottom: 0.9rem;
+}
+.xpl-p strong { color: var(--ink); font-weight: 400; background: rgba(194,48,42,0.1); padding: 0 0.2em; }
+.xpl-p em { font-style: italic; color: var(--ink); }
+.xpl-p--quiet { font-size: 1.05rem; color: var(--muted); }
+.xpl-link { color: var(--accent); cursor: pointer; border-bottom: 1px solid transparent; }
+.xpl-link:hover { border-bottom-color: var(--accent); }
+
+/* replacement-level rising bars */
+.xpl-viz {
+  margin-top: 1.6rem;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 1.5rem 1.5rem 1rem;
+}
+.xpl-viz-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.6rem;
+  height: 200px;
+  position: relative;
+  padding-bottom: 38px;     /* room for the floor band */
+  border-bottom: 2px solid var(--rule-strong);
+}
+.xpl-bar {
+  flex: 1;
+  height: 0;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-deep) 100%);
+  border-radius: 1px 1px 0 0;
+  position: relative;
+  transition: height 0.7s var(--ease) var(--d, 0s);
+  align-self: flex-end;
+}
+.xpl-viz-bars.go .xpl-bar { height: var(--h); }
+.xpl-bar.is-repl { background: var(--muted); }
+.xpl-bar.is-peak { background: linear-gradient(180deg, #e0584f 0%, var(--accent) 100%); }
+.xpl-bar-cap {
+  position: absolute;
+  top: -1.2rem; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.xpl-bar.is-peak .xpl-bar-cap { color: var(--accent); }
+.xpl-baseline { position: relative; margin-top: -38px; height: 38px; }
+.xpl-baseline-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.xpl-viz-cap {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.98rem;
+  color: var(--muted);
+  margin-top: 0.8rem;
+}
+
+/* limits list */
+.xpl-limits { list-style: none; margin: 0.5rem 0 1rem; display: grid; gap: 0.55rem; }
+.xpl-limits li {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-2);
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+}
+.xpl-x { color: var(--accent); font-size: 15px; }
+.xpl-section--limits { background: linear-gradient(180deg, rgba(194,48,42,0.04), transparent); }
+
+/* the two numbers */
+.xpl-twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.2rem 0; }
+.xpl-num {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--ink);
+  border-radius: 2px;
+  padding: 1.1rem 1.2rem;
+}
+.xpl-num--raw  { border-top-color: var(--accent); }
+.xpl-num--proj { border-top-color: var(--ink); }
+.xpl-num-tag {
+  font-family: var(--display); font-weight: 800; font-size: 1.4rem;
+  letter-spacing: 0.01em; margin-bottom: 0.5rem;
+}
+.xpl-num--raw .xpl-num-tag { color: var(--accent); }
+.xpl-num-q { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--ink); margin-bottom: 0.5rem; }
+.xpl-num-d { font-family: var(--mono); font-size: 11.5px; line-height: 1.6; color: var(--muted); }
+@media (max-width: 680px){ .xpl-twocol { grid-template-columns: 1fr; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .xpl-viz-bars .xpl-bar { transition: none; height: var(--h); }
+}
+
+/* ============================================================
+   NOTES — "coming soon" stub
+   ============================================================ */
+.notes-comingsoon {
+  max-width: 56ch;
+  margin: 3rem auto;
+  text-align: center;
+  border: 1px dashed var(--rule-strong);
+  border-radius: 3px;
+  padding: 3rem 2rem;
+  background: var(--card);
+}
+.notes-soon-lead { font-family: var(--serif); font-size: 1.45rem; color: var(--ink); line-height: 1.4; }
+.notes-soon-sub  { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 1rem; }
+.notes-soon-sub a { color: var(--accent); cursor: pointer; }
+.notes-sub { font-family: var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer-logo { font-family: var(--display); font-weight: 900; }
+.footer-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--muted); }
