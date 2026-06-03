@@ -706,3 +706,90 @@ nav ul li a:not(.nav-cta):hover::after { width: 100%; }
    ============================================================ */
 .footer-logo { font-family: var(--display); font-weight: 900; }
 .footer-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--muted); }
+
+/* ============================================================
+   SITE ITERATION #1 — fixes & the stat-positioning lens
+   ============================================================ */
+
+/* §1.2 — sort-header hover: was var(--paper) (blends on the dark header).
+   Use the bright signal-orange so the hovered column is unmistakable. */
+.car-th-sort:hover { color: #ff7a52; }
+
+/* Audit: active-page indicator in the nav (was no current-page cue) */
+nav a[data-nav].nav-here {
+  color: var(--ink);
+}
+nav a[data-nav] {
+  position: relative;
+  padding-bottom: 2px;
+}
+nav a[data-nav].nav-here::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -3px;
+  height: 2px;
+  background: var(--accent);
+}
+
+/* §1.3 — league dropdown (replaces the overflowing chip row) */
+.car-filter-group--select { display: flex; flex-direction: column; gap: 0.45rem; align-items: flex-start; }
+.car-league-select {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink);
+  background-color: var(--card);
+  border: 1px solid var(--rule-strong);
+  border-radius: 1px;
+  padding: 0.4rem 1.9rem 0.4rem 0.65rem;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%2317130b' stroke-width='1.4' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  cursor: pointer;
+  transition: border-color 0.16s, box-shadow 0.16s;
+}
+.car-league-select:hover  { border-color: var(--ink); }
+.car-league-select:focus  { outline: none; border-color: var(--ink); box-shadow: 0 0 0 2px rgba(194,48,42,0.18); }
+
+/* §0.2 / §2 — chart controls: selects stack label-over-control; cohort
+   selectors (sc-only) are revealed by JS only on the Stat positioning lens. */
+.chart-controls .car-filter-group--select { flex-direction: column; align-items: flex-start; gap: 0.35rem; }
+.chart-controls .sc-only { display: none; }
+.chart-gp-note {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.04em;
+  color: var(--muted); align-self: center; margin-left: auto;
+}
+
+/* §1.5 — home CAR teaser: lift it into the instrument-panel system */
+.car-hero-preview { border-top: none; }
+.car-lb-head {
+  display: grid;
+  grid-template-columns: 24px 1fr 52px;
+  gap: 0.75rem;
+  padding: 0.5rem 0.6rem;
+  margin-top: 0.5rem;
+  background: var(--ink);
+  color: rgba(245,239,227,0.66);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-radius: 1px 1px 0 0;
+}
+.car-lb-head span:last-child { text-align: right; }
+.car-hero-preview .car-leaderboard-row {
+  padding: 0.6rem;
+  border-bottom: 1px solid var(--hair);
+  position: relative;
+}
+.car-hero-preview .car-leaderboard-row::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: var(--accent); transform: scaleY(0); transform-origin: top;
+  transition: transform 0.18s var(--ease);
+}
+.car-hero-preview .car-leaderboard-row:hover { padding-left: 0.85rem; background: var(--paper-2); }
+.car-hero-preview .car-leaderboard-row:hover::before { transform: scaleY(1); }
+.car-hero-preview .car-lb-rank { font-weight: 700; color: var(--accent); }
+.car-hero-preview .car-lb-value { color: var(--pos); }
+.car-hero-note { font-family: var(--mono); font-size: 10px; color: var(--muted); }

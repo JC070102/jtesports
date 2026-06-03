@@ -17,13 +17,13 @@
 <nav>
   <span class="wordmark" onclick="showPage('home')">JT<span>E</span></span>
   <ul>
-    <li><a onclick="showPage('home')">Home</a></li>
-    <li><a onclick="showPage('car')">Index</a></li>
-    <li><a onclick="showPage('charts')">Charts</a></li>
-    <li><a onclick="showPage('archive')">Stories</a></li>
-    <li><a onclick="showPage('explainer')">What is CAR</a></li>
-    <li><a onclick="showPage('notes')">Notes</a></li>
-    <li><a onclick="showPage('about')">About</a></li>
+    <li><a data-nav="home" onclick="showPage('home')">Home</a></li>
+    <li><a data-nav="car" onclick="showPage('car')">Index</a></li>
+    <li><a data-nav="charts" onclick="showPage('charts')">Charts</a></li>
+    <li><a data-nav="archive" onclick="showPage('archive')">Stories</a></li>
+    <li><a data-nav="explainer" onclick="showPage('explainer')">What is CAR</a></li>
+    <li><a data-nav="notes" onclick="showPage('notes')">Notes</a></li>
+    <li><a data-nav="about" onclick="showPage('about')">About</a></li>
     <li><a href="https://twitter.com/jt_esports" class="nav-cta" target="_blank">Twitter / X ↗</a></li>
   </ul>
 </nav>
@@ -46,7 +46,7 @@
       <div class="hero-right">
         <div class="car-hero">
           <div class="car-hero-label">Contribution Above Replacement</div>
-          <p class="car-hero-desc">A wins-based model for evaluating professional League of Legends players across every major league.</p>
+          <p class="car-hero-desc">A composite performance score that rates a player's output against a replacement-level baseline at the same position — on an artificial scale, not a wins total.</p>
           <div class="car-hero-preview" id="car-hero-preview"></div>
           <div class="car-hero-count" id="car-hero-count">Showing top 4 of 501 players across 9 datasets →</div>
           <a class="hero-cta car-hero-cta" onclick="showPage('car')">Explore the full CAR index →</a>
@@ -108,7 +108,7 @@
     <div class="about-left">
       <h2 class="about-hed">Underreported stories,<br><em>surfaced by the data.</em></h2>
       <div class="about-body">
-        <p>JTE is an independent analytics publication for professional League of Legends, built around the CAR Index — a wins-based player-value model. The numbers find what conventional coverage misses; the writing explains why it happened.</p>
+        <p>JTE is an independent analytics publication for professional League of Legends, built around the CAR Index — a composite, replacement-relative score of player value. The numbers find what conventional coverage misses; the writing explains why it happened.</p>
         <p>Every projection-vs-record gap is a built-in narrative: expectation versus reality. Arguments are built to hold up, not to be agreeable. 0% AI-written content.</p>
       </div>
     </div>
@@ -195,7 +195,7 @@
   <div class="archive-header">
     <h1 class="archive-hed">CAR Index</h1>
     <p class="archive-sub">Contribution Above Replacement — league-relative player evaluation across professional LoL. Every row is a portal: open a player for their projection, components, and the stories the numbers surface.</p>
-    <p class="car-page-note">CAR measures wins contributed above a freely replaceable player at the same position. Figures are not cross-league comparable. <a class="car-whatis" onclick="showPage('explainer')">What is CAR? →</a></p>
+    <p class="car-page-note">CAR is a composite performance score measuring a player's output against a freely replaceable player at the same position, on an artificial scale — not a wins total, and not WAR. Figures are not cross-league comparable. <a class="car-whatis" onclick="showPage('explainer')">What is CAR? →</a></p>
   </div>
 
   <div class="car-tab-bar">
@@ -206,15 +206,9 @@
   <!-- PLAYERS VIEW -->
   <div id="car-players-view">
     <div class="filter-bar car-filter-bar">
-      <div class="car-filter-group" data-field="league">
+      <div class="car-filter-group car-filter-group--select" data-field="league">
         <span class="car-filter-label">League</span>
-        <button class="filter-btn car-fb active" data-val="All">All</button>
-        <button class="filter-btn car-fb" data-val="LCK">LCK</button>
-        <button class="filter-btn car-fb" data-val="LCK CL">LCK CL</button>
-        <button class="filter-btn car-fb" data-val="LEC">LEC</button>
-        <button class="filter-btn car-fb" data-val="LCS">LCS</button>
-        <button class="filter-btn car-fb" data-val="LCP">LCP</button>
-        <button class="filter-btn car-fb" data-val="CBLOL">CBLOL</button>
+        <select class="car-league-select" id="players-league-select" aria-label="League"></select>
       </div>
       <div class="car-filter-group" data-field="year">
         <span class="car-filter-label">Year</span>
@@ -235,9 +229,9 @@
       </div>
       <div class="car-filter-group" data-field="minGp">
         <span class="car-filter-label">Min GP</span>
-        <button class="filter-btn car-fb active" data-val="0">All</button>
+        <button class="filter-btn car-fb" data-val="0">All</button>
         <button class="filter-btn car-fb" data-val="10">10+</button>
-        <button class="filter-btn car-fb" data-val="25">25+</button>
+        <button class="filter-btn car-fb active" data-val="25">25+</button>
         <button class="filter-btn car-fb" data-val="50">50+</button>
       </div>
       <input type="text" class="car-search" id="car-search" placeholder="Search player...">
@@ -256,15 +250,9 @@
   <!-- TEAMS VIEW -->
   <div id="car-teams-view" style="display:none;">
     <div class="filter-bar car-filter-bar">
-      <div class="car-filter-group" data-field="league">
+      <div class="car-filter-group car-filter-group--select" data-field="league">
         <span class="car-filter-label">League</span>
-        <button class="filter-btn car-fb active" data-val="All">All</button>
-        <button class="filter-btn car-fb" data-val="LCK">LCK</button>
-        <button class="filter-btn car-fb" data-val="LCK CL">LCK CL</button>
-        <button class="filter-btn car-fb" data-val="LEC">LEC</button>
-        <button class="filter-btn car-fb" data-val="LCS">LCS</button>
-        <button class="filter-btn car-fb" data-val="LCP">LCP</button>
-        <button class="filter-btn car-fb" data-val="CBLOL">CBLOL</button>
+        <select class="car-league-select" id="teams-league-select" aria-label="League"></select>
       </div>
       <div class="car-filter-group" data-field="year">
         <span class="car-filter-label">Year</span>
@@ -277,7 +265,10 @@
     </div>
 
     <div class="car-callout">
-      Sorting by team CAR is more effective in showing general strength, as some high CAR/G teams reflect incomplete rosters or mid-season changes.
+      <strong>Team CAR is the sum of its players' CARs</strong> — it is <em>not</em> the team-strength rating.
+      Teams routinely over- or under-perform the sum of their pieces (synergy, coaching, draft, shot-calling),
+      so a high team CAR signals stacked individual talent, not a clean measure of how good the team actually is.
+      It also reads more reliably than CAR/G, since some high CAR/G teams reflect incomplete rosters or mid-season changes.
     </div>
 
     <div class="car-table-wrapper">
@@ -294,7 +285,7 @@
       <span class="car-method-toggle-sym">+</span><span>Methodology</span>
     </button>
     <div class="car-method-body" id="car-method-body" style="display:none;">
-      <p><strong>What CAR measures.</strong> CAR quantifies how many wins a player contributes above a freely available replacement-level player at their position and league. It combines role-specific individual statistics — each adjusted for team context to reduce inflation from winning or losing environments — into a single number expressed in wins.</p>
+      <p><strong>What CAR measures.</strong> CAR is a composite performance score: it measures how far a player's output sits above a freely available replacement-level player at their position and league. It combines role-specific individual statistics — each adjusted for team context to reduce inflation from winning or losing environments — into a single number on an artificial scale. It is <strong>not</strong> a wins total and <strong>not</strong> WAR: it is not tied to a fixed games-played count in a season.</p>
       <p><strong>Replacement level.</strong> The baseline is the 25th percentile of qualifying players (minimum 10 GP) at each role within the dataset. A player at exactly replacement level scores 0. The replacement baseline is recalculated per dataset, so figures from different leagues and years reflect different competitive environments and should not be directly compared.</p>
       <p><strong>Limitations.</strong> The model cannot capture strategic coordination, draft execution, communication, or macro decision-making that doesn't manifest in individual statistics. Players in system-oriented roles (e.g. utility junglers, facilitating supports) may read lower than their actual contribution.</p>
     </div>
@@ -310,37 +301,58 @@
     <p class="car-page-note">League-relative figures — points are not cross-comparable between regions or years.</p>
   </div>
 
-  <div class="chart-controls" id="chart-controls">
-    <div class="car-filter-group" data-field="cl-league">
-      <span class="car-filter-label">League</span>
-      <button class="filter-btn car-fb cl-fb active" data-field="league" data-val="All">All</button>
-      <button class="filter-btn car-fb cl-fb" data-field="league" data-val="LCK">LCK</button>
-      <button class="filter-btn car-fb cl-fb" data-field="league" data-val="LEC">LEC</button>
-      <button class="filter-btn car-fb cl-fb" data-field="league" data-val="LCS">LCS</button>
-      <button class="filter-btn car-fb cl-fb" data-field="league" data-val="LCP">LCP</button>
-      <button class="filter-btn car-fb cl-fb" data-field="league" data-val="LCK CL">LCK CL</button>
-      <button class="filter-btn car-fb cl-fb" data-field="league" data-val="CBLOL">CBLOL</button>
-    </div>
-    <div class="car-filter-group" data-field="cl-mingp">
-      <span class="car-filter-label">Min GP</span>
-      <button class="filter-btn car-fb cl-gp" data-val="25">25+</button>
-      <button class="filter-btn car-fb cl-gp active" data-val="50">50+</button>
-      <button class="filter-btn car-fb cl-gp" data-val="0">All</button>
-    </div>
-  </div>
-
   <div class="chart-switch" id="chart-switch">
     <button class="chart-switch-btn active" data-chart="rawvsproj">Record vs projection</button>
     <button class="chart-switch-btn" data-chart="teams">Team over/under-achievers</button>
     <button class="chart-switch-btn" data-chart="yoy">YoY trajectory</button>
+    <button class="chart-switch-btn" data-chart="vsteam">Player vs team</button>
+    <button class="chart-switch-btn" data-chart="statscatter">Stat positioning</button>
     <button class="chart-switch-btn is-soon" data-chart="dmggold" disabled>Damage vs gold · soon</button>
+  </div>
+
+  <div class="chart-controls" id="chart-controls">
+    <!-- shared dropdowns (Record / Teams / YoY / Player vs team) -->
+    <div class="car-filter-group car-filter-group--select cl-only" data-field="chart-league">
+      <span class="car-filter-label">League</span>
+      <select class="car-league-select" id="charts-league-select" aria-label="League"></select>
+    </div>
+    <div class="car-filter-group car-filter-group--select cl-only" data-field="chart-year">
+      <span class="car-filter-label">Year</span>
+      <select class="car-league-select" id="charts-year-select" aria-label="Year"></select>
+    </div>
+    <div class="car-filter-group car-filter-group--select cl-only cl-role" data-field="chart-role">
+      <span class="car-filter-label">Role</span>
+      <select class="car-league-select" id="charts-role-select" aria-label="Role"></select>
+    </div>
+    <!-- cohort selectors (Stat positioning only) -->
+    <div class="car-filter-group car-filter-group--select sc-only" data-field="sc-league">
+      <span class="car-filter-label">League</span>
+      <select class="car-league-select" id="sc-league-select" aria-label="League"></select>
+    </div>
+    <div class="car-filter-group car-filter-group--select sc-only" data-field="sc-year">
+      <span class="car-filter-label">Year</span>
+      <select class="car-league-select" id="sc-year-select" aria-label="Year"></select>
+    </div>
+    <div class="car-filter-group car-filter-group--select sc-only" data-field="sc-role">
+      <span class="car-filter-label">Role</span>
+      <select class="car-league-select" id="sc-role-select" aria-label="Role"></select>
+    </div>
+    <div class="car-filter-group car-filter-group--select sc-only" data-field="sc-x">
+      <span class="car-filter-label">Horizontal ·&nbsp;X</span>
+      <select class="car-league-select" id="sc-x-select" aria-label="X stat"></select>
+    </div>
+    <div class="car-filter-group car-filter-group--select sc-only" data-field="sc-y">
+      <span class="car-filter-label">Vertical ·&nbsp;Y</span>
+      <select class="car-league-select" id="sc-y-select" aria-label="Y stat"></select>
+    </div>
+    <span class="chart-gp-note">25 GP+ always · low-sample players excluded</span>
   </div>
 
   <figure class="chart-card">
     <figcaption class="chart-cap">
-      <span class="chart-cap-title" id="chart-title">Record vs projection — raw CAR (x) against pCAR (y)</span>
+      <span class="chart-cap-title" id="chart-title">Record vs projection — pCAR (x) against raw CAR (y)</span>
       <span class="chart-cap-sub" id="chart-sub">The diagonal is "performing as projected." Above it, the record outruns the
-      forecast (breakout or regression-bait); below it, a player is trailing his own projection.</span>
+      forecast (a breakout, or regression-bait); below it, a player is trailing his own projection.</span>
     </figcaption>
     <div class="chart-plot" id="chart-rawvsproj"></div>
   </figure>
@@ -352,7 +364,7 @@
 <div class="page" id="page-explainer">
   <div class="archive-header">
     <h1 class="archive-hed">What CAR is<br>— and isn't.</h1>
-    <p class="archive-sub">A wins-based model of individual player value. Rigorous on the logic,
+    <p class="archive-sub">A composite, replacement-relative score of individual player value. Rigorous on the logic,
     deliberately honest about what it can't see. Read this before you argue with a number.</p>
   </div>
 
@@ -360,18 +372,19 @@
 
     <section class="xpl-section">
       <div class="xpl-kicker">01 · The idea</div>
-      <h2 class="xpl-h">Wins above a replaceable player.</h2>
+      <h2 class="xpl-h">Output above a replaceable player.</h2>
       <p class="xpl-p">Every league has a freely available floor: the players a team could sign tomorrow
       with no real cost. Call that <em>replacement level</em> — concretely, the 25th percentile of
-      qualifying players at each position. <strong>CAR is how many wins a player adds above that floor.</strong>
-      A replacement-level player scores 0. The rest is what you actually bought.</p>
+      qualifying players at each position. <strong>CAR is how far a player's output rises above that floor</strong>
+      — a composite score on an artificial scale, not a count of wins. A replacement-level player scores 0.
+      The rest is what you actually bought.</p>
 
       <!-- interactive replacement-level visual -->
       <figure class="xpl-viz" id="xpl-replacement" role="img"
         aria-label="A baseline marks replacement level; player bars rise above it. The height above the line is that player's CAR.">
         <div class="xpl-viz-bars" id="xpl-bars"></div>
         <div class="xpl-baseline"><span class="xpl-baseline-label">replacement level · 0</span></div>
-        <figcaption class="xpl-viz-cap">The shaded height above the floor is CAR — wins contributed beyond what a freely available player would have given you.</figcaption>
+        <figcaption class="xpl-viz-cap">The shaded height above the floor is CAR — output beyond what a freely available player would have given you, on the CAR scale.</figcaption>
       </figure>
     </section>
 
@@ -436,7 +449,7 @@
   <div class="about-page">
     <h1 class="about-page-hed">About JTE</h1>
     <div class="about-page-body">
-      <p>JTE is an independent analytics publication for professional League of Legends. It is built around the CAR Index — Contribution Above Replacement, a wins-based model of individual player value — and the stories that the index surfaces but conventional coverage misses.</p>
+      <p>JTE is an independent analytics publication for professional League of Legends. It is built around the CAR Index — Contribution Above Replacement, a composite, replacement-relative score of individual player value — and the stories that the index surfaces but conventional coverage misses.</p>
       <p>The approach is empirical: a forecaster minimizes surprise, but a story maximizes it. The same model devices, read for their residuals and gaps, become narrative engines — the player whose record outruns his projection, the roster beating its own pieces, the floor quietly rising across a region.</p>
       <p>Pieces run long when the argument demands it. Data is used when it's honest, and always with its limits stated. The goal is analysis the scene deserves but rarely produces for itself.</p>
     </div>
@@ -485,6 +498,8 @@
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const pg = document.getElementById('page-' + id);
     pg.classList.add('active');
+    // reflect the current page in the nav
+    document.querySelectorAll('nav a[data-nav]').forEach(a => a.classList.toggle('nav-here', a.dataset.nav === id));
     // SP1: replay the staggered "instrument boot" reveal each time a page opens
     pg.classList.remove('sp1-enter');
     void pg.offsetWidth;               // force reflow so the animation restarts
@@ -507,7 +522,11 @@
   (function initSp1Reveal() {
     const start = () => {
       const a = document.querySelector('.page.active');
-      if (a) { void a.offsetWidth; a.classList.add('sp1-enter'); }
+      if (a) {
+        void a.offsetWidth; a.classList.add('sp1-enter');
+        const id = a.id.replace('page-', '');
+        document.querySelectorAll('nav a[data-nav]').forEach(n => n.classList.toggle('nav-here', n.dataset.nav === id));
+      }
     };
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', start);
@@ -842,7 +861,9 @@
   function renderCarHeroPreview(rows) {
     const el = document.getElementById('car-hero-preview');
     if (!el) return;
-    el.innerHTML = rows.slice(0, 4).map((r, i) => `
+    el.innerHTML =
+      `<div class="car-lb-head"><span>#</span><span>Top performers · league-relative</span><span>CAR</span></div>` +
+      rows.slice(0, 4).map((r, i) => `
       <div class="car-leaderboard-row">
         <span class="car-lb-rank">${i + 1}</span>
         <span class="car-lb-player">
@@ -915,9 +936,9 @@
 
   const DASH_PAGE_SIZE = 25;
 
-  let dashFilters     = { league: 'All', year: 'All', role: 'All', minGp: '0', search: '' };
+  let dashFilters     = { league: 'LCK', year: 'All', role: 'All', minGp: '25', search: '' };
   let dashSort        = { col: 'WAR', dir: 'desc' };
-  let dashTeamFilters = { league: 'All', year: 'All' };
+  let dashTeamFilters = { league: 'LCK', year: 'All' };
   let dashTeamSort    = { col: 'Team_WAR', dir: 'desc' };
   let dashTab         = 'players';
   let expandedPlayer  = null;
@@ -927,23 +948,25 @@
   /* Friendly labels for the LIVE 16-component CAR set (SP1: reconciled to the
      current engine output — dropped dead z_CSPM/z_CTR_adj_GD10/z_D_P15_adj,
      renamed z_XPD10_adj→z_XPD10, added z_GD15_adj + z_KS_pct). */
+  /* §1.4 — vague-but-robust labels: stripped of over-specific tokens
+     (@10/@15, (adj.), type3, "CS") so they can't be misread. */
   const Z_FRIENDLY = {
     z_DMG_GOLD_ratio: 'Damage Efficiency',
     z_DPM_adj:        'Damage Output',
     z_neg_DTH:        'Survival',
     z_EGPM_adj:       'Gold Efficiency',
-    z_GD10_adj:       'Lane Gold Diff @10',
-    z_XPD10:          'XP Differential @10',
-    z_KP_residual:    'Kill Participation (adj.)',
+    z_GD10_adj:       'Laning',
+    z_XPD10:          'Early XP',
+    z_KP_residual:    'Teamfight Involvement',
     z_KS_pct:         'Kill Share',
     z_TLDPS:          'Damage Pressure',
-    z_neg_DTH_adj:    'Survival (map-adj)',
-    z_WCPM_type3:     'Ward Clears',
-    z_JSAD:           'Style-adj Damage',
-    z_CSD10_adj:      'Early Pathing (CS)',
+    z_neg_DTH_adj:    'Survival',
+    z_WCPM_type3:     'Ward Clearing',
+    z_JSAD:           'Damage Impact',
+    z_CSD10_adj:      'Early Pathing',
     z_CWPM_type3:     'Control Wards',
     z_WPM_type3:      'Vision Created',
-    z_GD15_adj:       'Mid-Game Gold Diff @15'
+    z_GD15_adj:       'Mid-Game Gold'
   };
 
   /* Role → z-components to show in the expansion panel, in display order.
@@ -1477,12 +1500,22 @@
       t.addEventListener('click', () => switchTab(t.dataset.tab));
     });
 
-    // Filter bars
+    // Filter bars (year/role/minGp chips). League is a dropdown, wired below.
     bindFilterBar('car-players-view', dashFilters, () => {
       dashPage = 0; expandedPlayer = null; renderPlayers();
     });
     bindFilterBar('car-teams-view', dashTeamFilters, () => {
       renderTeams();
+    });
+
+    // League dropdowns (§1.3 — enumerated from data, no "All", default LCK)
+    const plSel = document.getElementById('players-league-select');
+    if (plSel) plSel.addEventListener('change', () => {
+      dashFilters.league = plSel.value; dashPage = 0; expandedPlayer = null; renderPlayers();
+    });
+    const tmSel = document.getElementById('teams-league-select');
+    if (tmSel) tmSel.addEventListener('change', () => {
+      dashTeamFilters.league = tmSel.value; renderTeams();
     });
 
     // Search (players)
@@ -1499,9 +1532,15 @@
     const reset = document.getElementById('car-reset');
     if (reset) {
       reset.addEventListener('click', () => {
-        dashFilters = { league: 'All', year: 'All', role: 'All', minGp: '0', search: '' };
+        dashFilters = { league: 'LCK', year: 'All', role: 'All', minGp: '25', search: '' };
         dashPage = 0; expandedPlayer = null;
         if (search) search.value = '';
+        const plSelReset = document.getElementById('players-league-select');
+        if (plSelReset) {
+          const leagues = orderedLeagues(carPlayers);
+          dashFilters.league = leagues.includes('LCK') ? 'LCK' : (leagues[0] || 'LCK');
+          plSelReset.value = dashFilters.league;
+        }
         document.querySelectorAll('#car-players-view .car-filter-group').forEach(grp => {
           const field = grp.dataset.field;
           const defaultVal = dashFilters[field];
@@ -1540,13 +1579,19 @@
      Flagship: raw CAR (x) vs pCAR (y); diagonal = "as projected";
      hover any point, click → opens that player's card on the Index.
      ══════════════════════════════════════════════ */
-  let chartFilters = { league: 'All', minGp: '50' };
+  const CHART_MIN_GP = 25;                                 // §0.2 — 25 GP+ on every chart, always
+  let chartFilters = { league: 'LCK', year: 'All', role: 'All' }; // Record / Teams / YoY / Player-vs-team
   let currentChart = 'rawvsproj';
+
+  /* §2 — Stat-positioning (cohort scatter) state. First instance: LEC · 2026 · ADC,
+     X = Damage Efficiency (z_DMG_GOLD_ratio), Y = Survival (z_neg_DTH). */
+  let scatterState = { league: 'LEC', year: '2026', role: 'ADC', x: 'z_DMG_GOLD_ratio', y: 'z_neg_DTH' };
+  let scatterInit  = false;
 
   const CHART_META = {
     rawvsproj: {
-      title: 'Record vs projection — raw CAR (x) against pCAR (y)',
-      sub: 'The diagonal is "performing as projected." Above it, the record outruns the forecast (breakout or regression-bait); below it, a player is trailing his own projection.'
+      title: 'Record vs projection — pCAR (x) against raw CAR (y)',
+      sub: 'The diagonal is "performing as projected." Above it, the record (raw CAR) outruns the forecast — a breakout, or regression-bait; below it, a player is trailing his own projection.'
     },
     teams: {
       title: 'Team over/under-achievers — projected CAR (x) vs win rate (y)',
@@ -1555,8 +1600,29 @@
     yoy: {
       title: 'Year-over-year trajectory — CAR last year (x) vs this year (y)',
       sub: 'Each point is one player’s year-to-year step. The diagonal is "held steady"; above it he rose, below it he fell. League-relative, so read the shape of a career, not the absolute gap.'
+    },
+    vsteam: {
+      title: 'Player vs team — team average CAR (x) vs player CAR (y)',
+      sub: 'The diagonal is "exactly your team’s average." Above it, a player is outperforming his roster (a carry); below it, the roster is carrying him. League-relative.'
     }
   };
+
+  /* Preferred league display order; any league in the data not listed here is
+     appended alphabetically (so new leagues surface automatically). §1.3 */
+  const LEAGUE_ORDER = ['LCK', 'LCK CL', 'LEC', 'LCS', 'LCP', 'CBLOL', 'NACL', 'LES', 'PRM', 'LFL'];
+  function orderedLeagues(rows) {
+    const present = Array.from(new Set(rows.map(r => r.League).filter(Boolean)));
+    const known = LEAGUE_ORDER.filter(l => present.includes(l));
+    const extra = present.filter(l => !LEAGUE_ORDER.includes(l)).sort();
+    return known.concat(extra);
+  }
+  function fillLeagueSelect(el, leagues, current) {
+    if (!el) return;
+    const val = leagues.includes(current) ? current : (leagues[0] || '');
+    el.innerHTML = leagues.map(l => `<option value="${escapeHtml(l)}">${escapeHtml(l)}</option>`).join('');
+    el.value = val;
+    return val;
+  }
 
   function chartLeagueColor(lg) {
     const m = { 'LCK': '#c2302a', 'LEC': '#1a5fa8', 'LCS': '#2f7a4c', 'LCP': '#9c6b1f', 'LCK CL': '#7a4ba0', 'CBLOL': '#1f8a8a' };
@@ -1564,20 +1630,24 @@
   }
 
   function renderActiveChart() {
+    if (currentChart === 'statscatter') { renderStatScatter(); return; }   // sets its own caption
     const meta = CHART_META[currentChart] || CHART_META.rawvsproj;
     const t = document.getElementById('chart-title'); if (t) t.textContent = meta.title;
     const s = document.getElementById('chart-sub');   if (s) s.textContent = meta.sub;
     if (currentChart === 'teams') renderTeamChart();
     else if (currentChart === 'yoy') renderYoyChart();
+    else if (currentChart === 'vsteam') renderVsTeamChart();
     else renderFlagshipChart();
   }
 
-  function chartRows() {
-    const minGp = Number(chartFilters.minGp) || 0;
+  function chartRows(opts) {
+    const needProj = !(opts && opts.noProj);   // vs-team doesn't require a projection
     return carPlayers.filter(r =>
-      isFinite(Number(r.WAR)) && isFinite(Number(r.proj_WAR)) &&
-      Number(r.GP) >= minGp &&
-      (chartFilters.league === 'All' || r.League === chartFilters.league)
+      isFinite(Number(r.WAR)) && (!needProj || isFinite(Number(r.proj_WAR))) &&
+      Number(r.GP) >= CHART_MIN_GP &&
+      (chartFilters.league === 'All' || r.League === chartFilters.league) &&
+      (chartFilters.year   === 'All' || String(r.Year) === String(chartFilters.year)) &&
+      (chartFilters.role   === 'All' || r.Pos === chartFilters.role)
     );
   }
 
@@ -1600,8 +1670,10 @@
     if (!rows.length) { el.style.display = 'none'; if (empty) empty.style.display = 'block'; return; }
     el.style.display = ''; if (empty) empty.style.display = 'none';
 
-    const x = rows.map(r => Number(r.WAR));
-    const y = rows.map(r => Number(r.proj_WAR));
+    // §1.8 — pCAR (projection) on X, raw CAR (record) on Y, so performing
+    // well reads UP: above the diagonal = the record beat the projection.
+    const x = rows.map(r => Number(r.proj_WAR));
+    const y = rows.map(r => Number(r.WAR));
     const text = rows.map(r => {
       const resid = Number(r.WAR) - Number(r.proj_WAR);
       const tag = resid >= 0 ? 'over' : 'under';
@@ -1628,9 +1700,13 @@
       paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
       margin: { l: 64, r: 24, t: 12, b: 52 },
       font: { family: 'DM Mono, monospace', size: 11, color: '#4c4537' },
-      xaxis: { title: { text: 'raw CAR  —  what he did', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
-      yaxis: { title: { text: 'pCAR  —  forward projection', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
+      xaxis: { title: { text: 'pCAR  —  forward projection', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
+      yaxis: { title: { text: 'raw CAR  —  the actual record', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
       showlegend: false,
+      annotations: [
+        { x: lo + pad, y: hi - pad, xanchor: 'left',  yanchor: 'top',    text: 'overperformed ↑', showarrow: false, font: { family: 'DM Mono, monospace', size: 10, color: 'rgba(47,122,76,0.85)' } },
+        { x: hi - pad, y: lo + pad, xanchor: 'right', yanchor: 'bottom', text: 'underperformed ↓', showarrow: false, font: { family: 'DM Mono, monospace', size: 10, color: 'rgba(194,48,42,0.8)' } }
+      ],
       hoverlabel: { bgcolor: '#17130b', bordercolor: '#17130b', font: { family: 'DM Mono, monospace', color: '#f5efe3', size: 11 } }
     };
     Plotly.react(el, [diag, scatter], layout, { displayModeBar: false, responsive: true });
@@ -1647,11 +1723,11 @@
     const empty = document.getElementById('chart-empty');
     if (!el) return;
     if (!carLoaded) return;
-    const minGp = Number(chartFilters.minGp) || 0;
     const rows = carTeams.filter(t =>
       isFinite(Number(t.Projected_Team_WAR)) && isFinite(normalizeWpct(t.W_pct)) &&
-      Number(t.GP) >= minGp &&
-      (chartFilters.league === 'All' || t.League === chartFilters.league)
+      Number(t.GP) >= CHART_MIN_GP &&
+      (chartFilters.league === 'All' || t.League === chartFilters.league) &&
+      (chartFilters.year   === 'All' || String(t.Year) === String(chartFilters.year))
     );
     if (!rows.length) { el.style.display = 'none'; if (empty) empty.style.display = 'block'; return; }
     el.style.display = ''; if (empty) empty.style.display = 'none';
@@ -1686,7 +1762,7 @@
     const empty = document.getElementById('chart-empty');
     if (!el) return;
     if (!carLoaded) return;
-    const minGp = Number(chartFilters.minGp) || 0;
+    const minGp = CHART_MIN_GP;
     // group history by player, build consecutive-year (prev → curr) pairs
     const byPlayer = {};
     carHistory.forEach(h => {
@@ -1701,6 +1777,8 @@
         if (Number(curr.Year) - Number(prev.Year) !== 1) continue;     // strictly consecutive years
         if (Number(prev.GP) < minGp || Number(curr.GP) < minGp) continue;
         if (chartFilters.league !== 'All' && curr.League !== chartFilters.league) continue;
+        if (chartFilters.year   !== 'All' && String(curr.Year) !== String(chartFilters.year)) continue;  // year = the "this year" axis
+        if (chartFilters.role   !== 'All' && curr.Pos !== chartFilters.role) continue;
         pairs.push({ prev, curr });
       }
     });
@@ -1747,6 +1825,167 @@
     });
   }
 
+  /* ══════════════════════════════════════════════
+     PLAYER vs TEAM — player CAR against his roster's average CAR.
+     Above the diagonal = outperforming his team (a carry); below = carried.
+     ══════════════════════════════════════════════ */
+  function teamKey(r) { return [r.Team, r.Year, r.League, r.Dataset].join('|'); }
+  function teamAvgMap() {
+    // mean player CAR per team (25 GP+ qualified starters), cached per data load
+    if (teamAvgMap._cache && teamAvgMap._n === carPlayers.length) return teamAvgMap._cache;
+    const groups = {};
+    carPlayers.forEach(r => {
+      if (!isFinite(Number(r.WAR)) || Number(r.GP) < CHART_MIN_GP) return;
+      (groups[teamKey(r)] = groups[teamKey(r)] || []).push(Number(r.WAR));
+    });
+    const avg = {};
+    Object.keys(groups).forEach(k => { const a = groups[k]; avg[k] = a.reduce((s, v) => s + v, 0) / a.length; });
+    teamAvgMap._cache = avg; teamAvgMap._n = carPlayers.length;
+    return avg;
+  }
+
+  function renderVsTeamChart() {
+    if (typeof Plotly === 'undefined') return;
+    const el = document.getElementById('chart-rawvsproj');
+    const empty = document.getElementById('chart-empty');
+    if (!el || !carLoaded) return;
+    const avg = teamAvgMap();
+    const rows = chartRows({ noProj: true }).filter(r => isFinite(avg[teamKey(r)]));
+    if (!rows.length) { el.style.display = 'none'; if (empty) empty.style.display = 'block'; return; }
+    el.style.display = ''; if (empty) empty.style.display = 'none';
+
+    const x = rows.map(r => avg[teamKey(r)]);
+    const y = rows.map(r => Number(r.WAR));
+    const text = rows.map(r => {
+      const ta = avg[teamKey(r)];
+      const d = Number(r.WAR) - ta;
+      return `<b>${escapeHtml(r.Player)}</b> · ${escapeHtml(String(r.Pos || ''))}<br>` +
+             `${escapeHtml(r.Team || '')} · ${escapeHtml(r.League || '')} ${escapeHtml(String(r.Year || ''))}<br>` +
+             `player CAR ${fmtSigned(r.WAR, 1)} · team avg ${fmtSigned(ta, 1)}<br>` +
+             `${d >= 0 ? 'above' : 'below'} team by ${fmtSigned(Math.abs(d), 1)}`;
+    });
+    const colors = rows.map(r => chartRoleColor(r.Pos));
+    const lo = Math.min.apply(null, x.concat(y));
+    const hi = Math.max.apply(null, x.concat(y));
+    const pad = (hi - lo) * 0.05 || 1;
+    const scatter = {
+      x, y, text, customdata: rows.map(r => playerKey(r)),
+      mode: 'markers', type: 'scattergl',
+      hovertemplate: '%{text}<extra></extra>',
+      marker: { size: 9, color: colors, opacity: 0.78, line: { width: 0.5, color: 'rgba(23,19,11,0.35)' } }
+    };
+    const diag = {
+      x: [lo - pad, hi + pad], y: [lo - pad, hi + pad], mode: 'lines', type: 'scatter',
+      hoverinfo: 'skip', line: { color: 'rgba(23,19,11,0.5)', width: 1, dash: 'dash' }, showlegend: false
+    };
+    const layout = {
+      paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
+      margin: { l: 64, r: 24, t: 12, b: 52 },
+      font: { family: 'DM Mono, monospace', size: 11, color: '#4c4537' },
+      xaxis: { title: { text: 'team average CAR — the roster level', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
+      yaxis: { title: { text: 'player CAR — the individual', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
+      showlegend: false,
+      annotations: [
+        { x: lo + pad, y: hi - pad, xanchor: 'left',  yanchor: 'top',    text: 'carrying the team ↑', showarrow: false, font: { family: 'DM Mono, monospace', size: 10, color: 'rgba(47,122,76,0.85)' } },
+        { x: hi - pad, y: lo + pad, xanchor: 'right', yanchor: 'bottom', text: 'carried by the team ↓', showarrow: false, font: { family: 'DM Mono, monospace', size: 10, color: 'rgba(194,48,42,0.8)' } }
+      ],
+      hoverlabel: { bgcolor: '#17130b', bordercolor: '#17130b', font: { family: 'DM Mono, monospace', color: '#f5efe3', size: 11 } }
+    };
+    Plotly.react(el, [diag, scatter], layout, { displayModeBar: false, responsive: true });
+    el.removeAllListeners && el.removeAllListeners('plotly_click');
+    el.on('plotly_click', ev => {
+      const pt = ev.points && ev.points.find(p => p.data.customdata);
+      if (pt) { const key = pt.data.customdata[pt.pointIndex]; if (key) openPlayerFromChart(key); }
+    });
+  }
+
+  /* ══════════════════════════════════════════════
+     STAT POSITIONING — generalized cohort scatter (§2)
+     Single (League × Year × Role) cohort, 25 GP+ always (§0.2/§0.3),
+     axes = the role's populated z-components only (§0.4), shown with the
+     vague friendly labels. Lines at 0 frame the quadrants; click → player card.
+     ══════════════════════════════════════════════ */
+  const ROLE_LIST = ['Top', 'Jungle', 'Middle', 'ADC', 'Support'];
+
+  function statOptionsForRole(role) {
+    // Only the components the engine actually populates for this role (NaN-safe).
+    return (ROLE_COMPONENTS[role] || []).map(k => ({ key: k, label: Z_FRIENDLY[k] || k }));
+  }
+  function fillStatSelect(el, opts, current) {
+    if (!el) return current;
+    const keys = opts.map(o => o.key);
+    const val = keys.includes(current) ? current : (keys[0] || '');
+    el.innerHTML = opts.map(o => `<option value="${escapeHtml(o.key)}">${escapeHtml(o.label)}</option>`).join('');
+    el.value = val;
+    return val;
+  }
+  function scatterCohort() {
+    const { league, year, role, x, y } = scatterState;
+    return carPlayers.filter(r =>
+      r.Pos === role &&
+      String(r.League) === String(league) &&
+      String(r.Year) === String(year) &&
+      Number(r.GP) >= CHART_MIN_GP &&
+      isFinite(Number(r[x])) && isFinite(Number(r[y]))
+    );
+  }
+
+  function renderStatScatter() {
+    if (typeof Plotly === 'undefined') return;
+    const el = document.getElementById('chart-rawvsproj');
+    const empty = document.getElementById('chart-empty');
+    if (!el || !carLoaded) return;
+
+    const { x: xk, y: yk, league, year, role } = scatterState;
+    const xLabel = Z_FRIENDLY[xk] || xk;
+    const yLabel = Z_FRIENDLY[yk] || yk;
+    const rows = scatterCohort();
+
+    // caption reflects the live cohort + axes
+    const t = document.getElementById('chart-title');
+    const s = document.getElementById('chart-sub');
+    if (t) t.textContent = `Stat positioning — ${xLabel} (x) vs ${yLabel} (y)`;
+    if (s) s.textContent = `${league} · ${year} · ${role}. Each axis is a player's standing within this cohort `
+      + `(0 = cohort average). The lines split the four corners — the outliers are the story. Click a point to open the player.`;
+
+    if (!rows.length) { el.style.display = 'none'; if (empty) empty.style.display = 'block'; return; }
+    el.style.display = ''; if (empty) empty.style.display = 'none';
+
+    const x = rows.map(r => Number(r[xk]));
+    const y = rows.map(r => Number(r[yk]));
+    const text = rows.map(r =>
+      `<b>${escapeHtml(r.Player)}</b> · ${escapeHtml(r.Team || '')}<br>` +
+      `${escapeHtml(xLabel)} ${fmtSigned(Number(r[xk]), 2)}<br>` +
+      `${escapeHtml(yLabel)} ${fmtSigned(Number(r[yk]), 2)}`);
+    const color = chartRoleColor(role);
+
+    const scatter = {
+      x, y, text, customdata: rows.map(r => playerKey(r)),
+      mode: 'markers', type: 'scattergl',
+      hovertemplate: '%{text}<extra></extra>',
+      marker: { size: 10, color: color, opacity: 0.78, line: { width: 0.5, color: 'rgba(23,19,11,0.35)' } }
+    };
+    const layout = {
+      paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
+      margin: { l: 64, r: 24, t: 12, b: 52 },
+      font: { family: 'DM Mono, monospace', size: 11, color: '#4c4537' },
+      xaxis: { title: { text: `${xLabel}  —  vs cohort`, font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
+      yaxis: { title: { text: `${yLabel}  —  vs cohort`, font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
+      showlegend: false,
+      shapes: [
+        { type: 'line', xref: 'x', yref: 'paper', x0: 0, x1: 0, y0: 0, y1: 1, line: { color: 'rgba(23,19,11,0.32)', width: 1, dash: 'dot' } },
+        { type: 'line', xref: 'paper', yref: 'y', x0: 0, x1: 1, y0: 0, y1: 0, line: { color: 'rgba(23,19,11,0.32)', width: 1, dash: 'dot' } }
+      ],
+      hoverlabel: { bgcolor: '#17130b', bordercolor: '#17130b', font: { family: 'DM Mono, monospace', color: '#f5efe3', size: 11 } }
+    };
+    Plotly.react(el, [scatter], layout, { displayModeBar: false, responsive: true });
+    el.removeAllListeners && el.removeAllListeners('plotly_click');
+    el.on('plotly_click', ev => {
+      const pt = ev.points && ev.points.find(p => p.data.customdata);
+      if (pt) { const key = pt.data.customdata[pt.pointIndex]; if (key) openPlayerFromChart(key); }
+    });
+  }
+
   function openPlayerByName(name) {
     // pick the player's highest-GP current row to open their card
     const matches = carPlayers.filter(p => p.Player === name);
@@ -1758,10 +1997,14 @@
   function openPlayerFromChart(key) {
     const r = carPlayers.find(p => playerKey(p) === key);
     if (!r) return;
-    dashFilters = { league: 'All', year: 'All', role: 'All', minGp: '0', search: r.Player };
+    // Scope to the player's own league (no "All" sentinel in the UI) and clear
+    // the other filters so their row surfaces under the name search.
+    dashFilters = { league: String(r.League), year: 'All', role: 'All', minGp: '0', search: r.Player };
     expandedPlayer = key;
     const sb = document.getElementById('car-search'); if (sb) sb.value = r.Player;
-    // sync the players-view filter chips back to "All"
+    const plSel = document.getElementById('players-league-select');
+    if (plSel) plSel.value = dashFilters.league;
+    // sync the players-view filter chips (year/role/minGp) to the cleared state
     document.querySelectorAll('#car-players-view .car-filter-group').forEach(grp => {
       const field = grp.dataset.field;
       grp.querySelectorAll('.car-fb').forEach(b => b.classList.toggle('active', b.dataset.val === dashFilters[field]));
@@ -1794,32 +2037,96 @@
     xplReplacementBuilt = true;
   }
 
+  function updateChartControlsMode() {
+    const scatter = currentChart === 'statscatter';
+    document.querySelectorAll('#chart-controls .sc-only').forEach(g => g.style.display = scatter ? 'flex' : 'none');
+    document.querySelectorAll('#chart-controls .cl-only').forEach(g => g.style.display = scatter ? 'none' : 'flex');
+    // role does not apply to the team-level chart
+    const roleGrp = document.querySelector('#chart-controls .cl-role');
+    if (roleGrp && !scatter) roleGrp.style.display = (currentChart === 'teams') ? 'none' : 'flex';
+  }
+
+  // Populate the chart dropdowns from live data (called once after load). §1.3/§2
+  function populateChartSelects() {
+    const leagues = orderedLeagues(carPlayers);
+    chartFilters.league = fillLeagueSelect(document.getElementById('charts-league-select'), leagues, chartFilters.league);
+    scatterState.league = fillLeagueSelect(document.getElementById('sc-league-select'), leagues, scatterState.league);
+
+    const years = Array.from(new Set(carPlayers.map(r => String(r.Year)).filter(v => v && v !== 'null')))
+      .sort((a, b) => Number(b) - Number(a));
+
+    // shared Year / Role dropdowns (these carry an "All" option)
+    const clYearSel = document.getElementById('charts-year-select');
+    if (clYearSel) {
+      clYearSel.innerHTML = ['All'].concat(years).map(y => `<option value="${y}">${y === 'All' ? 'All years' : y}</option>`).join('');
+      clYearSel.value = chartFilters.year;
+    }
+    const clRoleSel = document.getElementById('charts-role-select');
+    if (clRoleSel) {
+      clRoleSel.innerHTML = ['All'].concat(ROLE_LIST).map(r => `<option value="${r}">${r === 'All' ? 'All roles' : r}</option>`).join('');
+      clRoleSel.value = chartFilters.role;
+    }
+
+    const scY = document.getElementById('sc-year-select');
+    if (scY) {
+      scatterState.year = years.includes(scatterState.year) ? scatterState.year : (years[0] || scatterState.year);
+      scY.innerHTML = years.map(y => `<option value="${y}">${y}</option>`).join('');
+      scY.value = scatterState.year;
+    }
+    const scR = document.getElementById('sc-role-select');
+    if (scR) { scR.innerHTML = ROLE_LIST.map(r => `<option value="${r}">${r}</option>`).join(''); scR.value = scatterState.role; }
+
+    const opts = statOptionsForRole(scatterState.role);
+    scatterState.x = fillStatSelect(document.getElementById('sc-x-select'), opts, scatterState.x);
+    scatterState.y = fillStatSelect(document.getElementById('sc-y-select'), opts, scatterState.y);
+  }
+
+  // Populate the players + teams league dropdowns from live data. §1.3
+  function populateTableLeagueSelects() {
+    dashFilters.league = fillLeagueSelect(
+      document.getElementById('players-league-select'), orderedLeagues(carPlayers), dashFilters.league);
+    dashTeamFilters.league = fillLeagueSelect(
+      document.getElementById('teams-league-select'), orderedLeagues(carTeams), dashTeamFilters.league);
+  }
+
   function initCharts() {
-    document.querySelectorAll('#chart-controls .cl-fb').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('#chart-controls .cl-fb').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        chartFilters.league = btn.dataset.val;
-        renderActiveChart();
-      });
-    });
-    document.querySelectorAll('#chart-controls .cl-gp').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('#chart-controls .cl-gp').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        chartFilters.minGp = btn.dataset.val;
-        renderActiveChart();
-      });
-    });
     document.querySelectorAll('#chart-switch .chart-switch-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         if (btn.disabled) return;
         document.querySelectorAll('#chart-switch .chart-switch-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentChart = btn.dataset.chart;
+        updateChartControlsMode();
         renderActiveChart();
       });
     });
+
+    const clSel = document.getElementById('charts-league-select');
+    if (clSel) clSel.addEventListener('change', () => { chartFilters.league = clSel.value; renderActiveChart(); });
+    const clYr = document.getElementById('charts-year-select');
+    if (clYr) clYr.addEventListener('change', () => { chartFilters.year = clYr.value; renderActiveChart(); });
+    const clRl = document.getElementById('charts-role-select');
+    if (clRl) clRl.addEventListener('change', () => { chartFilters.role = clRl.value; renderActiveChart(); });
+
+    const scL  = document.getElementById('sc-league-select');
+    const scY  = document.getElementById('sc-year-select');
+    const scR  = document.getElementById('sc-role-select');
+    const scX  = document.getElementById('sc-x-select');
+    const scYv = document.getElementById('sc-y-select');
+    if (scL)  scL.addEventListener('change',  () => { scatterState.league = scL.value; renderActiveChart(); });
+    if (scY)  scY.addEventListener('change',  () => { scatterState.year   = scY.value; renderActiveChart(); });
+    if (scR)  scR.addEventListener('change',  () => {
+      scatterState.role = scR.value;
+      const opts = statOptionsForRole(scatterState.role);
+      scatterState.x = fillStatSelect(scX,  opts, scatterState.x);
+      // keep Y distinct from X where possible
+      scatterState.y = fillStatSelect(scYv, opts, scatterState.y === scatterState.x ? null : scatterState.y);
+      renderActiveChart();
+    });
+    if (scX)  scX.addEventListener('change',  () => { scatterState.x = scX.value; renderActiveChart(); });
+    if (scYv) scYv.addEventListener('change', () => { scatterState.y = scYv.value; renderActiveChart(); });
+
+    updateChartControlsMode();
   }
 
   async function initCar() {
@@ -1838,6 +2145,10 @@
     if (carLoaded) {
       renderCarHeroPreview(getCarHeroRows());
       renderCarHeroCount();
+      // Populate data-driven dropdowns before first render.
+      populateTableLeagueSelects();
+      populateChartSelects();
+      updateChartControlsMode();
       // Pre-render both tables in memory so switching the CAR page is instant.
       renderPlayers();
       renderTeams();
