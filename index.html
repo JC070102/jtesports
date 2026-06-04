@@ -29,7 +29,7 @@
 </nav>
 
 <!-- HOME PAGE -->
-<div class="page" id="page-home">
+<div class="page active" id="page-home">
 
   <div class="hero">
     <div class="hero-columns">
@@ -190,7 +190,7 @@
 </div>
 
 <!-- CAR DASHBOARD PAGE (landing) -->
-<div class="page active" id="page-car">
+<div class="page" id="page-car">
 
   <div class="archive-header">
     <h1 class="archive-hed">CAR Index</h1>
@@ -494,13 +494,33 @@
 </footer>
 
 <script>
+  /* ── Routing: clean path URLs on GitHub Pages (History API + 404 fallback) ── */
+  const ROUTES = {
+    '/': 'home', '/index': 'car', '/charts': 'charts', '/stories': 'archive',
+    '/what-is-car': 'explainer', '/notes': 'notes', '/about': 'about'
+  };
+  const PAGE_TO_PATH = {
+    home: '/', car: '/index', charts: '/charts', archive: '/stories',
+    explainer: '/what-is-car', notes: '/notes', about: '/about'
+  };
+  function pageFromPath() {
+    return ROUTES[(location.pathname.replace(/\/+$/, '') || '/')] || 'home';
+  }
+
   /* ── Page switching ── */
-  function showPage(id) {
+  function showPage(id, opts) {
+    opts = opts || {};
+    if (!document.getElementById('page-' + id)) id = 'home';
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const pg = document.getElementById('page-' + id);
     pg.classList.add('active');
     // reflect the current page in the nav
     document.querySelectorAll('nav a[data-nav]').forEach(a => a.classList.toggle('nav-here', a.dataset.nav === id));
+    // keep the URL in sync (skip when the change came from history / initial route)
+    if (!opts.fromHistory) {
+      const path = PAGE_TO_PATH[id] || '/';
+      if (location.pathname !== path) history.pushState({ page: id }, '', path);
+    }
     // SP1: replay the staggered "instrument boot" reveal each time a page opens
     pg.classList.remove('sp1-enter');
     void pg.offsetWidth;               // force reflow so the animation restarts
@@ -519,15 +539,17 @@
     }
   }
 
-  // SP1: fire the reveal on the initially-active page (home)
-  (function initSp1Reveal() {
+  // Back / forward buttons
+  window.addEventListener('popstate', () => window.showPage(pageFromPath(), { fromHistory: true }));
+
+  // Initial route: restore a 404-stashed deep link, then render the path's page
+  (function initRouter() {
     const start = () => {
-      const a = document.querySelector('.page.active');
-      if (a) {
-        void a.offsetWidth; a.classList.add('sp1-enter');
-        const id = a.id.replace('page-', '');
-        document.querySelectorAll('nav a[data-nav]').forEach(n => n.classList.toggle('nav-here', n.dataset.nav === id));
-      }
+      const stashed = sessionStorage.getItem('spa-redirect');
+      if (stashed) { sessionStorage.removeItem('spa-redirect'); history.replaceState(null, '', stashed); }
+      const id = pageFromPath();
+      history.replaceState({ page: id }, '', PAGE_TO_PATH[id] || '/');
+      window.showPage(id, { fromHistory: true });   // window.* so the CAR-render wrapper runs
     };
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', start);
@@ -1573,8 +1595,8 @@
 
   /* ── Hook showPage so the dashboard renders on activation ── */
   const _carOrigShowPage = window.showPage;
-  window.showPage = function(id) {
-    _carOrigShowPage(id);
+  window.showPage = function(id, opts) {
+    _carOrigShowPage(id, opts);
     if (id === 'car') ensureCarRendered();
   };
 

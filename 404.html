@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>JTE — The CAR Index</title>
+<meta name="robots" content="noindex">
+<script>
+  /* SPA deep-link fallback for GitHub Pages.
+     GitHub Pages serves this file for any path without a matching file
+     (e.g. /charts, /index). We stash the intended path and bounce to the
+     root; index.html restores it via the History API and routes to it.
+     Real files (e.g. /writing/*.html) are served directly and never hit this. */
+  (function () {
+    try {
+      sessionStorage.setItem('spa-redirect', location.pathname + location.search + location.hash);
+    } catch (e) {}
+    location.replace('/');
+  })();
+</script>
+</head>
+<body></body>
+</html>
