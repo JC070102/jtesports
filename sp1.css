@@ -845,3 +845,23 @@ nav a[data-nav].nav-here::after {
   background: linear-gradient(to bottom, transparent 70%, rgba(236,228,214,0.85) 100%) !important;
   opacity: 1 !important;
 }
+
+/* Vitality hero crest panel (replaces the BFX team photo) */
+.hero-crest-block {
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  min-height: 360px;
+  background: radial-gradient(circle at 50% 42%, var(--card), var(--paper-2));
+}
+.hero-crest-block::after { display: none !important; }   /* kill the photo paper-fade */
+.hero-crest-img {
+  position: relative; z-index: 1;
+  height: 250px; width: auto;
+  filter: drop-shadow(0 14px 30px rgba(23,19,11,0.28));
+}
+.hero-crest-ghost {
+  position: absolute; z-index: 0;
+  width: 128%; height: auto; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.05; pointer-events: none;
+}

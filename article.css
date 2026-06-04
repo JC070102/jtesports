@@ -1,0 +1,227 @@
+/* ============================================================
+   ARTICLE TEMPLATE — the JTE "data-essay"
+   Shared by all stories. Builds on the SP1 warm-paper system
+   (vars/fonts/nav/footer come from style.css + sp1.css); this
+   file adds the masthead, reading body, figures and call-outs.
+   ============================================================ */
+
+:root {
+  /* per-article accent — overridden per piece; defaults to the site red */
+  --art-accent: var(--accent);
+  --art-accent-deep: var(--accent-deep);
+  /* Vitality signature (warmed gold, tuned to sit on the paper) */
+  --gold: #c9962e;
+  --gold-deep: #a87a1f;
+}
+
+/* the Vitality piece flips its accent to gold */
+.theme-vitality { --art-accent: var(--gold); --art-accent-deep: var(--gold-deep); }
+
+body { background: var(--paper); color: var(--ink); }
+
+/* ── shell ── */
+.article-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem 5rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── masthead ── */
+.article-masthead {
+  position: relative;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--rule-strong);
+}
+.am-crest {
+  width: 76px; height: auto; display: block;
+  margin-bottom: 1.4rem;
+  filter: drop-shadow(0 8px 22px rgba(23,19,11,0.18));
+}
+/* oversized faded crest watermark behind the masthead */
+.am-crest-ghost {
+  position: absolute;
+  top: -2.5rem; right: -1.5rem;
+  width: 320px; height: auto;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
+}
+.article-masthead > *:not(.am-crest-ghost) { position: relative; z-index: 1; }
+
+.am-kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--art-accent);
+  margin-bottom: 1rem;
+  display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;
+}
+.am-kicker .am-tag {
+  border: 1px solid var(--art-accent);
+  border-radius: 1px;
+  padding: 0.15rem 0.45rem;
+}
+.am-title {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 6vw, 4rem);
+  line-height: 0.94;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0 0 1rem;
+}
+.am-dek {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+  color: var(--ink-2);
+  line-height: 1.4;
+  max-width: 36rem;
+  margin: 0 0 1.4rem;
+}
+.am-byline {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.am-byline strong { color: var(--ink); font-weight: 500; }
+
+/* ── reading body ── */
+.article-body { position: relative; z-index: 2; }
+.article-body > p {
+  font-family: var(--serif);
+  font-size: 1.24rem;
+  line-height: 1.72;
+  color: var(--ink);
+  margin: 0 0 1.5rem;
+}
+.article-body > p:first-of-type::first-letter {
+  font-family: var(--display);
+  font-weight: 800;
+  float: left;
+  font-size: 3.4rem;
+  line-height: 0.8;
+  padding: 0.3rem 0.6rem 0 0;
+  color: var(--art-accent);
+}
+.article-body a {
+  color: var(--art-accent-deep);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+/* section kicker between chapters */
+.a-kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--art-accent);
+  margin: 3rem 0 1.4rem;
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.a-kicker::after {
+  content: ""; flex: 1; height: 1px; background: var(--rule);
+}
+
+.a-rule { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
+
+/* inline stat call-out (an "instrument" number pulled from the data) */
+.a-callout {
+  display: flex; align-items: baseline; gap: 0.9rem;
+  margin: 2rem 0;
+  padding: 1rem 1.25rem;
+  background: var(--paper-2);
+  border-left: 3px solid var(--art-accent);
+  border-radius: 0 2px 2px 0;
+}
+.a-callout-num {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 2.4rem;
+  line-height: 1;
+  color: var(--art-accent-deep);
+  white-space: nowrap;
+}
+.a-callout-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+
+/* ── figures (charts + screenshots) ── */
+.a-figure {
+  margin: 2.5rem 0;
+}
+.a-figcap {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+.a-fignote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.98rem;
+  color: var(--ink-2);
+  line-height: 1.5;
+  margin-top: 0.7rem;
+}
+
+/* chart figure — 1:1, framed instrument panel */
+.a-figure--chart .a-chart {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: var(--card);
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  box-shadow: 0 18px 50px -38px rgba(23,19,11,0.5);
+  overflow: hidden;
+}
+.a-chart-loading {
+  display: flex; align-items: center; justify-content: center;
+  height: 100%;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+/* screenshot figure — framed with a soft paper blend */
+.a-shot-frame {
+  position: relative;
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--ink);
+  box-shadow: 0 18px 50px -38px rgba(23,19,11,0.5);
+}
+.a-shot-frame img { display: block; width: 100%; height: auto; }
+.a-shot-frame::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to bottom, transparent 78%, rgba(23,19,11,0.18) 100%);
+}
+
+/* ── article footer nav ── */
+.article-end {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule-strong);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+}
+.article-end a { color: var(--art-accent-deep); cursor: pointer; }
+
+@media (max-width: 760px) {
+  .am-crest-ghost { width: 200px; opacity: 0.05; }
+  .article-body > p { font-size: 1.12rem; }
+}
