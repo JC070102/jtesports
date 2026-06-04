@@ -354,6 +354,7 @@
       <span class="chart-cap-sub" id="chart-sub">The diagonal is "performing as projected." Above it, the record outruns the
       forecast (a breakout, or regression-bait); below it, a player is trailing his own projection.</span>
     </figcaption>
+    <div class="chart-legend" id="chart-legend" style="display:none;"></div>
     <div class="chart-plot" id="chart-rawvsproj"></div>
   </figure>
 
@@ -921,10 +922,14 @@
     }
   }
 
+  // Major (tier-1 regional) leagues — excludes challenger / ERL development
+  // leagues whose smaller pools inflate raw CAR (NACL, LCK CL, PRM, LFL, LES).
+  const MAJOR_LEAGUES = ['LCK', 'LEC', 'LCS', 'LCP', 'CBLOL'];
   function getCarHeroRows() {
     if (!carLoaded || !carPlayers.length) return CAR_FALLBACK;
     return carPlayers
-      .filter(r => r.Player && isFinite(Number(r.WAR)))
+      .filter(r => r.Player && isFinite(Number(r.WAR)) &&
+                   Number(r.GP) >= 25 && MAJOR_LEAGUES.includes(r.League))
       .slice()
       .sort((a, b) => Number(b.WAR) - Number(a.WAR))
       .slice(0, 4);
@@ -1657,7 +1662,24 @@
     if (p.startsWith('jun') || p === 'jgl') return '#2f7a4c';
     if (p.startsWith('mid')) return '#17130b';
     if (p.startsWith('adc') || p.startsWith('bot')) return '#c2302a';
+    if (p.startsWith('sup')) return '#b07d2b';   // Support gets its own (was lumped into grey)
     return '#8b8270';
+  }
+
+  /* Lightweight HTML legend under the chart caption (color-encoded charts). */
+  function setChartLegend(items) {
+    const el = document.getElementById('chart-legend');
+    if (!el) return;
+    if (!items || !items.length) { el.innerHTML = ''; el.style.display = 'none'; return; }
+    el.style.display = 'flex';
+    el.innerHTML = items.map(it =>
+      `<span class="chart-legend-item"><span class="chart-legend-dot" style="background:${it.color}"></span>${escapeHtml(it.label)}</span>`
+    ).join('');
+  }
+  function roleLegend(rows) {
+    const present = new Set(rows.map(r => r.Pos));
+    const roles = ['Top', 'Jungle', 'Middle', 'ADC', 'Support'].filter(r => present.has(r));
+    return roles.length > 1 ? roles.map(r => ({ label: r, color: chartRoleColor(r) })) : [];
   }
 
   function renderFlagshipChart() {
@@ -1710,6 +1732,7 @@
       hoverlabel: { bgcolor: '#17130b', bordercolor: '#17130b', font: { family: 'DM Mono, monospace', color: '#f5efe3', size: 11 } }
     };
     Plotly.react(el, [diag, scatter], layout, { displayModeBar: false, responsive: true });
+    setChartLegend(roleLegend(rows));
     el.removeAllListeners && el.removeAllListeners('plotly_click');
     el.on('plotly_click', ev => {
       const pt = ev.points && ev.points.find(p => p.data.customdata);
@@ -1754,6 +1777,7 @@
       hoverlabel: { bgcolor: '#17130b', bordercolor: '#17130b', font: { family: 'DM Mono, monospace', color: '#f5efe3', size: 11 } }
     };
     Plotly.react(el, [scatter], layout, { displayModeBar: false, responsive: true });
+    setChartLegend([]);   // single league → one color, no legend
   }
 
   function renderYoyChart() {
@@ -1818,6 +1842,7 @@
       hoverlabel: { bgcolor: '#17130b', bordercolor: '#17130b', font: { family: 'DM Mono, monospace', color: '#f5efe3', size: 11 } }
     };
     Plotly.react(el, [diag, scatter], layout, { displayModeBar: false, responsive: true });
+    setChartLegend([{ label: 'Rose year-on-year', color: '#2f7a4c' }, { label: 'Fell year-on-year', color: '#c2302a' }]);
     el.removeAllListeners && el.removeAllListeners('plotly_click');
     el.on('plotly_click', ev => {
       const pt = ev.points && ev.points.find(p => p.data.customdata);
@@ -1892,6 +1917,7 @@
       hoverlabel: { bgcolor: '#17130b', bordercolor: '#17130b', font: { family: 'DM Mono, monospace', color: '#f5efe3', size: 11 } }
     };
     Plotly.react(el, [diag, scatter], layout, { displayModeBar: false, responsive: true });
+    setChartLegend(roleLegend(rows));
     el.removeAllListeners && el.removeAllListeners('plotly_click');
     el.on('plotly_click', ev => {
       const pt = ev.points && ev.points.find(p => p.data.customdata);
@@ -1979,6 +2005,7 @@
       hoverlabel: { bgcolor: '#17130b', bordercolor: '#17130b', font: { family: 'DM Mono, monospace', color: '#f5efe3', size: 11 } }
     };
     Plotly.react(el, [scatter], layout, { displayModeBar: false, responsive: true });
+    setChartLegend([]);   // single role, single color
     el.removeAllListeners && el.removeAllListeners('plotly_click');
     el.on('plotly_click', ev => {
       const pt = ev.points && ev.points.find(p => p.data.customdata);

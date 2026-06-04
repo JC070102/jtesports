@@ -793,3 +793,32 @@ nav a[data-nav].nav-here::after {
 .car-hero-preview .car-lb-rank { font-weight: 700; color: var(--accent); }
 .car-hero-preview .car-lb-value { color: var(--pos); }
 .car-hero-note { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+
+/* Audit: color-encoded chart legend (Record / YoY / Player-vs-team) */
+.chart-legend {
+  display: flex; flex-wrap: wrap; gap: 0.4rem 1.3rem;
+  margin: 0 2.5rem; padding: 0.5rem 0 0.1rem;
+}
+.chart-legend-item {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.04em; color: var(--ink-2);
+}
+.chart-legend-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+
+/* Audit: hero image — was small + heavily washed into the paper. Give it
+   presence (taller, crisper, framed) until the Vitality story replaces it. */
+.hero-image-block {
+  border: 1px solid var(--rule-strong);
+  border-radius: 3px;
+  box-shadow: 0 24px 60px -40px rgba(23,19,11,0.6);
+  overflow: hidden;
+}
+.hero-team-img {
+  height: 440px;
+  filter: contrast(0.96) brightness(0.99) saturate(0.96);
+}
+.hero-image-block::after {
+  /* drop the side paper-fades that letterboxed it; keep a soft bottom blend only */
+  background: linear-gradient(to bottom, transparent 70%, rgba(236,228,214,0.85) 100%) !important;
+  opacity: 1 !important;
+}
