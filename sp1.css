@@ -761,38 +761,61 @@ nav a[data-nav].nav-here::after {
   color: var(--muted); align-self: center; margin-left: auto;
 }
 
-/* §1.5 — home CAR teaser: lift it into the instrument-panel system */
-.car-hero-preview { border-top: none; }
-.car-lb-head {
+/* §1.5 — home CAR teaser: padded instrument-panel leaderboard.
+   The card had NO internal padding (content jammed to the border) and a
+   heavy dark header band that fought the editorial card + duplicated the
+   dark CTA. Rebuilt: padded card, light column header, aligned rows. */
+.car-hero { padding: 1.6rem 1.7rem; }
+.car-hero-label  { margin-bottom: 0.7rem; }
+.car-hero-desc   { font-size: 0.97rem; line-height: 1.5; margin-bottom: 1.25rem; }
+
+.car-hero-preview { border-top: none; margin-bottom: 1rem; }
+
+/* shared 3-col grid for header + rows so columns line up exactly */
+.car-lb-head,
+.car-hero-preview .car-leaderboard-row {
   display: grid;
-  grid-template-columns: 24px 1fr 52px;
-  gap: 0.75rem;
-  padding: 0.5rem 0.6rem;
-  margin-top: 0.5rem;
-  background: var(--ink);
-  color: rgba(245,239,227,0.66);
+  grid-template-columns: 22px 1fr auto;
+  gap: 0.85rem;
+  align-items: center;
+}
+.car-lb-head {
+  padding: 0 0 0.55rem;
+  border-bottom: 1px solid var(--rule-strong);
   font-family: var(--mono);
   font-size: 9px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  border-radius: 1px 1px 0 0;
+  color: var(--muted);
 }
 .car-lb-head span:last-child { text-align: right; }
+
 .car-hero-preview .car-leaderboard-row {
-  padding: 0.6rem;
+  padding: 0.62rem 0;
   border-bottom: 1px solid var(--hair);
   position: relative;
+  transition: transform 0.16s var(--ease);
 }
+.car-hero-preview .car-leaderboard-row:last-child { border-bottom: none; }
+/* accent tab sits in the left gutter; row nudges right on hover */
 .car-hero-preview .car-leaderboard-row::before {
-  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
-  background: var(--accent); transform: scaleY(0); transform-origin: top;
+  content: ""; position: absolute; left: -0.85rem; top: 0.45rem; bottom: 0.45rem; width: 2px;
+  background: var(--accent); transform: scaleY(0); transform-origin: center;
   transition: transform 0.18s var(--ease);
 }
-.car-hero-preview .car-leaderboard-row:hover { padding-left: 0.85rem; background: var(--paper-2); }
+.car-hero-preview .car-leaderboard-row:hover { transform: translateX(3px); }
 .car-hero-preview .car-leaderboard-row:hover::before { transform: scaleY(1); }
-.car-hero-preview .car-lb-rank { font-weight: 700; color: var(--accent); }
-.car-hero-preview .car-lb-value { color: var(--pos); }
-.car-hero-note { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.car-hero-preview .car-leaderboard-row:hover .car-lb-rank { color: var(--accent); }
+
+.car-hero-preview .car-lb-rank {
+  font-family: var(--mono); font-size: 12px; font-weight: 500;
+  color: var(--muted); text-align: center; transition: color 0.16s;
+}
+.car-hero-preview .car-lb-name  { font-size: 14px; }
+.car-hero-preview .car-lb-value { color: var(--pos); font-size: 13px; white-space: nowrap; }
+
+.car-hero-count { margin-bottom: 1.1rem; }
+.car-hero-note  { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 0.1rem; }
 
 /* Audit: color-encoded chart legend (Record / YoY / Player-vs-team) */
 .chart-legend {
