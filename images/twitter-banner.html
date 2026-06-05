@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>JTE banner</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4f1eb; --ink:#17130b; --muted:#8b8270; --accent:#c2302a;
+    --rule:rgba(23,19,11,0.13);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{background:#cdc6b8;}
+  .banner{
+    width:1500px;height:500px;background:var(--paper);
+    position:relative;overflow:hidden;
+    padding:40px 60px;
+  }
+  /* top + bottom hairlines */
+  .rule-top{position:absolute;left:60px;right:60px;top:74px;height:1px;background:var(--rule);}
+  .rule-bot{position:absolute;left:60px;right:60px;bottom:78px;height:1px;background:var(--rule);}
+  .meta{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'DM Mono',monospace;font-size:15px;letter-spacing:0.2em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .headline{
+    position:absolute;left:60px;right:60px;top:50%;transform:translateY(-52%);
+  }
+  .l1{
+    font-family:'Big Shoulders Display',sans-serif;font-weight:800;
+    font-size:150px;line-height:0.86;letter-spacing:-0.005em;color:var(--ink);
+  }
+  .l2{
+    font-family:'Instrument Serif',Georgia,serif;font-style:italic;
+    font-size:112px;line-height:0.95;color:var(--accent);margin-top:6px;
+  }
+  .tagline{
+    position:absolute;left:60px;bottom:42px;
+    font-family:'DM Mono',monospace;font-size:15px;letter-spacing:0.2em;
+    text-transform:uppercase;color:var(--muted);
+  }
+</style>
+</head>
+<body>
+  <div class="banner">
+    <div class="meta">
+      <span>The CAR Index</span>
+      <span>@jt_esports</span>
+    </div>
+    <div class="rule-top"></div>
+    <div class="headline">
+      <div class="l1">Underreported stories,</div>
+      <div class="l2">surfaced by the data.</div>
+    </div>
+    <div class="rule-bot"></div>
+    <div class="tagline">Empirical analysis · Professional League of Legends</div>
+  </div>
+</body>
+</html>
