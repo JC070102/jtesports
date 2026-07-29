@@ -7,7 +7,7 @@ this copy taken from the 2026-07-19 refresh).
 | File | What it is | Source |
 |---|---|---|
 | `msi2026_per_game.csv` | Full filtered per-game rows (player + team) for MSI 2026: 71 games, 11 teams, 2026-06-28 to 2026-07-12. Complete timeline coverage. | Raw all-leagues OE drop, `league == "MSI"` |
-| `msi2026_players.csv` | Per-player MSI-only aggregates, within-role z-scores, radar axes (JSON column `radar_axes`), equal-weighted composite, role rank. No domestic carryover, no priors. | Built by `tools/build_event_dataset.py` |
+| `msi2026_players.csv` | Per-player MSI-only ratings from the LIVE CAR engine using the deployed role formulas (`engine/rebuild_weights.json`): CAR, CPS composite, radar axes (JSON column `radar_axes`), role rank. The engine z-scores components and sets replacement within the slice it is handed, so passing it MSI games alone gives event-only ratings with no domestic carryover. Champion neutralization OFF (71 games is too thin to estimate effects from). | Built by `tools/build_event_dataset.py` |
 | `oe_2026_per_game_filtered.csv` | The canonical domestic refresh artifact (CAR league set: LCK, LEC, LCS, LCP, CBLOL + development leagues). MSI / LPL / EWC are deliberately excluded by the refresh filter. | `newmodel/oe_refresh/per_game/2026_per_game_filtered.csv` |
 | `lpl_per_game.csv` | The LPL substrate, 2023-2026, full OE schema. OE's own LPL rows have no timeline data; the 2026 team rows carry a `golddiffat25` backfill from the tabesports.gg gold curves. Player-level timeline diffs (GD10/XPD10 etc.) remain null, which limits which CAR components LPL can support. | `newmodel/lpl_data/lpl_per_game.csv` |
 
