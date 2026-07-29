@@ -1,0 +1,26 @@
+# JTE data directory
+
+Provenance and rebuild notes for every CSV in this folder. All data originates
+from the newmodel OE refresh pipeline (`newmodel/oe_refresh/`, daily refresh;
+this copy taken from the 2026-07-19 refresh).
+
+| File | What it is | Source |
+|---|---|---|
+| `msi2026_per_game.csv` | Full filtered per-game rows (player + team) for MSI 2026: 71 games, 11 teams, 2026-06-28 to 2026-07-12. Complete timeline coverage. | Raw all-leagues OE drop, `league == "MSI"` |
+| `msi2026_players.csv` | Per-player MSI-only aggregates, within-role z-scores, radar axes (JSON column `radar_axes`), equal-weighted composite, role rank. No domestic carryover, no priors. | Built by `tools/build_event_dataset.py` |
+| `oe_2026_per_game_filtered.csv` | The canonical domestic refresh artifact (CAR league set: LCK, LEC, LCS, LCP, CBLOL + development leagues). MSI / LPL / EWC are deliberately excluded by the refresh filter. | `newmodel/oe_refresh/per_game/2026_per_game_filtered.csv` |
+| `lpl_per_game.csv` | The LPL substrate, 2023-2026, full OE schema. OE's own LPL rows have no timeline data; the 2026 team rows carry a `golddiffat25` backfill from the tabesports.gg gold curves. Player-level timeline diffs (GD10/XPD10 etc.) remain null, which limits which CAR components LPL can support. | `newmodel/lpl_data/lpl_per_game.csv` |
+
+| `msi2026_isolated_deaths.csv` | Coordinate-based discipline ledger: isolated, uncompensated side-lane deaths past 20:00 (and picks secured), from the tabesports events substrate (68/71 MSI games carry coordinates). | Built by `tools/coord_isolated_deaths.py` |
+
+## Rebuilding the event dataset
+
+```
+py tools/build_event_dataset.py --league MSI --year 2026 \
+    --source "C:/Users/jaspe/AppData/Local/Temp/oe_extract/2026_LoL_esports_match_data_from_OraclesElixir.csv" \
+    --out-prefix msi2026
+```
+
+The same tool builds any future event edition (Worlds, EWC) by switching
+`--league` / `--year` / `--out-prefix`. The landing-page dissection reads
+`msi2026_players.csv` directly via PapaParse.

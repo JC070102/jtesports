@@ -6,76 +6,116 @@
 <title>JTE · The CAR Index · Underreported stories in pro League</title>
   <link rel="icon" type="image/svg+xml" href="jte-logo.jpg">
 <meta name="description" content="An interactive analytics publication for pro League of Legends, built around the CAR Index, underreported stories surfaced through empirical analysis.">
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="sp1.css">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=sp3">
+<link rel="stylesheet" href="sp1.css?v=sp3">
+<link rel="stylesheet" href="dissect.css?v=sp3">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
 </head>
 <body>
 
-<nav>
+<header class="mast">
   <span class="wordmark" onclick="showPage('home')">JT<span>E</span></span>
+  <span class="mast-tag">Every number here has an opinion.</span>
+  <a href="https://twitter.com/jt_esports" class="mast-x" target="_blank">Twitter / X ↗</a>
+</header>
+<nav>
   <ul>
     <li><a data-nav="home" onclick="showPage('home')">Home</a></li>
     <li><a data-nav="car" onclick="showPage('car')">Index</a></li>
     <li><a data-nav="charts" onclick="showPage('charts')">Charts</a></li>
     <li><a data-nav="archive" onclick="showPage('archive')">Stories</a></li>
     <li><a data-nav="explainer" onclick="showPage('explainer')">What is CAR</a></li>
-    <li><a data-nav="notes" onclick="showPage('notes')">Notes</a></li>
     <li><a data-nav="about" onclick="showPage('about')">About</a></li>
-    <li><a href="https://twitter.com/jt_esports" class="nav-cta" target="_blank">Twitter / X ↗</a></li>
   </ul>
 </nav>
 
-<!-- HOME PAGE -->
+<!-- HOME PAGE — THE DISSECTION (updateable per event; current edition: MSI 2026) -->
 <div class="page active" id="page-home">
 
-  <div class="hero">
-    <div class="hero-columns">
-      <div class="hero-left">
-  <div class="hero-tag">Latest essay</div>
-  <h1 class="hero-headline">What Happened to Vitality?</h1>
-  <p class="hero-sub">An empirical anatomy of the LEC's most volatile team.</p>
-  <a href="writing/vitality-downfall.html" class="hero-cta">Read the essay →</a>
-  <div class="hero-image-block hero-crest-block">
-    <img src="images/vitality-crest.png" alt="Team Vitality crest" class="hero-crest-img">
-    <img src="images/vitality-crest.png" alt="" aria-hidden="true" class="hero-crest-ghost">
-  </div>
-</div>
-      <div class="hero-right">
-        <div class="car-hero">
-          <div class="car-hero-label">Contribution Above Replacement</div>
-          <p class="car-hero-desc">A composite performance score that rates a player's output against a replacement-level baseline at the same position, on an artificial scale, not a wins total.</p>
-          <div class="car-hero-preview" id="car-hero-preview"></div>
-          <div class="car-hero-count" id="car-hero-count">Showing top 8 of 501 players across 9 datasets →</div>
-          <a class="hero-cta car-hero-cta" onclick="showPage('car')">Explore the full CAR index →</a>
-          <p class="car-hero-note">League-relative figures, not cross-comparable between regions.</p>
+  <section class="dsx-hero">
+    <div class="dsx-hero-main">
+      <p class="dsx-kicker">The Dissection</p>
+      <h1 class="dsx-hed">MSI 2026,<br>laid <em>open.</em></h1>
+      <p class="dsx-dek">Fifteen days, 71 games, 11 teams. Every chart on this page is built from
+      MSI games alone: no domestic form carried in, no reputations, no benefit of the doubt.</p>
+      <div class="dsx-facts">
+        <div class="dsx-fact">
+          <span class="dsx-fact-k">Champions</span>
+          <span class="dsx-fact-v">Hanwha Life Esports</span>
+          <span class="dsx-fact-s">3-2 over Bilibili Gaming in the July 12 final</span>
+        </div>
+        <div class="dsx-fact">
+          <span class="dsx-fact-k">The widest role gap</span>
+          <span class="dsx-fact-v">Middle</span>
+          <span class="dsx-fact-s">Knight +1.39 to Dire −1.24, the biggest best-to-worst spread of any role</span>
+        </div>
+        <div class="dsx-fact">
+          <span class="dsx-fact-k">The data's MVP</span>
+          <span class="dsx-fact-v">Peyz</span>
+          <span class="dsx-fact-s">T1 ADC, best composite of the whole tournament</span>
         </div>
       </div>
     </div>
-  </div>
+    <figure class="dsx-featured" id="dsx-featured">
+      <div class="dsx-featured-radar" id="dsx-featured-radar"></div>
+      <figcaption class="dsx-featured-cap" id="dsx-featured-cap"></figcaption>
+    </figure>
+  </section>
 
-  <div class="ticker">
-    <div class="ticker-inner">
-      <span class="dot">▲</span><span>The CAR Index</span>
-      <span class="dot">·</span><span>Contribution Above Replacement</span>
-      <span class="dot">·</span><span>raw CAR vs pCAR</span>
-      <span class="dot">·</span><span>Breakout watch</span>
-      <span class="dot">·</span><span>Positioning charts</span>
-      <span class="dot">·</span><span>Team over/under-achievers</span>
-      <span class="dot">·</span><span>Underreported stories</span>
-      <span class="dot">·</span><span>Empirical analysis</span>
-      <span class="dot">▲</span><span>The CAR Index</span>
-      <span class="dot">·</span><span>Contribution Above Replacement</span>
-      <span class="dot">·</span><span>raw CAR vs pCAR</span>
-      <span class="dot">·</span><span>Breakout watch</span>
-      <span class="dot">·</span><span>Positioning charts</span>
-      <span class="dot">·</span><span>Team over/under-achievers</span>
-      <span class="dot">·</span><span>Underreported stories</span>
-      <span class="dot">·</span><span>Empirical analysis</span>
+  <section class="dsx-roles">
+    <div class="dsx-roles-head">
+      <h2 class="dsx-h2">Best and worst, role by role</h2>
+      <p class="dsx-p">Each radar is the player's shape against the rest of his role at MSI:
+      the outer ring is two standard deviations above the field, the middle ring is the field's average.
+      The composite is an equal-weighted mean of the five axes.</p>
     </div>
-  </div>
+    <div class="dsx-role-grid" id="dsx-role-grid">
+      <p class="dsx-loading">Loading the MSI dataset…</p>
+    </div>
+  </section>
+
+  <section class="dsx-board">
+    <div class="dsx-board-head">
+      <h2 class="dsx-h2">The full field, ranked</h2>
+      <p class="dsx-p">Ranked by MSI-only composite, minimum 4 games: the top ten, then the bottom five.
+      A rank here is a claim about these fifteen days, nothing more, and nothing less.
+      The middle of the pack lives in the CSV below.</p>
+    </div>
+    <div class="dsx-board-table" id="dsx-board-table"></div>
+    <p class="dsx-board-foot">Built from the Oracle's Elixir per-game refresh, MSI slice.
+      <a class="dsx-link" href="data/msi2026_players.csv" download>Download the computed dataset</a>
+      or <a class="dsx-link" href="data/msi2026_per_game.csv" download>the raw per-game rows</a>.</p>
+  </section>
+
+  <section class="dsx-board dsx-coord">
+    <div class="dsx-board-head">
+      <h2 class="dsx-h2">The map doesn't lie</h2>
+      <p class="dsx-p">A new lens, from full kill coordinates: side-lane deaths past 20:00 that
+      <em>started</em> the sequence (no kill anywhere in the prior minute, the first domino) and
+      bought nothing, meaning the victim's team took no kill or objective in the minute after.
+      Everything is per game, minimum six played. The third table is the price tag: first-domino
+      deaths the enemy converted into a dragon or baron inside a minute. 68 of 71 MSI games carry
+      coordinates.</p>
+    </div>
+    <div class="dsx-coord-grid">
+      <div class="dsx-coord-col">
+        <h3 class="dsx-coord-h">Thrown picks, deaths taken</h3>
+        <div id="dsx-coord-deaths" class="dsx-board-table"></div>
+      </div>
+      <div class="dsx-coord-col">
+        <h3 class="dsx-coord-h">Punishers, picks secured</h3>
+        <div id="dsx-coord-picks" class="dsx-board-table"></div>
+      </div>
+      <div class="dsx-coord-col">
+        <h3 class="dsx-coord-h">Deaths that cost an objective</h3>
+        <div id="dsx-coord-obj" class="dsx-board-table"></div>
+      </div>
+    </div>
+    <p class="dsx-board-foot">Computed by <span class="dsx-mono">tools/coord_isolated_deaths.py</span> from the tabesports coordinate feed.
+      <a class="dsx-link" href="data/msi2026_isolated_deaths.csv" download>Download the full ledger</a>.</p>
+  </section>
 
   <div class="section-header">
     <span class="section-label">Latest writing</span>
@@ -102,6 +142,10 @@
         <p class="piece-excerpt">From beating T1 to a 0-3 start. The damage-share-over-gold-share read that named the carry pool by hand, the same device the CAR Index now runs across every player.</p>
         <a href="writing/bfx-identity-crisis.html" class="read-link">Read essay →</a>
       </div>
+      <div class="dsx-index-strip">
+        <span class="dsx-index-copy" id="dsx-index-count">The CAR Index: full player and team tables, every tracked league.</span>
+        <a class="dsx-index-cta" onclick="showPage('car')">Explore the index →</a>
+      </div>
     </div>
   </div>
   <div class="about-band">
@@ -109,13 +153,13 @@
       <h2 class="about-hed">Underreported stories,<br><em>surfaced by the data.</em></h2>
       <div class="about-body">
         <p>JTE is an independent analytics publication for professional League of Legends, built around the CAR Index, a composite, replacement-relative score of player value. The numbers find what conventional coverage misses; the writing explains why it happened.</p>
-        <p>Every projection-vs-record gap is a built-in narrative: expectation versus reality. Arguments are built to hold up, not to be agreeable. 0% AI-written content.</p>
+        <p>Every gap between the record and a player's established level is a built-in narrative: expectation versus reality. Arguments are built to hold up, not to be agreeable. 0% AI-written content.</p>
       </div>
     </div>
     <div class="about-right">
       <div class="about-scope-label">What the index surfaces</div>
       <ul class="scope-list">
-        <li class="scope-item">Raw CAR vs pCAR, breakouts &amp; regression</li>
+        <li class="scope-item">Raw CAR vs pCAR, splits above or below a player's level</li>
         <li class="scope-item">Carry pool, damage share over gold share</li>
         <li class="scope-item">Teams beating (or trailing) their roster</li>
         <li class="scope-item">Career trajectories &amp; crossovers</li>
@@ -154,53 +198,12 @@
   </div>
 </div>
 
-<!-- NOTES PAGE -->
-<div class="page" id="page-notes">
-
-  <!-- CALENDAR VIEW -->
-  <div id="notes-calendar">
-    <div class="notes-header">
-      <div class="notes-header-left">
-        <h1 class="notes-hed">Notes</h1>
-        <p class="notes-sub">Coming soon.</p>
-      </div>
-    </div>
-    <div class="notes-comingsoon">
-      <p class="notes-soon-lead">Recurring short <strong>data drops</strong> live here, the
-      weekly residuals the CAR Index flags, written up in a sentence or two.</p>
-      <p class="notes-soon-sub">Backlogged until the index and its stories are right.
-      <a onclick="showPage('car')">Explore the CAR Index →</a></p>
-    </div>
-  </div>
-
-  <!-- NOTE READER VIEW -->
-  <div id="notes-reader" style="display:none;">
-    <div class="reader-nav">
-      <a class="reader-arrow reader-arrow-left disabled" id="reader-prev">← <span class="reader-arrow-label"></span></a>
-      <span class="reader-date-center" id="reader-date"></span>
-      <a class="reader-arrow reader-arrow-right disabled" id="reader-next"><span class="reader-arrow-label"></span> →</a>
-    </div>
-    <div class="reader-card">
-      <div class="reader-inner">
-        <span class="note-tag" id="reader-tag">League</span>
-        <h1 class="reader-title" id="reader-title"></h1>
-        <div class="reader-body" id="reader-body"></div>
-        <div class="reader-footer">
-          <a class="reader-back" id="reader-back">← Back to calendar</a>
-          <span class="reader-read-time" id="reader-read-time"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
 <!-- CAR DASHBOARD PAGE (landing) -->
 <div class="page" id="page-car">
 
   <div class="archive-header">
     <h1 class="archive-hed">CAR Index</h1>
-    <p class="archive-sub">Contribution Above Replacement, league-relative player evaluation across professional LoL. Every row is a portal: open a player for their projection, components, and the stories the numbers surface.</p>
+    <p class="archive-sub">Contribution Above Replacement, league-relative player evaluation across professional LoL. Every row is a portal: open a player for their skill estimate, components, and the stories the numbers surface.</p>
     <p class="car-page-note">CAR is a composite performance score measuring a player's output against a freely replaceable player at the same position, on an artificial scale, not a wins total, and not WAR. Figures are not cross-league comparable. <a class="car-whatis" onclick="showPage('explainer')">What is CAR? →</a></p>
   </div>
 
@@ -291,7 +294,7 @@
       <span class="car-method-toggle-sym">+</span><span>Methodology</span>
     </button>
     <div class="car-method-body" id="car-method-body" style="display:none;">
-      <p><strong>What CAR measures.</strong> CAR is a composite performance score: it measures how far a player's output sits above a freely available replacement-level player at their position and league. It combines role-specific individual statistics, each adjusted for team context to reduce inflation from winning or losing environments, into a single number on an artificial scale. It is <strong>not</strong> a wins total and <strong>not</strong> WAR: it is not tied to a fixed games-played count in a season.</p>
+      <p><strong>What CAR measures.</strong> CAR is a composite performance score: it measures how far a player's output sits above a freely available replacement-level player at their position and league. It combines role-specific individual statistics, chosen and framed so that team level cannot enter them, into a single number on an artificial scale. It is <strong>not</strong> a wins total and <strong>not</strong> WAR: it is not tied to a fixed games-played count in a season.</p>
       <p><strong>Replacement level.</strong> The baseline is the 25th percentile of qualifying players (minimum 10 GP) at each role within the dataset. A player at exactly replacement level scores 0. The replacement baseline is recalculated per dataset, so figures from different leagues and years reflect different competitive environments and should not be directly compared.</p>
       <p><strong>Limitations.</strong> The model cannot capture strategic coordination, draft execution, communication, or macro decision-making that doesn't manifest in individual statistics. Players in system-oriented roles (e.g. utility junglers, facilitating supports) may read lower than their actual contribution.</p>
     </div>
@@ -308,7 +311,7 @@
   </div>
 
   <div class="chart-switch" id="chart-switch">
-    <button class="chart-switch-btn active" data-chart="rawvsproj">Record vs projection</button>
+    <button class="chart-switch-btn active" data-chart="rawvsproj">Record vs skill estimate</button>
     <button class="chart-switch-btn" data-chart="teams">Team over/under-achievers</button>
     <button class="chart-switch-btn" data-chart="yoy">YoY trajectory</button>
     <button class="chart-switch-btn" data-chart="vsteam">Player vs team</button>
@@ -356,9 +359,9 @@
 
   <figure class="chart-card">
     <figcaption class="chart-cap">
-      <span class="chart-cap-title" id="chart-title">Record vs projection, pCAR (x) against raw CAR (y)</span>
-      <span class="chart-cap-sub" id="chart-sub">The diagonal is "performing as projected." Above it, the record outruns the
-      forecast (a breakout, or regression-bait); below it, a player is trailing his own projection.</span>
+      <span class="chart-cap-title" id="chart-title">Record vs skill estimate, pCAR (x) against raw CAR (y)</span>
+      <span class="chart-cap-sub" id="chart-sub">The diagonal is "performing at his established level." Above it, the split
+      outran what the player had shown before; below it, he fell short of his own bar.</span>
     </figcaption>
     <div class="chart-legend" id="chart-legend" style="display:none;"></div>
     <div class="chart-stage">
@@ -383,7 +386,6 @@
   <div class="xpl">
 
     <section class="xpl-section">
-      <div class="xpl-kicker">01 · The idea</div>
       <h2 class="xpl-h">Output above a replaceable player.</h2>
       <p class="xpl-p">Every league has a freely available floor: the players a team could sign tomorrow
       with no real cost. Call that <em>replacement level</em>, concretely, the 25th percentile of
@@ -401,12 +403,16 @@
     </section>
 
     <section class="xpl-section">
-      <div class="xpl-kicker">02 · Team context, removed</div>
       <h2 class="xpl-h">It isolates the player from the team.</h2>
       <p class="xpl-p">Raw stats reward players on winning teams and punish players on losing ones.
-      CAR's component metrics are <strong>context-adjusted</strong>, laning, damage, vision and survival are
-      measured against what the game state would predict, so a carry on a 2-win roster isn't buried by his
-      teammates, and a passenger on a champion isn't flattered by them.</p>
+      So CAR is built almost entirely from numbers that <strong>cannot carry team level</strong>: a
+      player's share of his own team's farm, gold or kills; his damage per unit of gold spent; his
+      warding measured against his own teammates'; and his lane result measured against the opponent
+      standing in front of him. A share cannot rise just because the team is winning, and a duel with
+      the enemy laner is a duel whoever else is on the map.</p>
+      <p class="xpl-p">Every role is built separately, because the same statistic means different
+      things in different seats. Gold difference at ten minutes is close to a clean duel result in the
+      top lane and nearly meaningless in the bot lane, where two players and a jungler decide it.</p>
       <p class="xpl-p">The same logic is applied to the <strong>champion itself</strong>. Some champions inflate
       the box score through their kit alone, not through better play, so CAR treats every champion as a park
       factor and strips that inflation out. What remains is a <strong>champion-neutral</strong> estimate of the
@@ -415,7 +421,6 @@
     </section>
 
     <section class="xpl-section xpl-section--limits">
-      <div class="xpl-kicker">03 · What it cannot see</div>
       <h2 class="xpl-h">The honest part.</h2>
       <p class="xpl-p">CAR is built from what shows up in the data. A great deal of competitive League does not:</p>
       <ul class="xpl-limits">
@@ -429,7 +434,6 @@
     </section>
 
     <section class="xpl-section">
-      <div class="xpl-kicker">04 · League-relative</div>
       <h2 class="xpl-h">Don't compare across regions.</h2>
       <p class="xpl-p">Replacement level is recomputed inside each league and split, and cross-region samples are
       reset. A +30 in the LCK and a +30 in a development league are <strong>not the same achievement</strong>;
@@ -437,25 +441,24 @@
     </section>
 
     <section class="xpl-section xpl-section--two">
-      <div class="xpl-kicker">05 · The two numbers</div>
-      <h2 class="xpl-h">raw CAR is the record. pCAR is the forecast.</h2>
+      <h2 class="xpl-h">raw CAR is the record. pCAR is the skill estimate.</h2>
       <p class="xpl-p">The model produces two genuinely different scores, and the site shows both because the
       <em>gap between them is the story.</em></p>
       <div class="xpl-twocol">
         <div class="xpl-num xpl-num--raw">
           <div class="xpl-num-tag">raw CAR</div>
           <div class="xpl-num-q">"What did he actually contribute this split?"</div>
-          <div class="xpl-num-d">A descriptive record of this dataset. No projection, no shrinkage.</div>
+          <div class="xpl-num-d">A descriptive record of this dataset. No smoothing, no shrinkage.</div>
         </div>
         <div class="xpl-num xpl-num--proj">
           <div class="xpl-num-tag">pCAR</div>
-          <div class="xpl-num-q">"What's the best estimate of his true skill going forward?"</div>
-          <div class="xpl-num-d">Multi-year weighted, shrunk toward the role median on thin samples, aging-adjusted. A forward look, never a verdict on the current split.</div>
+          <div class="xpl-num-q">"What's the best estimate of his true skill level?"</div>
+          <div class="xpl-num-d">Multi-year weighted, shrunk toward the role median on thin samples, aging-adjusted. A stable read of ability, never a verdict on the current split.</div>
         </div>
       </div>
       <p class="xpl-p xpl-p--quiet">A rookie with a monster split posts a high raw CAR but a shrunk pCAR, the model
-      doesn't trust the sample yet. That tension is the engine behind <em>breakout watch</em> and <em>regression watch</em>.
-      <a class="xpl-link" onclick="showPage('charts')">See it on the record-vs-projection chart →</a></p>
+      doesn't trust the sample yet. That tension is the engine behind every "is he actually this good" argument.
+      <a class="xpl-link" onclick="showPage('charts')">See it on the record-vs-estimate chart →</a></p>
     </section>
 
   </div>
@@ -467,7 +470,7 @@
     <h1 class="about-page-hed">About JTE</h1>
     <div class="about-page-body">
       <p>JTE is an independent analytics publication for professional League of Legends. It is built around the CAR Index, Contribution Above Replacement, a composite, replacement-relative score of individual player value, and the stories that the index surfaces but conventional coverage misses.</p>
-      <p>The approach is empirical: a forecaster minimizes surprise, but a story maximizes it. The same model devices, read for their residuals and gaps, become narrative engines, the player whose record outruns his projection, the roster beating its own pieces, the floor quietly rising across a region.</p>
+      <p>The approach is empirical: a forecaster minimizes surprise, but a story maximizes it. The same model devices, read for their residuals and gaps, become narrative engines, the player whose record outruns his established level, the roster beating its own pieces, the floor quietly rising across a region.</p>
       <p>Pieces run long when the argument demands it. Data is used when it's honest, and always with its limits stated. The goal is analysis the scene deserves but rarely produces for itself.</p>
     </div>
     <hr class="about-divider">
@@ -503,7 +506,6 @@
     <li><a onclick="showPage('charts')">Charts</a></li>
     <li><a onclick="showPage('archive')">Stories</a></li>
     <li><a onclick="showPage('explainer')">What is CAR</a></li>
-    <li><a onclick="showPage('notes')">Notes</a></li>
     <li><a onclick="showPage('about')">About</a></li>
     <li><a href="https://twitter.com/jt_esports" target="_blank">Twitter ↗</a></li>
   </ul>
@@ -513,11 +515,11 @@
   /* ── Routing: clean path URLs on GitHub Pages (History API + 404 fallback) ── */
   const ROUTES = {
     '/': 'home', '/index': 'car', '/charts': 'charts', '/stories': 'archive',
-    '/what-is-car': 'explainer', '/notes': 'notes', '/about': 'about'
+    '/what-is-car': 'explainer', '/about': 'about'
   };
   const PAGE_TO_PATH = {
     home: '/', car: '/index', charts: '/charts', archive: '/stories',
-    explainer: '/what-is-car', notes: '/notes', about: '/about'
+    explainer: '/what-is-car', about: '/about'
   };
   function pageFromPath() {
     return ROUTES[(location.pathname.replace(/\/+$/, '') || '/')] || 'home';
@@ -542,9 +544,6 @@
     void pg.offsetWidth;               // force reflow so the animation restarts
     pg.classList.add('sp1-enter');
     window.scrollTo(0, 0);
-    if (id === 'notes') {
-      showCalendar();
-    }
     if (id === 'charts') {
       requestAnimationFrame(() => renderActiveChart());
     }
@@ -590,276 +589,6 @@
   });
 
   /* ══════════════════════════════════════════════
-     NOTES SYSTEM, Calendar + Reader
-     ══════════════════════════════════════════════ */
-
-  let notesData = [];
-  let notesByDate = {};
-  let calYear = 2026;
-  let calMonth = 3; // April (0-indexed)
-  let currentNoteIdx = -1;
-
-  const MONTHS = ['January','February','March','April','May','June',
-                  'July','August','September','October','November','December'];
-  const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-
-  /* ── Load notes.json ── */
-  async function loadNotes() {
-    try {
-      const res = await fetch('notes/notes.json');
-      notesData = await res.json();
-      notesData.sort((a, b) => a.date.localeCompare(b.date));
-      notesByDate = {};
-      notesData.forEach((n, i) => { notesByDate[n.date] = i; });
-    } catch (e) {
-      console.warn('Could not load notes.json:', e);
-      notesData = [];
-      notesByDate = {};
-    }
-  }
-
-  /* ── Calendar renderer ── */
-  function renderCalendar() {
-    const grid = document.getElementById('cal-grid');
-    grid.innerHTML = '';
-
-    document.getElementById('cal-month-label').textContent = MONTHS[calMonth] + ' ' + calYear;
-
-    // Day headers
-    DAYS.forEach(d => {
-      const h = document.createElement('div');
-      h.className = 'cal-day-header';
-      h.textContent = d;
-      grid.appendChild(h);
-    });
-
-    const firstDay = new Date(calYear, calMonth, 1).getDay();
-    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-    const today = new Date();
-    const isCurrentMonth = today.getFullYear() === calYear && today.getMonth() === calMonth;
-
-    // Empty cells before month starts
-    for (let i = 0; i < firstDay; i++) {
-      const c = document.createElement('div');
-      c.className = 'cal-cell cal-empty';
-      grid.appendChild(c);
-    }
-
-    let openDate = null;
-    let dropdownEl = null;
-
-    function closeDropdown() {
-      if (dropdownEl) { dropdownEl.remove(); dropdownEl = null; }
-      grid.querySelectorAll('.cal-cell.cal-active').forEach(c => c.classList.remove('cal-active'));
-    }
-
-    function openDropdown(dateStr, cellEl) {
-      const idx = notesByDate[dateStr];
-      if (idx === undefined) return;
-      const note = notesData[idx];
-
-      if (openDate === dateStr) { closeDropdown(); openDate = null; return; }
-      closeDropdown();
-      openDate = dateStr;
-      cellEl.classList.add('cal-active');
-
-      const dd = document.createElement('div');
-      dd.className = 'cal-dropdown';
-
-      const tagClass = 'note-tag';
-      dd.innerHTML = `
-        <div class="cal-dd-left">
-          <span class="cal-dd-date">${dateStr}</span>
-          <span class="cal-dd-title">${note.title}</span>
-          <span class="${tagClass}">${note.tag || 'League'}</span>
-        </div>
-        <a class="cal-dd-link" data-date="${dateStr}">Read →</a>
-      `;
-
-      dd.querySelector('.cal-dd-link').addEventListener('click', () => {
-        openReader(dateStr);
-      });
-
-      // Insert after the row
-      const day = parseInt(dateStr.split('-')[2]);
-      const row = Math.ceil((firstDay + day) / 7);
-      const rowEndIndex = 7 + (row * 7); // 7 headers + row cells
-      const cells = grid.children;
-      if (rowEndIndex < cells.length) {
-        grid.insertBefore(dd, cells[rowEndIndex]);
-      } else {
-        grid.appendChild(dd);
-      }
-      dropdownEl = dd;
-    }
-
-    // Day cells
-    for (let d = 1; d <= daysInMonth; d++) {
-      const dateStr = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-      const hasNote = notesByDate[dateStr] !== undefined;
-      const isToday = isCurrentMonth && d === today.getDate();
-
-      const c = document.createElement('div');
-      c.className = 'cal-cell' + (hasNote ? ' cal-has-note' : '') + (isToday ? ' cal-today' : '');
-      c.innerHTML = `<span class="cal-num">${d}</span>` + (hasNote ? '<span class="cal-dot"></span>' : '');
-
-      if (hasNote) {
-        c.addEventListener('click', () => openDropdown(dateStr, c));
-      }
-
-      grid.appendChild(c);
-    }
-
-    // Trailing empty cells
-    const remaining = (7 - ((firstDay + daysInMonth) % 7)) % 7;
-    for (let i = 0; i < remaining; i++) {
-      const c = document.createElement('div');
-      c.className = 'cal-cell cal-empty';
-      grid.appendChild(c);
-    }
-  }
-
-  /* ── Recent notes list ── */
-  function renderRecent() {
-    const list = document.getElementById('recent-list');
-    list.innerHTML = '';
-    const recent = notesData.slice().reverse().slice(0, 5);
-    recent.forEach(note => {
-      const row = document.createElement('div');
-      row.className = 'recent-row';
-      row.innerHTML = `
-        <span class="piece-date">${formatDateShort(note.date)}</span>
-        <span class="note-tag">${note.tag || 'League'}</span>
-        <span class="recent-row-title">${note.title}</span>
-        <span class="archive-row-arrow">→</span>
-      `;
-      row.addEventListener('click', () => openReader(note.date));
-      list.appendChild(row);
-    });
-  }
-
-  function formatDateShort(dateStr) {
-    const d = new Date(dateStr + 'T12:00:00');
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-  }
-
-  function formatDateFull(dateStr) {
-    const d = new Date(dateStr + 'T12:00:00');
-    return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  }
-
-  /* ── Calendar navigation (notes backlogged to a stub in SP1, guard nulls) ── */
-  document.getElementById('cal-prev')?.addEventListener('click', () => {
-    calMonth--;
-    if (calMonth < 0) { calMonth = 11; calYear--; }
-    renderCalendar();
-  });
-
-  document.getElementById('cal-next')?.addEventListener('click', () => {
-    calMonth++;
-    if (calMonth > 11) { calMonth = 0; calYear++; }
-    renderCalendar();
-  });
-
-  /* ── Show/hide views ── */
-  function showCalendar() {
-    document.getElementById('notes-calendar').style.display = 'block';
-    document.getElementById('notes-reader').style.display = 'none';
-  }
-
-  /* ── Note reader ── */
-  async function openReader(dateStr) {
-    const idx = notesByDate[dateStr];
-    if (idx === undefined) return;
-    currentNoteIdx = idx;
-
-    document.getElementById('notes-calendar').style.display = 'none';
-    document.getElementById('notes-reader').style.display = 'block';
-    window.scrollTo(0, 0);
-
-    await renderNote();
-  }
-
-  async function renderNote() {
-    const note = notesData[currentNoteIdx];
-
-    // Load note HTML
-    try {
-      const res = await fetch(note.file);
-      const html = await res.text();
-      document.getElementById('reader-body').innerHTML = html;
-    } catch (e) {
-      document.getElementById('reader-body').innerHTML = '<p style="color:var(--muted);">Could not load note.</p>';
-    }
-
-    // Title, tag, date
-    document.getElementById('reader-title').textContent = note.title;
-    document.getElementById('reader-date').textContent = formatDateFull(note.date);
-    const tagEl = document.getElementById('reader-tag');
-    tagEl.textContent = note.tag || 'League';
-    tagEl.className = 'note-tag';
-
-    // Read time
-    const text = document.getElementById('reader-body').textContent || '';
-    const words = text.trim().split(/\s+/).length;
-    document.getElementById('reader-read-time').textContent = '~' + Math.max(1, Math.round(words / 200)) + ' min read';
-
-    // Nav arrows
-    const prevBtn = document.getElementById('reader-prev');
-    const nextBtn = document.getElementById('reader-next');
-
-    if (currentNoteIdx > 0) {
-      prevBtn.classList.remove('disabled');
-      prevBtn.querySelector('.reader-arrow-label').textContent = formatDateShort(notesData[currentNoteIdx - 1].date);
-      prevBtn.onclick = () => { currentNoteIdx--; renderNote(); window.scrollTo(0, 0); };
-    } else {
-      prevBtn.classList.add('disabled');
-      prevBtn.querySelector('.reader-arrow-label').textContent = '';
-      prevBtn.onclick = null;
-    }
-
-    if (currentNoteIdx < notesData.length - 1) {
-      nextBtn.classList.remove('disabled');
-      nextBtn.querySelector('.reader-arrow-label').textContent = formatDateShort(notesData[currentNoteIdx + 1].date);
-      nextBtn.onclick = () => { currentNoteIdx++; renderNote(); window.scrollTo(0, 0); };
-    } else {
-      nextBtn.classList.add('disabled');
-      nextBtn.querySelector('.reader-arrow-label').textContent = '';
-      nextBtn.onclick = null;
-    }
-
-    // Animate
-    const card = document.querySelector('.reader-card');
-    card.style.animation = 'none';
-    card.offsetHeight;
-    card.style.animation = 'noteIn 0.25s ease-out';
-  }
-
-  /* ── Back to calendar ── */
-  document.getElementById('reader-back').addEventListener('click', () => {
-    showCalendar();
-    window.scrollTo(0, 0);
-  });
-
-  /* ── Init ── */
-  async function initNotes() {
-    // Notes is backlogged to a "Coming soon" stub (SP1), the calendar/recent
-    // DOM was removed, so bail before touching it.
-    if (!document.getElementById('cal-grid')) return;
-    await loadNotes();
-    // Set calendar to the most recent note's month, or current month
-    if (notesData.length > 0) {
-      const latest = notesData[notesData.length - 1].date;
-      calYear = parseInt(latest.substring(0, 4));
-      calMonth = parseInt(latest.substring(5, 7)) - 1;
-    }
-    renderCalendar();
-    renderRecent();
-  }
-
-  initNotes();
-
-  /* ══════════════════════════════════════════════
      CAR DASHBOARD, data loading + hero teaser
      ══════════════════════════════════════════════ */
 
@@ -872,18 +601,9 @@
   let carHistory = [];
   let carLoaded = false;
 
-  /* Fallback rows, shown before data resolves, or on fetch failure,
-     so the hero is never empty. Values are representative, not live. */
-  const CAR_FALLBACK = [
-    { Player: 'Zeus',    Team: 'T1',          League: 'LCK', Year: 2023, WAR: 43.97 },
-    { Player: 'Kiin',    Team: 'KT Rolster',  League: 'LCK', Year: 2023, WAR: 41.75 },
-    { Player: 'Chovy',   Team: 'Gen.G',       League: 'LCK', Year: 2024, WAR: 40.12 },
-    { Player: 'Canyon',  Team: 'Gen.G',       League: 'LCK', Year: 2024, WAR: 38.50 }
-  ];
-
   function formatCarValue(v) {
     const n = Number(v);
-    if (!isFinite(n)) return '—';
+    if (!isFinite(n)) return '·';
     const sign = n >= 0 ? '+' : '−';
     return sign + Math.abs(n).toFixed(1);
   }
@@ -895,33 +615,6 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
-  }
-
-  function renderCarHeroPreview(rows) {
-    const el = document.getElementById('car-hero-preview');
-    if (!el) return;
-    el.innerHTML =
-      `<div class="car-lb-head"><span>#</span><span>Top performers · league-relative</span><span>CAR</span></div>` +
-      rows.slice(0, 8).map((r, i) => `
-      <div class="car-leaderboard-row">
-        <span class="car-lb-rank">${i + 1}</span>
-        <span class="car-lb-player">
-          <span class="car-lb-name">${escapeHtml(r.Player)}</span>
-          <span class="car-lb-team">${escapeHtml(r.Team)} · ${escapeHtml(r.League)} · ${escapeHtml(String(r.Year == null ? '' : r.Year))}</span>
-        </span>
-        <span class="car-lb-value">${formatCarValue(r.WAR)}</span>
-      </div>
-    `).join('');
-  }
-
-  function renderCarHeroCount() {
-    const el = document.getElementById('car-hero-count');
-    if (!el) return;
-    if (!carLoaded || !carPlayers.length) return; // keep static default
-    const datasetKey = r => `${r.League || ''}|${r.Year || ''}|${r.Dataset || ''}`;
-    const datasets = new Set(carPlayers.map(datasetKey));
-    const total = carPlayers.filter(r => r.Player).length;
-    el.textContent = `Showing top 8 of ${total} players across ${datasets.size} datasets →`;
   }
 
   async function loadCarData() {
@@ -960,19 +653,6 @@
     }
   }
 
-  // Major (tier-1 regional) leagues, excludes challenger / ERL development
-  // leagues whose smaller pools inflate raw CAR (NACL, LCK CL, PRM, LFL, LES).
-  const MAJOR_LEAGUES = ['LCK', 'LEC', 'LCS', 'LCP', 'CBLOL'];
-  function getCarHeroRows() {
-    if (!carLoaded || !carPlayers.length) return CAR_FALLBACK;
-    return carPlayers
-      .filter(r => r.Player && isFinite(Number(r.WAR)) &&
-                   Number(r.GP) >= 25 && MAJOR_LEAGUES.includes(r.League))
-      .slice()
-      .sort((a, b) => Number(b.WAR) - Number(a.WAR))
-      .slice(0, 8);
-  }
-
   /* ══════════════════════════════════════════════
      CAR DASHBOARD, Full page (Players + Teams)
      ══════════════════════════════════════════════ */
@@ -987,52 +667,49 @@
   let expandedPlayer  = null;
   let dashPage        = 0;
 
-  /* Map raw z-score columns to human-readable labels. */
-  /* Friendly labels for the LIVE 16-component CAR set (SP1: reconciled to the
-     current engine output, dropped dead z_CSPM/z_CTR_adj_GD10/z_D_P15_adj,
-     renamed z_XPD10_adj→z_XPD10, added z_GD15_adj + z_KS_pct). */
-  /* §1.4, vague-but-robust labels: stripped of over-specific tokens
-     (@10/@15, (adj.), type3, "CS") so they can't be misread. */
+  /* Map raw z-score columns to human-readable labels.
+     Reconciled to the REBUILT component set (2026-07-28). Each role is now
+     built from its own measured components rather than a shared template, so
+     the same idea can arrive under different columns per role (laning is CS
+     diff for ADC/Middle/Jungle and gold diff for Top/Support). Labels stay
+     vague-but-robust: no @10/@15, no "type3", nothing that can be misread. */
   const Z_FRIENDLY = {
+    z_CSD10:          'Laning',
+    z_GD10:           'Laning',
+    'z_CS%P15':       'Farm Share',
+    'z_GOLD%':        'Gold Share',
     z_DMG_GOLD_ratio: 'Damage Efficiency',
-    z_DPM_adj:        'Damage Output',
     z_neg_DTH:        'Survival',
-    z_EGPM_adj:       'Gold Efficiency',
-    z_GD10_adj:       'Laning',
-    z_XPD10:          'Early XP',
-    z_KP_residual:    'Teamfight Involvement',
     z_KS_pct:         'Kill Share',
-    z_TLDPS:          'Damage Pressure',
-    z_neg_DTH_adj:    'Survival',
+    z_KP:             'Fight Presence',
+    z_TDPG_share:     'Tower Pressure',
     z_WCPM_type3:     'Ward Clearing',
-    z_JSAD:           'Damage Impact',
-    z_CSD10_adj:      'Early Pathing',
     z_CWPM_type3:     'Control Wards',
-    z_WPM_type3:      'Vision Created',
-    z_GD15_adj:       'Mid-Game Gold'
+    z_WPM_type3:      'Vision Created'
   };
 
-  /* Role → z-components to show in the expansion panel, in display order.
-     Reconciled (SP1) to the components the engine actually POPULATES per role
-     (verified against site_players.csv: z-columns are role-specific, so each
-     role lists only its own non-empty components, no missing-data gaps). */
+  /* Role → z-components to show in the expansion panel, in weight order.
+     These are exactly the components each role's formula uses; a role only
+     lists its own, so there are never missing-data gaps. */
   const ROLE_COMPONENTS = {
-    Top:     ['z_XPD10', 'z_EGPM_adj', 'z_TLDPS', 'z_KP_residual', 'z_neg_DTH_adj'],
-    Jungle:  ['z_EGPM_adj', 'z_CSD10_adj', 'z_GD10_adj', 'z_JSAD', 'z_neg_DTH_adj'],
-    Middle:  ['z_GD10_adj', 'z_XPD10', 'z_KP_residual', 'z_DPM_adj', 'z_KS_pct'],
-    ADC:     ['z_DMG_GOLD_ratio', 'z_DPM_adj', 'z_GD10_adj', 'z_EGPM_adj', 'z_neg_DTH'],
-    Support: ['z_WCPM_type3', 'z_WPM_type3', 'z_KP_residual', 'z_GD15_adj', 'z_neg_DTH']
+    Top:     ['z_GD10', 'z_DMG_GOLD_ratio', 'z_TDPG_share'],
+    Jungle:  ['z_CSD10', 'z_GOLD%', 'z_DMG_GOLD_ratio', 'z_neg_DTH',
+              'z_WCPM_type3', 'z_CWPM_type3', 'z_WPM_type3'],
+    Middle:  ['z_CSD10', 'z_CS%P15', 'z_DMG_GOLD_ratio', 'z_neg_DTH', 'z_KS_pct'],
+    ADC:     ['z_CSD10', 'z_CS%P15', 'z_DMG_GOLD_ratio', 'z_neg_DTH', 'z_KS_pct'],
+    Support: ['z_GD10', 'z_WPM_type3', 'z_CWPM_type3', 'z_WCPM_type3',
+              'z_neg_DTH', 'z_KP']
   };
 
   /* ── Small formatters / classifiers ── */
   function fmtNum(v, dp) {
     const n = Number(v);
-    if (!isFinite(n)) return '—';
+    if (!isFinite(n)) return '·';
     return dp == null ? String(n) : n.toFixed(dp);
   }
   function fmtSigned(v, dp) {
     const n = Number(v);
-    if (!isFinite(n)) return '—';
+    if (!isFinite(n)) return '·';
     const sign = n >= 0 ? '+' : '−';
     return sign + Math.abs(n).toFixed(dp == null ? 2 : dp);
   }
@@ -1062,7 +739,7 @@
   }
   function fmtPct(v) {
     const n = normalizeWpct(v);
-    if (!isFinite(n)) return '—';
+    if (!isFinite(n)) return '·';
     return n.toFixed(1) + '%';
   }
 
@@ -1239,9 +916,9 @@
         <div class="car-td car-td-right car-td-rank">${rank}</div>
         <div class="car-td car-td-player">${escapeHtml(r.Player)}</div>
         <div class="car-td"><span class="car-pos-badge ${roleBadgeClass(r.Pos)}">${escapeHtml(shortRole(r.Pos))}</span></div>
-        <div class="car-td car-td-team">${escapeHtml(r.Team || '—')}</div>
-        <div class="car-td"><span class="car-league-badge ${leagueBadgeClass(r.League)}">${escapeHtml(r.League || '—')}</span></div>
-        <div class="car-td car-td-right car-td-year">${escapeHtml(String(r.Year == null ? '—' : r.Year))}</div>
+        <div class="car-td car-td-team">${escapeHtml(r.Team || '·')}</div>
+        <div class="car-td"><span class="car-league-badge ${leagueBadgeClass(r.League)}">${escapeHtml(r.League || '·')}</span></div>
+        <div class="car-td car-td-right car-td-year">${escapeHtml(String(r.Year == null ? '·' : r.Year))}</div>
         <div class="car-td car-td-right car-td-gp">${fmtNum(r.GP)}${lowGp ? '<span class="car-gp-tilde">~</span>' : ''}</div>
         <div class="car-td car-td-right ${carColorClass(r.WAR)}">${fmtSigned(r.WAR, 1)}</div>
         <div class="car-td car-td-right car-td-carg ${cargColorClass(r.WAR_per_game)}">${fmtSigned(r.WAR_per_game, 2)}</div>
@@ -1379,11 +1056,11 @@
     const crossRegion = isTruthyFlag(r.cross_region_first);
     const tentative   = crossRegion || (isFinite(effGp) && effGp < 50);
     const gapLabel = !isFinite(resid) ? '' : (resid >= 0
-        ? `record outruns projection by ${fmtSigned(resid, 1)}, regression / breakout watch`
-        : `projection exceeds record by ${fmtSigned(-resid, 1)}, slump watch`);
+        ? `record sits ${fmtSigned(resid, 1)} above his established level`
+        : `record sits ${fmtSigned(-resid, 1)} below his established level`);
     const note = tentative
-      ? 'Thin or cross-region sample, heavily shrunk toward the role median. A tentative forward look, not a verdict on this split.'
-      : 'A forward estimate of true skill: multi-year weighted, shrunk toward the role median, aging-adjusted. A forward look, never a verdict on this split.';
+      ? 'Thin or cross-region sample, heavily shrunk toward the role median. A tentative estimate, not a verdict on this split.'
+      : 'The model\'s best estimate of true skill: multi-year weighted, shrunk toward the role median, aging-adjusted. Never a verdict on this split.';
     const meta = [];
     if (isFinite(effGp)) meta.push(`<span class="pcar-meta-item">eff. GP <span class="pcar-meta-val ${effGp < 50 ? 'pcar-tentative' : ''}">${effGp.toFixed(0)}</span></span>`);
     if (r.proj_hist_gp_used != null && r.proj_hist_gp_used !== '') meta.push(`<span class="pcar-meta-item">history GP <span class="pcar-meta-val">${fmtNum(r.proj_hist_gp_used)}</span></span>`);
@@ -1391,7 +1068,7 @@
     if (r.shrinkage_target_used != null && r.shrinkage_target_used !== '') meta.push(`<span class="pcar-meta-item">role target <span class="pcar-meta-val">${fmtNum(Number(r.shrinkage_target_used), 1)}</span></span>`);
     return `
       <div class="pcar-callout">
-        <div class="pcar-head"><span>pCAR · forward projection</span></div>
+        <div class="pcar-head"><span>pCAR · skill estimate</span></div>
         <div style="display:flex;align-items:baseline;gap:0.8rem;flex-wrap:wrap;margin-top:0.3rem;">
           <span class="pcar-val">${fmtSigned(proj, 1)}</span>
           ${gapLabel ? `<span class="pcar-gap ${dir}">${gapLabel}</span>` : ''}
@@ -1406,8 +1083,8 @@
     const st = residualStanding(r);
     const resid = Number(r.WAR) - Number(r.proj_WAR);
     if (st && isFinite(resid)) {
-      if (st.rankHigh <= 25)     hooks.push(`Breakout / regression watch, #${st.rankHigh} of ${st.total} by record-over-projection.`);
-      else if (st.rankLow <= 25) hooks.push(`Slump watch, #${st.rankLow} of ${st.total} by projection-over-record.`);
+      if (st.rankHigh <= 25)     hooks.push(`Splitting above his level, #${st.rankHigh} of ${st.total} by record-over-estimate.`);
+      else if (st.rankLow <= 25) hooks.push(`Splitting below his level, #${st.rankLow} of ${st.total} by estimate-over-record.`);
     }
     if (!hooks.length) return '';
     return `<div class="pcar-hooks">${hooks.map(h => `<div class="pcar-hook">${escapeHtml(h)}</div>`).join('')}</div>`;
@@ -1422,7 +1099,7 @@
     const hasNext = end < total;
     el.innerHTML = `
       <button class="car-page-btn" id="car-prev-btn" ${hasPrev ? '' : 'disabled'}>← Prev</button>
-      <span class="car-page-count">Showing ${start + 1}–${end} of ${total} players</span>
+      <span class="car-page-count">Showing ${start + 1}-${end} of ${total} players</span>
       <button class="car-page-btn" id="car-next-btn" ${hasNext ? '' : 'disabled'}>Next →</button>
     `;
     const prev = document.getElementById('car-prev-btn');
@@ -1467,8 +1144,8 @@
         <div class="car-row car-row-teams">
           <div class="car-td car-td-right car-td-rank">${i + 1}</div>
           <div class="car-td car-td-team-name">${escapeHtml(r.Team)}</div>
-          <div class="car-td"><span class="car-league-badge ${leagueBadgeClass(r.League)}">${escapeHtml(r.League || '—')}</span></div>
-          <div class="car-td car-td-right car-td-year">${escapeHtml(String(r.Year == null ? '—' : r.Year))}</div>
+          <div class="car-td"><span class="car-league-badge ${leagueBadgeClass(r.League)}">${escapeHtml(r.League || '·')}</span></div>
+          <div class="car-td car-td-right car-td-year">${escapeHtml(String(r.Year == null ? '·' : r.Year))}</div>
           <div class="car-td car-td-right ${carColorClass(r.Team_WAR)}">${fmtSigned(r.Team_WAR, 1)}</div>
           <div class="car-td car-td-right car-td-carg ${cargColorClass(r.WAR_per_Game)}">${fmtSigned(r.WAR_per_Game, 2)}</div>
           <div class="car-td car-td-right">${fmtNum(r.W)}</div>
@@ -1633,8 +1310,8 @@
 
   const CHART_META = {
     rawvsproj: {
-      title: 'Record vs projection, pCAR (x) against raw CAR (y)',
-      sub: 'The diagonal is "performing as projected." Above it, the record (raw CAR) outruns the forecast, a breakout, or regression-bait; below it, a player is trailing his own projection.'
+      title: 'Record vs skill estimate, pCAR (x) against raw CAR (y)',
+      sub: 'The diagonal is "performing at his established level." Above it, the split (raw CAR) outran what the player had shown before; below it, he fell short of his own bar.'
     },
     teams: {
       title: 'Team over/under-achievers, projected CAR (x) vs win rate (y)',
@@ -1668,8 +1345,8 @@
   }
 
   function chartLeagueColor(lg) {
-    const m = { 'LCK': '#c2302a', 'LEC': '#1a5fa8', 'LCS': '#2f7a4c', 'LCP': '#9c6b1f', 'LCK CL': '#7a4ba0', 'CBLOL': '#1f8a8a' };
-    return m[lg] || '#8b8270';
+    const m = { 'LCK': '#f43325', 'LEC': '#2563a8', 'LCS': '#0c7c53', 'LCP': '#c26d1d', 'LCK CL': '#7a4ba0', 'CBLOL': '#1f8a8a' };
+    return m[lg] || '#6b6f9e';
   }
 
   function renderActiveChart() {
@@ -1696,12 +1373,12 @@
 
   function chartRoleColor(pos) {
     const p = String(pos || '').toLowerCase();
-    if (p.startsWith('top')) return '#1a5fa8';
-    if (p.startsWith('jun') || p === 'jgl') return '#2f7a4c';
-    if (p.startsWith('mid')) return '#17130b';
-    if (p.startsWith('adc') || p.startsWith('bot')) return '#c2302a';
-    if (p.startsWith('sup')) return '#b07d2b';   // Support gets its own (was lumped into grey)
-    return '#8b8270';
+    if (p.startsWith('top')) return '#2563a8';
+    if (p.startsWith('jun') || p === 'jgl') return '#0c7c53';
+    if (p.startsWith('mid')) return '#232c6e';
+    if (p.startsWith('adc') || p.startsWith('bot')) return '#f43325';
+    if (p.startsWith('sup')) return '#7a5aa8';   // Support gets its own (was lumped into grey)
+    return '#6b6f9e';
   }
 
   /* Lightweight HTML legend under the chart caption (color-encoded charts). */
@@ -1740,7 +1417,7 @@
       return `<b>${escapeHtml(r.Player)}</b> · ${escapeHtml(String(r.Pos || ''))}<br>` +
              `${escapeHtml(r.Team || '')} · ${escapeHtml(r.League || '')} ${escapeHtml(String(r.Year || ''))}<br>` +
              `raw CAR ${fmtSigned(r.WAR, 1)} · pCAR ${fmtSigned(Number(r.proj_WAR), 1)}<br>` +
-             `${fmtSigned(resid, 1)} ${tag} projection`;
+             `${fmtSigned(resid, 1)} ${tag} his level`;
     });
     const colors = rows.map(r => chartRoleColor(r.Pos));
     const lo = Math.min.apply(null, x.concat(y));
@@ -1750,24 +1427,24 @@
       x, y, text, customdata: rows.map(r => playerKey(r)),
       mode: 'markers', type: 'scattergl',
       hovertemplate: '%{text}<extra></extra>',
-      marker: { size: 9, color: colors, opacity: 0.78, line: { width: 0.5, color: 'rgba(23,19,11,0.35)' } }
+      marker: { size: 9, color: colors, opacity: 0.78, line: { width: 0.5, color: 'rgba(35,44,110,0.35)' } }
     };
     const diag = {
       x: [lo - pad, hi + pad], y: [lo - pad, hi + pad], mode: 'lines', type: 'scatter',
-      hoverinfo: 'skip', line: { color: 'rgba(23,19,11,0.5)', width: 1, dash: 'dash' }, showlegend: false
+      hoverinfo: 'skip', line: { color: 'rgba(35,44,110,0.5)', width: 1, dash: 'dash' }, showlegend: false
     };
     const layout = {
       paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
       margin: { l: 64, r: 24, t: 12, b: 52 },
-      font: { family: 'DM Mono, monospace', size: 11, color: '#4c4537' },
-      xaxis: { title: { text: 'pCAR  ·  forward projection', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
-      yaxis: { title: { text: 'raw CAR  ·  the actual record', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
+      font: { family: 'DM Mono, monospace', size: 11, color: '#3a4390' },
+      xaxis: { title: { text: 'pCAR  ·  established level', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(35,44,110,0.08)' },
+      yaxis: { title: { text: 'raw CAR  ·  the actual record', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(35,44,110,0.08)' },
       showlegend: false,
       annotations: [
-        { x: lo + pad, y: hi - pad, xanchor: 'left',  yanchor: 'top',    text: 'overperformed ↑', showarrow: false, font: { family: 'DM Mono, monospace', size: 10, color: 'rgba(47,122,76,0.85)' } },
-        { x: hi - pad, y: lo + pad, xanchor: 'right', yanchor: 'bottom', text: 'underperformed ↓', showarrow: false, font: { family: 'DM Mono, monospace', size: 10, color: 'rgba(194,48,42,0.8)' } }
+        { x: lo + pad, y: hi - pad, xanchor: 'left',  yanchor: 'top',    text: 'overperformed ↑', showarrow: false, font: { family: 'DM Mono, monospace', size: 10, color: 'rgba(12,124,83,0.85)' } },
+        { x: hi - pad, y: lo + pad, xanchor: 'right', yanchor: 'bottom', text: 'underperformed ↓', showarrow: false, font: { family: 'DM Mono, monospace', size: 10, color: 'rgba(244,51,37,0.8)' } }
       ],
-      hoverlabel: { bgcolor: '#17130b', bordercolor: '#17130b', font: { family: 'DM Mono, monospace', color: '#f5efe3', size: 11 } }
+      hoverlabel: { bgcolor: '#232c6e', bordercolor: '#232c6e', font: { family: 'DM Mono, monospace', color: '#f9f8f3', size: 11 } }
     };
     Plotly.react(el, [diag, scatter], layout, { displayModeBar: false, responsive: true });
     setChartLegend(roleLegend(rows));
@@ -1798,21 +1475,21 @@
     const text = rows.map(t =>
       `<b>${escapeHtml(t.Team)}</b><br>${escapeHtml(t.League || '')} ${escapeHtml(String(t.Year || ''))}<br>` +
       `projected team CAR ${fmtSigned(Number(t.Projected_Team_WAR), 1)}<br>` +
-      `${fmtNum(t.W)}–${fmtNum(t.L)} · ${normalizeWpct(t.W_pct).toFixed(0)}% wins`);
+      `${fmtNum(t.W)}-${fmtNum(t.L)} · ${normalizeWpct(t.W_pct).toFixed(0)}% wins`);
     const colors = rows.map(t => chartLeagueColor(t.League));
     const scatter = {
       x, y, text, mode: 'markers', type: 'scatter',
       hovertemplate: '%{text}<extra></extra>',
-      marker: { size: 11, color: colors, opacity: 0.8, line: { width: 0.5, color: 'rgba(23,19,11,0.35)' } }
+      marker: { size: 11, color: colors, opacity: 0.8, line: { width: 0.5, color: 'rgba(35,44,110,0.35)' } }
     };
     const layout = {
       paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
       margin: { l: 60, r: 24, t: 12, b: 52 },
-      font: { family: 'DM Mono, monospace', size: 11, color: '#4c4537' },
-      xaxis: { title: { text: 'projected team CAR, talent on paper', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
-      yaxis: { title: { text: 'actual win rate (%)', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)', range: [0, 100] },
+      font: { family: 'DM Mono, monospace', size: 11, color: '#3a4390' },
+      xaxis: { title: { text: 'projected team CAR, talent on paper', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(35,44,110,0.08)' },
+      yaxis: { title: { text: 'actual win rate (%)', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(35,44,110,0.08)', range: [0, 100] },
       showlegend: false,
-      hoverlabel: { bgcolor: '#17130b', bordercolor: '#17130b', font: { family: 'DM Mono, monospace', color: '#f5efe3', size: 11 } }
+      hoverlabel: { bgcolor: '#232c6e', bordercolor: '#232c6e', font: { family: 'DM Mono, monospace', color: '#f9f8f3', size: 11 } }
     };
     Plotly.react(el, [scatter], layout, { displayModeBar: false, responsive: true });
     setChartLegend([]);   // single league → one color, no legend
@@ -1856,7 +1533,7 @@
              `CAR ${fmtSigned(p.prev.WAR, 1)} → ${fmtSigned(p.curr.WAR, 1)}<br>` +
              `${d >= 0 ? 'rose' : 'fell'} ${fmtSigned(d, 1)} year-on-year`;
     });
-    const colors = pairs.map(p => (Number(p.curr.WAR) - Number(p.prev.WAR)) >= 0 ? '#2f7a4c' : '#c2302a');
+    const colors = pairs.map(p => (Number(p.curr.WAR) - Number(p.prev.WAR)) >= 0 ? '#0c7c53' : '#f43325');
     const lo = Math.min.apply(null, x.concat(y));
     const hi = Math.max.apply(null, x.concat(y));
     const pad = (hi - lo) * 0.05 || 1;
@@ -1864,23 +1541,23 @@
       x, y, text, customdata: pairs.map(p => p.curr.Player),
       mode: 'markers', type: 'scattergl',
       hovertemplate: '%{text}<extra></extra>',
-      marker: { size: 9, color: colors, opacity: 0.72, line: { width: 0.5, color: 'rgba(23,19,11,0.3)' } }
+      marker: { size: 9, color: colors, opacity: 0.72, line: { width: 0.5, color: 'rgba(35,44,110,0.3)' } }
     };
     const diag = {
       x: [lo - pad, hi + pad], y: [lo - pad, hi + pad], mode: 'lines', type: 'scatter',
-      hoverinfo: 'skip', line: { color: 'rgba(23,19,11,0.5)', width: 1, dash: 'dash' }, showlegend: false
+      hoverinfo: 'skip', line: { color: 'rgba(35,44,110,0.5)', width: 1, dash: 'dash' }, showlegend: false
     };
     const layout = {
       paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
       margin: { l: 64, r: 24, t: 12, b: 52 },
-      font: { family: 'DM Mono, monospace', size: 11, color: '#4c4537' },
-      xaxis: { title: { text: 'CAR, previous year', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
-      yaxis: { title: { text: 'CAR, this year', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
+      font: { family: 'DM Mono, monospace', size: 11, color: '#3a4390' },
+      xaxis: { title: { text: 'CAR, previous year', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(35,44,110,0.08)' },
+      yaxis: { title: { text: 'CAR, this year', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(35,44,110,0.08)' },
       showlegend: false,
-      hoverlabel: { bgcolor: '#17130b', bordercolor: '#17130b', font: { family: 'DM Mono, monospace', color: '#f5efe3', size: 11 } }
+      hoverlabel: { bgcolor: '#232c6e', bordercolor: '#232c6e', font: { family: 'DM Mono, monospace', color: '#f9f8f3', size: 11 } }
     };
     Plotly.react(el, [diag, scatter], layout, { displayModeBar: false, responsive: true });
-    setChartLegend([{ label: 'Rose year-on-year', color: '#2f7a4c' }, { label: 'Fell year-on-year', color: '#c2302a' }]);
+    setChartLegend([{ label: 'Rose year-on-year', color: '#0c7c53' }, { label: 'Fell year-on-year', color: '#f43325' }]);
     el.removeAllListeners && el.removeAllListeners('plotly_click');
     el.on('plotly_click', ev => {
       const pt = ev.points && ev.points.find(p => p.data.customdata);
@@ -1935,24 +1612,24 @@
       x, y, text, customdata: rows.map(r => playerKey(r)),
       mode: 'markers', type: 'scattergl',
       hovertemplate: '%{text}<extra></extra>',
-      marker: { size: 9, color: colors, opacity: 0.78, line: { width: 0.5, color: 'rgba(23,19,11,0.35)' } }
+      marker: { size: 9, color: colors, opacity: 0.78, line: { width: 0.5, color: 'rgba(35,44,110,0.35)' } }
     };
     const diag = {
       x: [lo - pad, hi + pad], y: [lo - pad, hi + pad], mode: 'lines', type: 'scatter',
-      hoverinfo: 'skip', line: { color: 'rgba(23,19,11,0.5)', width: 1, dash: 'dash' }, showlegend: false
+      hoverinfo: 'skip', line: { color: 'rgba(35,44,110,0.5)', width: 1, dash: 'dash' }, showlegend: false
     };
     const layout = {
       paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
       margin: { l: 64, r: 24, t: 12, b: 52 },
-      font: { family: 'DM Mono, monospace', size: 11, color: '#4c4537' },
-      xaxis: { title: { text: 'team average CAR, the roster level', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
-      yaxis: { title: { text: 'player CAR, the individual', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
+      font: { family: 'DM Mono, monospace', size: 11, color: '#3a4390' },
+      xaxis: { title: { text: 'team average CAR, the roster level', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(35,44,110,0.08)' },
+      yaxis: { title: { text: 'player CAR, the individual', font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(35,44,110,0.08)' },
       showlegend: false,
       annotations: [
-        { x: lo + pad, y: hi - pad, xanchor: 'left',  yanchor: 'top',    text: 'carrying the team ↑', showarrow: false, font: { family: 'DM Mono, monospace', size: 10, color: 'rgba(47,122,76,0.85)' } },
-        { x: hi - pad, y: lo + pad, xanchor: 'right', yanchor: 'bottom', text: 'carried by the team ↓', showarrow: false, font: { family: 'DM Mono, monospace', size: 10, color: 'rgba(194,48,42,0.8)' } }
+        { x: lo + pad, y: hi - pad, xanchor: 'left',  yanchor: 'top',    text: 'carrying the team ↑', showarrow: false, font: { family: 'DM Mono, monospace', size: 10, color: 'rgba(12,124,83,0.85)' } },
+        { x: hi - pad, y: lo + pad, xanchor: 'right', yanchor: 'bottom', text: 'carried by the team ↓', showarrow: false, font: { family: 'DM Mono, monospace', size: 10, color: 'rgba(244,51,37,0.8)' } }
       ],
-      hoverlabel: { bgcolor: '#17130b', bordercolor: '#17130b', font: { family: 'DM Mono, monospace', color: '#f5efe3', size: 11 } }
+      hoverlabel: { bgcolor: '#232c6e', bordercolor: '#232c6e', font: { family: 'DM Mono, monospace', color: '#f9f8f3', size: 11 } }
     };
     Plotly.react(el, [diag, scatter], layout, { displayModeBar: false, responsive: true });
     setChartLegend(roleLegend(rows));
@@ -2027,20 +1704,20 @@
       x, y, text, customdata: rows.map(r => playerKey(r)),
       mode: 'markers', type: 'scattergl',
       hovertemplate: '%{text}<extra></extra>',
-      marker: { size: 10, color: color, opacity: 0.78, line: { width: 0.5, color: 'rgba(23,19,11,0.35)' } }
+      marker: { size: 10, color: color, opacity: 0.78, line: { width: 0.5, color: 'rgba(35,44,110,0.35)' } }
     };
     const layout = {
       paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
       margin: { l: 64, r: 24, t: 12, b: 52 },
-      font: { family: 'DM Mono, monospace', size: 11, color: '#4c4537' },
-      xaxis: { title: { text: `${xLabel}  ·  vs cohort`, font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
-      yaxis: { title: { text: `${yLabel}  ·  vs cohort`, font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(23,19,11,0.08)' },
+      font: { family: 'DM Mono, monospace', size: 11, color: '#3a4390' },
+      xaxis: { title: { text: `${xLabel}  ·  vs cohort`, font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(35,44,110,0.08)' },
+      yaxis: { title: { text: `${yLabel}  ·  vs cohort`, font: { size: 12 } }, zeroline: false, gridcolor: 'rgba(35,44,110,0.08)' },
       showlegend: false,
       shapes: [
-        { type: 'line', xref: 'x', yref: 'paper', x0: 0, x1: 0, y0: 0, y1: 1, line: { color: 'rgba(23,19,11,0.32)', width: 1, dash: 'dot' } },
-        { type: 'line', xref: 'paper', yref: 'y', x0: 0, x1: 1, y0: 0, y1: 0, line: { color: 'rgba(23,19,11,0.32)', width: 1, dash: 'dot' } }
+        { type: 'line', xref: 'x', yref: 'paper', x0: 0, x1: 0, y0: 0, y1: 1, line: { color: 'rgba(35,44,110,0.32)', width: 1, dash: 'dot' } },
+        { type: 'line', xref: 'paper', yref: 'y', x0: 0, x1: 1, y0: 0, y1: 0, line: { color: 'rgba(35,44,110,0.32)', width: 1, dash: 'dot' } }
       ],
-      hoverlabel: { bgcolor: '#17130b', bordercolor: '#17130b', font: { family: 'DM Mono, monospace', color: '#f5efe3', size: 11 } }
+      hoverlabel: { bgcolor: '#232c6e', bordercolor: '#232c6e', font: { family: 'DM Mono, monospace', color: '#f9f8f3', size: 11 } }
     };
     Plotly.react(el, [scatter], layout, { displayModeBar: false, responsive: true });
     setChartLegend([]);   // single role, single color
@@ -2073,7 +1750,7 @@
     const rows = carPlayers.filter(p => p.Player === r.Player).slice()
       .sort((a, b) => (Number(b.Year) || 0) - (Number(a.Year) || 0)
                    || (Number(b.GP) || 0) - (Number(a.GP) || 0));
-    const fmtPcar = v => (v == null || v === '' || !isFinite(Number(v))) ? '—' : Number(v).toFixed(1);
+    const fmtPcar = v => (v == null || v === '' || !isFinite(Number(v))) ? '·' : Number(v).toFixed(1);
     const bodyRows = rows.map(p => {
       const cur = playerKey(p) === playerKey(r) ? ' class="is-current"' : '';
       return `<tr${cur}>`
@@ -2096,22 +1773,20 @@
     renderRadar(r);
   }
 
-  // CAR component radar: a fixed 5-axis pentagon. The three 5-component roles use
-  // their real components; Middle and Jungle collapse 7 -> 5 (each collapsed axis
-  // is the mean of its z-components), per JC's spec.
-  // Single-component axes derive their label from the index's Z_FRIENDLY map
-  // (vague, over-specific tokens stripped). The two collapsed axes (Middle/Jungle)
-  // get a vague label in the same house style.
+  // CAR component radar. Each role plots exactly the components its own formula
+  // uses, so the shape is the formula rather than a fixed pentagon: Top is a
+  // triangle, ADC and Middle pentagons, Support a hexagon, and Jungle collapses
+  // its three vision terms into one axis so the polygon stays readable.
+  // Single-component axes take their label from Z_FRIENDLY; collapsed axes get
+  // a vague label in the same house style.
   const RADAR_AXES = {
-    Top:     [['z_EGPM_adj'], ['z_XPD10'], ['z_KP_residual'], ['z_TLDPS'], ['z_neg_DTH_adj']],
-    ADC:     [['z_DMG_GOLD_ratio'], ['z_DPM_adj'], ['z_neg_DTH'], ['z_EGPM_adj'], ['z_GD10_adj']],
-    Support: [['z_neg_DTH'], ['z_KP_residual'], ['z_WCPM_type3'], ['z_WPM_type3'], ['z_GD15_adj']],
-    Middle:  [['z_DPM_adj'], ['z_neg_DTH'], ['z_XPD10'],
-              { label: 'Teamfight Involvement', cols: ['z_KP_residual', 'z_KS_pct'] },
-              { label: 'Gold Efficiency', cols: ['z_EGPM_adj', 'z_GD10_adj'] }],
-    Jungle:  [['z_neg_DTH_adj'], ['z_JSAD'], ['z_CSD10_adj'],
-              { label: 'Gold Efficiency', cols: ['z_EGPM_adj', 'z_GD10_adj'] },
-              { label: 'Vision Control', cols: ['z_WCPM_type3', 'z_CWPM_type3'] }]
+    Top:     [['z_GD10'], ['z_DMG_GOLD_ratio'], ['z_TDPG_share']],
+    ADC:     [['z_CSD10'], ['z_CS%P15'], ['z_DMG_GOLD_ratio'], ['z_neg_DTH'], ['z_KS_pct']],
+    Middle:  [['z_CSD10'], ['z_CS%P15'], ['z_DMG_GOLD_ratio'], ['z_neg_DTH'], ['z_KS_pct']],
+    Support: [['z_GD10'], ['z_WPM_type3'], ['z_CWPM_type3'], ['z_WCPM_type3'],
+              ['z_neg_DTH'], ['z_KP']],
+    Jungle:  [['z_CSD10'], ['z_GOLD%'], ['z_DMG_GOLD_ratio'], ['z_neg_DTH'],
+              { label: 'Vision Control', cols: ['z_WCPM_type3', 'z_CWPM_type3', 'z_WPM_type3'] }]
   };
 
   function radarValuesForPlayer(r) {
@@ -2155,8 +1830,8 @@
     const trace = {
       type: 'scatterpolar', mode: 'lines+markers',
       r: rShift.concat(rShift[0]), theta: d.labels.concat(d.labels[0]),
-      fill: 'toself', fillcolor: 'rgba(176,137,43,0.22)',
-      line: { color: 'rgba(150,110,30,0.95)', width: 2 }, marker: { size: 5 },
+      fill: 'toself', fillcolor: 'rgba(244,51,37,0.18)',
+      line: { color: 'rgba(201,32,15,0.95)', width: 2 }, marker: { size: 5 },
       customdata: d.vals.concat(d.vals[0]).map(v => clamp(v)),
       hovertemplate: '%{theta}: %{customdata:+.2f}z<extra></extra>'
     };
@@ -2289,8 +1964,210 @@
     updateChartControlsMode();
   }
 
+  /* ══════════════════════════════════════════════
+     THE DISSECTION — updateable event retrospective.
+     Current edition: MSI 2026. To publish the next event:
+     run tools/build_event_dataset.py, point dataUrl at the
+     new CSV, and update the hero copy + facts in the markup.
+     ══════════════════════════════════════════════ */
+
+  const DSX = {
+    dataUrl: 'data/msi2026_players.csv',
+    minGp: 4,
+    roles: ['Top', 'Jungle', 'Middle', 'ADC', 'Support']
+  };
+
+  /* Short axis labels for the small role-card radars. */
+  const DSX_SHORT = {
+    'Gold Efficiency': 'Gold', 'Early XP': 'XP', 'Teamfight Involvement': 'Fights',
+    'Damage Output': 'Damage', 'Survival': 'Survival', 'Early Pathing': 'Pathing',
+    'Laning': 'Laning', 'Damage Efficiency': 'Dmg/Gold', 'Kill Share': 'Kills',
+    'Ward Clearing': 'Sweeps', 'Vision Created': 'Vision', 'Mid-Game Gold': 'Mid Gold'
+  };
+
+  /* Hand-drawn SVG pentagon: rings at z = -1 / 0 / +1 / +2 (center = -2),
+     the dashed mid ring is the field average. */
+  function dsxRadarSVG(axes, opts) {
+    opts = opts || {};
+    const size = opts.size || 300;
+    const variant = opts.variant === 'worst' ? 'worst' : 'best';
+    const full = !!opts.fullLabels;
+    const pad = full ? 50 : 36;
+    // widen the canvas beyond the pentagon so side labels never clip
+    const vbW = size + (full ? 150 : 56);
+    const cx = vbW / 2, cy = size / 2, rMax = (size - pad * 2) / 2;
+    const n = axes.length;
+    const ang = i => (Math.PI * 2 * i / n) - Math.PI / 2;
+    const px = (i, r) => cx + Math.cos(ang(i)) * r;
+    const py = (i, r) => cy + Math.sin(ang(i)) * r;
+    const clamp = z => Math.max(-2, Math.min(2, Number(z) || 0));
+    const rFor = z => ((clamp(z) + 2) / 4) * rMax;
+    const ringPts = r => Array.from({ length: n }, (_, i) => `${px(i, r).toFixed(1)},${py(i, r).toFixed(1)}`).join(' ');
+
+    let s = `<svg class="dsx-radar-svg" viewBox="0 0 ${vbW} ${size}" role="img" aria-label="Component radar">`;
+    [0.25, 0.75, 1].forEach(f => { s += `<polygon class="rd-grid" points="${ringPts(rMax * f)}"/>`; });
+    s += `<polygon class="rd-grid rd-grid-mid" points="${ringPts(rMax * 0.5)}"/>`;
+    for (let i = 0; i < n; i++) s += `<line class="rd-spoke" x1="${cx}" y1="${cy}" x2="${px(i, rMax).toFixed(1)}" y2="${py(i, rMax).toFixed(1)}"/>`;
+
+    const shapePts = axes.map((a, i) => `${px(i, rFor(a.z)).toFixed(1)},${py(i, rFor(a.z)).toFixed(1)}`).join(' ');
+    s += `<polygon class="rd-shape-${variant}" points="${shapePts}"><title>${axes.map(a => `${a.label}: ${(a.z >= 0 ? '+' : '') + Number(a.z).toFixed(2)}z`).join('\n')}</title></polygon>`;
+    axes.forEach((a, i) => {
+      s += `<circle class="rd-dot-${variant}" r="${full ? 3.4 : 2.6}" cx="${px(i, rFor(a.z)).toFixed(1)}" cy="${py(i, rFor(a.z)).toFixed(1)}"/>`;
+    });
+
+    axes.forEach((a, i) => {
+      const c = Math.cos(ang(i)), sn = Math.sin(ang(i));
+      const lx = cx + c * (rMax + (full ? 18 : 12));
+      const ly = cy + sn * (rMax + (full ? 18 : 12));
+      const anchor = c > 0.35 ? 'start' : (c < -0.35 ? 'end' : 'middle');
+      const dy = sn > 0.35 ? '0.9em' : (sn < -0.35 ? '-0.4em' : '0.35em');
+      const label = full ? a.label : (DSX_SHORT[a.label] || a.label);
+      s += `<text class="rd-label" x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" dy="${dy}">${label}</text>`;
+      if (full) {
+        s += `<text class="rd-label rd-label-val" x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" dy="${sn > 0.35 ? '2.1em' : (sn < -0.35 ? '0.8em' : '1.55em')}">${(a.z >= 0 ? '+' : '') + Number(a.z).toFixed(2)}z</text>`;
+      }
+    });
+    return s + '</svg>';
+  }
+
+  function dsxScore(v) {
+    const n = Number(v);
+    if (!isFinite(n)) return '';
+    return (n >= 0 ? '+' : '−') + Math.abs(n).toFixed(2);
+  }
+  function dsxScoreClass(v) { return Number(v) >= 0 ? 'is-pos' : 'is-neg'; }
+
+  function dsxNameplate(r, tag) {
+    return `<div class="dsx-slot">
+      <span class="dsx-slot-tag ${tag === 'best' ? 'is-best' : 'is-worst'}">${tag === 'best' ? 'Played like the best' : 'Struggled the most'}</span>
+      <h3 class="dsx-slot-name">${escapeHtml(r.player)}</h3>
+      <div class="dsx-slot-meta">${escapeHtml(r.team)}, ${r.gp} games, ${r.wins}-${r.losses}</div>
+      <span class="dsx-slot-score ${dsxScoreClass(r.composite)}">${dsxScore(r.composite)} composite</span>
+      <div class="dsx-slot-radar">${dsxRadarSVG(r.axes, { size: 220, variant: tag })}</div>
+    </div>`;
+  }
+
+  async function initDissection() {
+    const grid = document.getElementById('dsx-role-grid');
+    if (!grid || typeof Papa === 'undefined') return;
+    let rows;
+    try {
+      const res = await fetch(DSX.dataUrl);
+      if (!res.ok) throw new Error('fetch failed: ' + res.status);
+      const parsed = Papa.parse(await res.text(), { header: true, dynamicTyping: true, skipEmptyLines: true });
+      rows = (parsed.data || []).filter(r => r && r.player).map(r => {
+        let axes = [];
+        try { axes = JSON.parse(r.radar_axes); } catch (e) { /* leave empty */ }
+        return { ...r, axes };
+      }).filter(r => r.axes.length);
+    } catch (e) {
+      console.warn('Dissection data unavailable:', e);
+      grid.innerHTML = '<p class="dsx-loading">The MSI dataset could not be loaded. The tables and stories below still work.</p>';
+      return;
+    }
+
+    const qualified = rows.filter(r => r.gp >= DSX.minGp);
+
+    // Featured: the tournament's best composite.
+    const mvp = qualified.slice().sort((a, b) => b.composite - a.composite)[0];
+    const fr = document.getElementById('dsx-featured-radar');
+    const fc = document.getElementById('dsx-featured-cap');
+    if (mvp && fr) {
+      fr.innerHTML = dsxRadarSVG(mvp.axes, { size: 380, variant: 'best', fullLabels: true });
+      if (fc) fc.textContent = `${mvp.player}, ${mvp.team}. ${mvp.gp} games, ${mvp.wins}-${mvp.losses}, `
+        + `composite ${dsxScore(mvp.composite)}: the strongest five-axis shape of the tournament, `
+        + `measured on MSI games alone.`;
+    }
+
+    // Role cards: best and worst per role.
+    grid.innerHTML = DSX.roles.map(role => {
+      const pool = qualified.filter(r => r.pos === role).sort((a, b) => b.composite - a.composite);
+      if (!pool.length) return '';
+      const best = pool[0], worst = pool[pool.length - 1];
+      return `<div class="dsx-role-card">
+        <div class="dsx-role-name">${role}</div>
+        ${dsxNameplate(best, 'best')}
+        ${dsxNameplate(worst, 'worst')}
+      </div>`;
+    }).join('');
+
+    // The board: top 10 + bottom 5.
+    const host = document.getElementById('dsx-board-table');
+    if (host) {
+      const ranked = qualified.slice().sort((a, b) => b.composite - a.composite);
+      const top = ranked.slice(0, 10);
+      const bottom = ranked.slice(-5);
+      const hidden = ranked.length - top.length - bottom.length;
+      const row = (r, i) => `<tr>
+        <td>${i + 1}</td>
+        <td class="dsx-td-player">${escapeHtml(r.player)}</td>
+        <td>${escapeHtml(r.team)}</td>
+        <td>${escapeHtml(r.pos)}</td>
+        <td>${r.gp}</td>
+        <td>${r.wins}-${r.losses}</td>
+        <td>${Number(r.kda).toFixed(2)}</td>
+        <td class="${dsxScoreClass(r.composite)} ${Number(r.composite) >= 0 ? 'dsx-val-pos' : 'dsx-val-neg'}">${dsxScore(r.composite)}</td>
+      </tr>`;
+      host.innerHTML = `<table>
+        <thead><tr><th>#</th><th>Player</th><th>Team</th><th>Role</th><th>GP</th><th>W-L</th><th>KDA</th><th>Composite</th></tr></thead>
+        <tbody>
+          ${top.map((r, i) => row(r, i)).join('')}
+          <tr class="is-break"><td colspan="8">${hidden} players in the middle of the pack, all in the downloadable CSV.</td></tr>
+          ${bottom.map((r, i) => row(r, ranked.length - 5 + i)).join('')}
+        </tbody>
+      </table>`;
+    }
+  }
+
+  /* The coordinate ledger: isolated side-lane deaths (see tools/coord_isolated_deaths.py). */
+  async function initCoordLedger() {
+    const dHost = document.getElementById('dsx-coord-deaths');
+    const pHost = document.getElementById('dsx-coord-picks');
+    if (!dHost || !pHost || typeof Papa === 'undefined') return;
+    try {
+      const res = await fetch('data/msi2026_isolated_deaths.csv');
+      if (!res.ok) throw new Error('fetch failed');
+      const rows = (Papa.parse(await res.text(), { header: true, dynamicTyping: true, skipEmptyLines: true }).data || [])
+        .filter(r => r && r.player);
+      const list = (items, cols) => `<table><thead><tr>${cols.map(c => `<th>${c.h}</th>`).join('')}</tr></thead><tbody>${
+        items.map(r => `<tr>${cols.map(c => `<td class="${c.cls || ''}">${c.f(r)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+      const oHost = document.getElementById('dsx-coord-obj');
+      const qual = rows.filter(r => Number(r.gp) >= 6);
+      const deaths = qual.filter(r => r.side_deaths > 0).sort((a, b) => b.side_deaths_pg - a.side_deaths_pg).slice(0, 6);
+      const picks = qual.filter(r => r.side_picks > 0).sort((a, b) => b.side_picks_pg - a.side_picks_pg).slice(0, 6);
+      const obj = qual.filter(r => r.obj_setup_deaths > 0).sort((a, b) => b.obj_setup_deaths_pg - a.obj_setup_deaths_pg).slice(0, 6);
+      dHost.innerHTML = list(deaths, [
+        { h: 'Player', f: r => escapeHtml(r.player), cls: 'dsx-td-player' },
+        { h: 'Per game', f: r => Number(r.side_deaths_pg).toFixed(2), cls: 'dsx-val-neg' },
+        { h: 'Total', f: r => r.side_deaths },
+        { h: 'Top / Bot', f: r => `${r.side_top} / ${r.side_bot}` }
+      ]);
+      pHost.innerHTML = list(picks, [
+        { h: 'Player', f: r => escapeHtml(r.player), cls: 'dsx-td-player' },
+        { h: 'Per game', f: r => Number(r.side_picks_pg).toFixed(2), cls: 'dsx-val-pos' },
+        { h: 'Total', f: r => r.side_picks }
+      ]);
+      if (oHost) oHost.innerHTML = list(obj, [
+        { h: 'Player', f: r => escapeHtml(r.player), cls: 'dsx-td-player' },
+        { h: 'Per game', f: r => Number(r.obj_setup_deaths_pg).toFixed(2), cls: 'dsx-val-neg' },
+        { h: 'Total', f: r => r.obj_setup_deaths }
+      ]);
+    } catch (e) {
+      console.warn('Coordinate ledger unavailable:', e);
+      dHost.innerHTML = '<p class="dsx-loading">The coordinate ledger could not be loaded.</p>';
+    }
+  }
+
+  /* Live count for the index strip once the CAR data resolves. */
+  function renderIndexStrip() {
+    const el = document.getElementById('dsx-index-count');
+    if (!el || !carLoaded || !carPlayers.length) return;
+    const datasetKey = r => `${r.League || ''}|${r.Year || ''}|${r.Dataset || ''}`;
+    const datasets = new Set(carPlayers.map(datasetKey));
+    el.textContent = `The CAR Index: ${carPlayers.filter(r => r.Player).length} player-seasons across ${datasets.size} datasets.`;
+  }
+
   async function initCar() {
-    renderCarHeroPreview(CAR_FALLBACK);   // never let the hero be empty
     initCarDash();
     initCharts();
 
@@ -2303,8 +2180,7 @@
     await loadCarData();
 
     if (carLoaded) {
-      renderCarHeroPreview(getCarHeroRows());
-      renderCarHeroCount();
+      renderIndexStrip();
       // Populate data-driven dropdowns before first render.
       populateTableLeagueSelects();
       populateChartSelects();
@@ -2319,6 +2195,8 @@
   }
 
   initCar();
+  initDissection();
+  initCoordLedger();
 </script>
 
 </body>

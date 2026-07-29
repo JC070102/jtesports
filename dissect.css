@@ -1,0 +1,387 @@
+/* ============================================================
+   JTE — dissect.css
+   The Dissection: the updateable event-retrospective front page
+   (current edition: MSI 2026), plus the press-room polish layer
+   loaded after style.css + sp1.css.
+   ============================================================ */
+
+/* ── MASTHEAD + SECTION BAND (SP3 riso) ── */
+.mast {
+  display: flex;
+  align-items: baseline;
+  gap: 1.4rem;
+  padding: 1.2rem 2.5rem 0.9rem;
+  position: relative;
+  z-index: 3;
+}
+.mast .wordmark {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 2.5rem;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--ink);
+  cursor: pointer;
+}
+.mast .wordmark span { color: var(--accent); }
+.mast-tag {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.08rem;
+  color: var(--ink-2);
+}
+.mast-x {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 1px;
+}
+.mast-x:hover { color: var(--accent-deep); }
+
+nav {
+  justify-content: flex-start;
+  padding: 0 2.5rem;
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  background: var(--paper);
+}
+nav ul { gap: 0; }
+nav ul li a {
+  display: block;
+  padding: 0.6rem 1.15rem;
+  color: var(--ink);
+  border-right: 1px solid var(--border);
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+nav ul li:first-child a { border-left: 1px solid var(--border); }
+nav ul li a::after { display: none; }
+nav ul li a.nav-here,
+nav a[data-nav].nav-here { background: var(--ink); color: var(--paper); }
+nav a[data-nav].nav-here::after { display: none; }
+nav ul li a:hover:not(.nav-here) { background: var(--paper-2); color: var(--ink); }
+
+/* Bricolage is wider than the old condensed face: recalibrate mastheads */
+.archive-hed { font-size: clamp(2.4rem, 5.5vw, 4.4rem); letter-spacing: -0.02em; line-height: 0.97; }
+
+/* ── HERO: asymmetric split, copy left / featured radar right ── */
+.dsx-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 3rem;
+  align-items: start;
+  padding: 3.5rem 2.5rem 3rem;
+  border-bottom: 1px solid var(--rule-strong);
+}
+.dsx-kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.1rem;
+}
+.dsx-hed {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  line-height: 0.97;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  margin: 0 0 1.2rem;
+  padding-bottom: 0.35rem;   /* italic descender reserve */
+}
+.dsx-hed em {
+  font-style: italic;
+  color: var(--ink);
+  /* the red marker stroke carries the emphasis */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M3 9 C 22 4, 48 11, 64 7 S 99 3, 117 8' fill='none' stroke='%23f43325' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left 100% / 100% 0.16em;
+  padding-bottom: 0.18em;
+}
+.dsx-dek {
+  font-family: var(--serif);
+  font-size: 1.22rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 34em;
+  margin-bottom: 2rem;
+}
+.dsx-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--rule-strong);
+}
+.dsx-fact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.1rem 0.2rem 0;
+}
+.dsx-fact + .dsx-fact { padding-left: 1.1rem; border-left: 1px solid var(--hair); }
+.dsx-fact-k {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.dsx-fact-v {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+.dsx-fact-s {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  color: var(--ink-2);
+}
+
+/* featured radar card */
+.dsx-featured {
+  margin: 0;
+  padding: 1.4rem 1.4rem 1.1rem;
+  background: var(--card);
+  border: 1.5px solid var(--ink);
+  box-shadow: 8px 8px 0 rgba(35, 44, 110, 0.16);
+}
+.dsx-featured-radar { width: 100%; }
+.dsx-featured-cap {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--ink-2);
+  line-height: 1.4;
+  border-top: 1px solid var(--hair);
+  padding-top: 0.7rem;
+  margin-top: 0.5rem;
+}
+
+/* ── shared section scaffolding ── */
+.dsx-h2 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.9rem, 3.4vw, 2.7rem);
+  line-height: 1;
+  text-transform: uppercase;
+  margin-bottom: 0.7rem;
+}
+.dsx-p {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 62ch;
+}
+.dsx-loading {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  padding: 2rem 0;
+}
+
+/* ── ROLE GRID: five role cards, best vs worst ── */
+.dsx-roles { padding: 3rem 2.5rem; border-bottom: 1px solid var(--rule-strong); }
+.dsx-roles-head { margin-bottom: 2rem; }
+.dsx-role-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
+}
+.dsx-role-card {
+  background: var(--card);
+  border: 1.5px solid var(--ink);
+  box-shadow: 5px 5px 0 rgba(35, 44, 110, 0.12);
+  padding: 0 0 0.6rem;
+  display: flex;
+  flex-direction: column;
+}
+.dsx-role-card > .dsx-slot { padding-inline: 0.9rem; }
+.dsx-role-name {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.4rem 0.9rem;
+  margin-bottom: 0.6rem;
+}
+.dsx-slot { padding: 0.2rem 0 0.5rem; }
+.dsx-slot + .dsx-slot { border-top: 1px dashed var(--border); margin-top: 0.3rem; padding-top: 0.7rem; }
+.dsx-slot-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.dsx-slot-tag.is-best  { color: var(--pos-deep); }
+.dsx-slot-tag.is-worst { color: var(--muted); }
+.dsx-slot-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.05;
+  margin: 0.15rem 0 0;
+}
+.dsx-slot-meta {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+.dsx-slot-score { font-family: var(--mono); font-size: 12px; font-weight: 500; }
+.dsx-slot-score.is-pos { color: var(--pos-deep); }
+.dsx-slot-score.is-neg { color: var(--accent-deep); }
+.dsx-slot-radar { margin: 0.2rem auto 0; width: 100%; max-width: 210px; }
+
+/* ── THE BOARD: ranked field table ── */
+.dsx-board { padding: 3rem 2.5rem; border-bottom: 1px solid var(--rule-strong); }
+.dsx-board-head { margin-bottom: 1.6rem; }
+.dsx-board-table { overflow-x: auto; }
+.dsx-board-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+.dsx-board-table th {
+  text-align: left;
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.45rem 0.8rem 0.45rem 0;
+  border-bottom: 2px solid var(--ink);
+}
+.dsx-board-table td {
+  padding: 0.5rem 0.8rem 0.5rem 0;
+  border-bottom: 1px solid var(--hair);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.dsx-board-table td.dsx-td-player { font-family: var(--display); font-weight: 700; font-size: 1.02rem; text-transform: uppercase; letter-spacing: 0.02em; }
+.dsx-board-table tr.is-break td { border-bottom: none; padding: 0.9rem 0; font-family: var(--serif); font-style: italic; color: var(--muted); white-space: normal; }
+.dsx-val-pos { color: var(--pos-deep); }
+.dsx-val-neg { color: var(--accent-deep); }
+.dsx-board-foot {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 1rem;
+}
+.dsx-link { color: var(--accent-deep); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.dsx-link:hover { color: var(--accent); }
+
+/* ── coordinate ledger ── */
+.dsx-coord-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 2.2rem;
+  align-items: start;
+}
+.dsx-coord-h {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
+}
+.dsx-mono { font-family: var(--mono); }
+@media (max-width: 900px) {
+  .dsx-coord-grid { grid-template-columns: 1fr; gap: 1.6rem; }
+}
+
+/* ── index strip (sits in the writing sidebar) ── */
+.dsx-index-strip {
+  margin-top: 1.2rem;
+  padding: 1.1rem 1.2rem;
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.dsx-index-copy { font-family: var(--serif); font-style: italic; font-size: 0.98rem; line-height: 1.4; }
+.dsx-index-cta {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.dsx-index-cta:hover { color: #ffb4ab; }
+
+/* ── radar SVG (shared by featured + role cards) ── */
+.dsx-radar-svg { display: block; width: 100%; height: auto; }
+.dsx-radar-svg .rd-grid { fill: none; stroke: rgba(35, 44, 110, 0.13); stroke-width: 1; }
+.dsx-radar-svg .rd-grid-mid { stroke: rgba(35, 44, 110, 0.32); stroke-dasharray: 3 3; }
+.dsx-radar-svg .rd-spoke { stroke: rgba(35, 44, 110, 0.10); stroke-width: 1; }
+.dsx-radar-svg .rd-shape-best  { fill: rgba(244, 51, 37, 0.20); stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; }
+.dsx-radar-svg .rd-shape-worst { fill: rgba(35, 44, 110, 0.14); stroke: var(--ink-2); stroke-width: 1.6; stroke-linejoin: round; }
+.dsx-radar-svg .rd-dot-best  { fill: var(--accent-deep); }
+.dsx-radar-svg .rd-dot-worst { fill: var(--ink-2); }
+.dsx-radar-svg .rd-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9.5px;
+  fill: var(--ink-2);
+  letter-spacing: 0.03em;
+}
+.dsx-radar-svg .rd-label-val { font-size: 8.5px; fill: var(--muted); }
+.dsx-featured-radar .rd-label { font-size: 11.5px; }
+.dsx-featured-radar .rd-label-val { font-size: 10px; }
+
+/* ── mobile nav: one scrollable line, wordmark first ── */
+@media (max-width: 760px) {
+  .mast { flex-wrap: wrap; gap: 0.4rem 1rem; padding: 0.9rem 1rem 0.6rem; }
+  .mast .wordmark { font-size: 2rem; }
+  .mast-tag { font-size: 0.95rem; }
+  .mast-x { margin-left: 0; flex-basis: 100%; width: fit-content; }
+  nav { padding: 0 1rem; gap: 0.9rem; }
+  nav ul {
+    gap: 1.1rem;
+    min-width: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    white-space: nowrap;
+  }
+  nav ul::-webkit-scrollbar { display: none; }
+}
+
+/* ── mobile collapse for legacy shared sections ── */
+@media (max-width: 760px) {
+  .about-band { grid-template-columns: 1fr; }
+  .about-left, .about-right { padding: 1.6rem 1.2rem; border-right: none; }
+  footer { flex-wrap: wrap; gap: 1rem; padding: 1.4rem 1rem; }
+  footer ul { flex-wrap: wrap; gap: 0.7rem 1.2rem; min-width: 0; padding: 0; }
+}
+
+/* ── responsive collapse ── */
+@media (max-width: 1100px) {
+  .dsx-role-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .dsx-hero { grid-template-columns: 1fr; gap: 2rem; padding: 2.4rem 1.2rem 2rem; }
+  .dsx-facts { grid-template-columns: 1fr; border-top: none; }
+  .dsx-fact { border-top: 1px solid var(--hair); padding: 0.8rem 0 0.5rem; }
+  .dsx-fact + .dsx-fact { padding-left: 0; border-left: none; }
+  .dsx-roles, .dsx-board { padding: 2.2rem 1.2rem; }
+}
+@media (max-width: 640px) {
+  .dsx-role-grid { grid-template-columns: 1fr; }
+}

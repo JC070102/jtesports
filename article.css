@@ -38,7 +38,7 @@ body { background: var(--paper); color: var(--ink); }
 .am-crest {
   width: 76px; height: auto; display: block;
   margin-bottom: 1.4rem;
-  filter: drop-shadow(0 8px 22px rgba(23,19,11,0.18));
+  filter: drop-shadow(0 8px 22px rgba(35,44,110,0.18));
 }
 /* oversized faded crest watermark behind the masthead */
 .am-crest-ghost {
@@ -186,7 +186,7 @@ body { background: var(--paper); color: var(--ink); }
   background: var(--card);
   border: 1px solid var(--rule-strong);
   border-radius: 2px;
-  box-shadow: 0 18px 50px -38px rgba(23,19,11,0.5);
+  box-shadow: 0 18px 50px -38px rgba(35,44,110,0.5);
   overflow: hidden;
 }
 .a-chart-loading {
@@ -203,12 +203,12 @@ body { background: var(--paper); color: var(--ink); }
   border-radius: 2px;
   overflow: hidden;
   background: var(--ink);
-  box-shadow: 0 18px 50px -38px rgba(23,19,11,0.5);
+  box-shadow: 0 18px 50px -38px rgba(35,44,110,0.5);
 }
 .a-shot-frame img { display: block; width: 100%; height: auto; }
 .a-shot-frame::after {
   content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(to bottom, transparent 78%, rgba(23,19,11,0.18) 100%);
+  background: linear-gradient(to bottom, transparent 78%, rgba(35,44,110,0.18) 100%);
 }
 
 /* ── article footer nav ── */
@@ -231,7 +231,7 @@ body { background: var(--paper); color: var(--ink); }
   background: var(--card);
   border: 1px solid var(--rule-strong);
   border-radius: 2px;
-  box-shadow: 0 18px 50px -38px rgba(23,19,11,0.5);
+  box-shadow: 0 18px 50px -38px rgba(35,44,110,0.5);
   padding: 1.3rem 1.5rem;
 }
 .sc-headline {

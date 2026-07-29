@@ -10,14 +10,14 @@
 }
 
 :root {
-  --ink: #0d0d0d;
-  --paper: #f4f1eb;
-  --accent: #c8372d;
-  --muted: #7a7670;
-  --border: rgba(13, 13, 13, 0.12);
+  --ink: #232c6e;
+  --paper: #f1f0ea;
+  --accent: #f43325;
+  --muted: #6b6f9e;
+  --border: rgba(35, 44, 110, 0.15);
   --mono: 'DM Mono', monospace;
-  --serif: 'Instrument Serif', serif;
-  --display: 'Syne', sans-serif;
+  --serif: 'Newsreader', Georgia, serif;
+  --display: 'Bricolage Grotesque', sans-serif;
 }
 
 html { scroll-behavior: smooth; }
@@ -290,7 +290,7 @@ nav .nav-cta {
 }
 
 .piece-tag.league   { background: var(--accent); }
-.piece-tag.cs       { background: #1a5fa8; }
+.piece-tag.cs       { background: #2563a8; }
 .piece-tag.analysis { background: #3a3a3a; }
 .piece-tag.gameplay { background: #2a7a3a; }
 
@@ -379,7 +379,7 @@ nav .nav-cta {
   font-family: var(--serif);
   font-size: 1.05rem;
   line-height: 1.65;
-  color: #3a3935;
+  color: var(--ink-2);
   max-width: 420px;
 }
 
@@ -406,7 +406,7 @@ nav .nav-cta {
 .scope-item {
   font-family: var(--serif);
   font-size: 1rem;
-  color: #3a3935;
+  color: var(--ink-2);
   padding: 0.6rem 0;
   border-bottom: 1px solid var(--border);
   display: flex;
@@ -415,7 +415,7 @@ nav .nav-cta {
 }
 
 .scope-item::before {
-  content: '—';
+  content: '';
   color: var(--accent);
   font-family: var(--mono);
   font-size: 12px;
@@ -570,7 +570,7 @@ footer a:hover { color: var(--ink); }
   font-family: var(--serif);
   font-size: 1.1rem;
   line-height: 1.7;
-  color: #3a3935;
+  color: var(--ink-2);
 }
 
 .about-page-body p + p { margin-top: 1.4rem; }
@@ -858,7 +858,7 @@ footer a:hover { color: var(--ink); }
   display: inline-block;
 }
 
-.note-tag.cs-tag { background: #1a5fa8; }
+.note-tag.cs-tag { background: #2563a8; }
 
 /* ── Recent notes list ── */
 .notes-recent {
@@ -955,7 +955,7 @@ footer a:hover { color: var(--ink); }
   font-family: var(--serif);
   font-size: 1.08rem;
   line-height: 1.72;
-  color: #3a3935;
+  color: var(--ink-2);
 }
 
 .reader-body p + p { margin-top: 1.15rem; }
@@ -1446,14 +1446,14 @@ footer a:hover { color: var(--ink); }
   white-space: nowrap;
 }
 
-.car-pos-top { background: #1a5fa8; }
+.car-pos-top { background: #2563a8; }
 .car-pos-jgl { background: #2a7a3a; }
 .car-pos-mid { background: var(--ink); }
 .car-pos-adc { background: var(--accent); }
 .car-pos-sup { background: var(--muted); }
 
 .car-lg-lck   { background: var(--accent); }
-.car-lg-lec   { background: #1a5fa8; }
+.car-lg-lec   { background: #2563a8; }
 .car-lg-lcs   { background: #2a7a3a; }
 .car-lg-other { background: var(--ink); }
 
