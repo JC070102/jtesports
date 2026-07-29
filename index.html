@@ -49,12 +49,12 @@
         <div class="dsx-fact">
           <span class="dsx-fact-k">The widest role gap</span>
           <span class="dsx-fact-v">Middle</span>
-          <span class="dsx-fact-s">Knight +1.39 to Dire −1.24, the biggest best-to-worst spread of any role</span>
+          <span class="dsx-fact-s">Knight +36.8 to Tutsz −17.8, the biggest best-to-worst spread of any role</span>
         </div>
         <div class="dsx-fact">
           <span class="dsx-fact-k">The data's MVP</span>
           <span class="dsx-fact-v">Peyz</span>
-          <span class="dsx-fact-s">T1 ADC, best composite of the whole tournament</span>
+          <span class="dsx-fact-s">T1 ADC, the highest MSI-only CAR of the tournament</span>
         </div>
       </div>
     </div>
@@ -69,7 +69,8 @@
       <h2 class="dsx-h2">Best and worst, role by role</h2>
       <p class="dsx-p">Each radar is the player's shape against the rest of his role at MSI:
       the outer ring is two standard deviations above the field, the middle ring is the field's average.
-      The composite is an equal-weighted mean of the five axes.</p>
+      The axes are the components of that role's CAR formula, so this is the same model the
+      index runs, pointed at fifteen days of games instead of a season.</p>
     </div>
     <div class="dsx-role-grid" id="dsx-role-grid">
       <p class="dsx-loading">Loading the MSI dataset…</p>
@@ -79,7 +80,7 @@
   <section class="dsx-board">
     <div class="dsx-board-head">
       <h2 class="dsx-h2">The full field, ranked</h2>
-      <p class="dsx-p">Ranked by MSI-only composite, minimum 4 games: the top ten, then the bottom five.
+      <p class="dsx-p">Ranked by MSI-only CAR, minimum 4 games: the top ten, then the bottom five.
       A rank here is a claim about these fifteen days, nothing more, and nothing less.
       The middle of the pack lives in the CSV below.</p>
     </div>
@@ -1971,18 +1972,22 @@
      new CSV, and update the hero copy + facts in the markup.
      ══════════════════════════════════════════════ */
 
+  /* Bump DSX_V whenever the event dataset is regenerated: returning visitors
+     otherwise keep a cached CSV and the page silently renders stale numbers. */
+  const DSX_V = '2026-07-29';
   const DSX = {
-    dataUrl: 'data/msi2026_players.csv',
+    dataUrl: 'data/msi2026_players.csv?v=' + DSX_V,
     minGp: 4,
     roles: ['Top', 'Jungle', 'Middle', 'ADC', 'Support']
   };
 
   /* Short axis labels for the small role-card radars. */
   const DSX_SHORT = {
-    'Gold Efficiency': 'Gold', 'Early XP': 'XP', 'Teamfight Involvement': 'Fights',
-    'Damage Output': 'Damage', 'Survival': 'Survival', 'Early Pathing': 'Pathing',
-    'Laning': 'Laning', 'Damage Efficiency': 'Dmg/Gold', 'Kill Share': 'Kills',
-    'Ward Clearing': 'Sweeps', 'Vision Created': 'Vision', 'Mid-Game Gold': 'Mid Gold'
+    'Laning': 'Laning', 'Farm Share': 'Farm', 'Gold Share': 'Gold',
+    'Damage Efficiency': 'Dmg/Gold', 'Survival': 'Survival', 'Kill Share': 'Kills',
+    'Fight Presence': 'Fights', 'Tower Pressure': 'Towers',
+    'Ward Clearing': 'Sweeps', 'Control Wards': 'Ctrl Wards',
+    'Vision Created': 'Vision', 'Vision Control': 'Vision'
   };
 
   /* Hand-drawn SVG pentagon: rings at z = -1 / 0 / +1 / +2 (center = -2),
@@ -2030,6 +2035,12 @@
     return s + '</svg>';
   }
 
+  /* CAR prints to one decimal like the index; dsxScore stays 2dp for z-values. */
+  function dsxCar(v) {
+    const n = Number(v);
+    if (!isFinite(n)) return '';
+    return (n >= 0 ? '+' : '−') + Math.abs(n).toFixed(1);
+  }
   function dsxScore(v) {
     const n = Number(v);
     if (!isFinite(n)) return '';
@@ -2042,7 +2053,7 @@
       <span class="dsx-slot-tag ${tag === 'best' ? 'is-best' : 'is-worst'}">${tag === 'best' ? 'Played like the best' : 'Struggled the most'}</span>
       <h3 class="dsx-slot-name">${escapeHtml(r.player)}</h3>
       <div class="dsx-slot-meta">${escapeHtml(r.team)}, ${r.gp} games, ${r.wins}-${r.losses}</div>
-      <span class="dsx-slot-score ${dsxScoreClass(r.composite)}">${dsxScore(r.composite)} composite</span>
+      <span class="dsx-slot-score ${dsxScoreClass(r.car)}">${dsxCar(r.car)} CAR</span>
       <div class="dsx-slot-radar">${dsxRadarSVG(r.axes, { size: 220, variant: tag })}</div>
     </div>`;
   }
@@ -2075,7 +2086,7 @@
     if (mvp && fr) {
       fr.innerHTML = dsxRadarSVG(mvp.axes, { size: 380, variant: 'best', fullLabels: true });
       if (fc) fc.textContent = `${mvp.player}, ${mvp.team}. ${mvp.gp} games, ${mvp.wins}-${mvp.losses}, `
-        + `composite ${dsxScore(mvp.composite)}: the strongest five-axis shape of the tournament, `
+        + `CAR ${dsxCar(mvp.car)}: the strongest component shape of the tournament, `
         + `measured on MSI games alone.`;
     }
 
@@ -2106,10 +2117,10 @@
         <td>${r.gp}</td>
         <td>${r.wins}-${r.losses}</td>
         <td>${Number(r.kda).toFixed(2)}</td>
-        <td class="${dsxScoreClass(r.composite)} ${Number(r.composite) >= 0 ? 'dsx-val-pos' : 'dsx-val-neg'}">${dsxScore(r.composite)}</td>
+        <td class="${Number(r.car) >= 0 ? 'dsx-val-pos' : 'dsx-val-neg'}">${dsxCar(r.car)}</td>
       </tr>`;
       host.innerHTML = `<table>
-        <thead><tr><th>#</th><th>Player</th><th>Team</th><th>Role</th><th>GP</th><th>W-L</th><th>KDA</th><th>Composite</th></tr></thead>
+        <thead><tr><th>#</th><th>Player</th><th>Team</th><th>Role</th><th>GP</th><th>W-L</th><th>KDA</th><th>CAR</th></tr></thead>
         <tbody>
           ${top.map((r, i) => row(r, i)).join('')}
           <tr class="is-break"><td colspan="8">${hidden} players in the middle of the pack, all in the downloadable CSV.</td></tr>
@@ -2125,7 +2136,7 @@
     const pHost = document.getElementById('dsx-coord-picks');
     if (!dHost || !pHost || typeof Papa === 'undefined') return;
     try {
-      const res = await fetch('data/msi2026_isolated_deaths.csv');
+      const res = await fetch('data/msi2026_isolated_deaths.csv?v=' + DSX_V);
       if (!res.ok) throw new Error('fetch failed');
       const rows = (Papa.parse(await res.text(), { header: true, dynamicTyping: true, skipEmptyLines: true }).data || [])
         .filter(r => r && r.player);
