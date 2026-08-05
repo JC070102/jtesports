@@ -2,7 +2,22 @@
 
 Provenance and rebuild notes for every CSV in this folder. All data originates
 from the newmodel OE refresh pipeline (`newmodel/oe_refresh/`, daily refresh;
-this copy taken from the 2026-07-19 refresh).
+this copy covers games through **2026-08-05**).
+
+Refresh with `py tools/refresh_data.py <raw OE csv>`. That runs newmodel's own
+`filter_per_game.py` -- so the league whitelist, the LVP SL -> LES rename and
+the promo-bracket exclusions match the prediction pipeline exactly -- and then
+applies the exclusions that are specific to the index.
+
+**KeSPA Cup is excluded from the index.** newmodel maps `KeSPA Cup` -> `LCK`,
+which is correct for prediction (same organisations, informs team strength) and
+wrong for CAR. CAR is league-relative: z-scores and the replacement baseline are
+computed inside a (league, year) pool, so folding a short academy-heavy cup into
+the LCK season merges two competitions into one cohort. When the 43 cup games
+were included, a 6-game substitute support rated +78.9 -- above Chovy -- and
+Chovy moved 72.4 -> 58.9 purely because the pool he is measured against changed.
+If the cup is ever wanted on the site it should arrive as its own cohort, not
+merged into the season.
 
 | File | What it is | Source |
 |---|---|---|
