@@ -48,8 +48,8 @@
         </div>
         <div class="dsx-fact">
           <span class="dsx-fact-k">Best on a losing side</span>
-          <span class="dsx-fact-v">Caps</span>
-          <span class="dsx-fact-s">+31.4 CAR while G2 went out at 6-9, the rating a result sheet hides</span>
+          <span class="dsx-fact-v">Hizto</span>
+          <span class="dsx-fact-s">+34.6 CAR while Team Secret Whales went out at 3-7, the rating a result sheet hides</span>
         </div>
         <div class="dsx-fact">
           <span class="dsx-fact-k">The data's MVP</span>
@@ -408,9 +408,17 @@
       <p class="xpl-p">Raw stats reward players on winning teams and punish players on losing ones.
       So CAR is built almost entirely from numbers that <strong>cannot carry team level</strong>: a
       player's share of his own team's farm, gold or kills; his damage per unit of gold spent; his
-      warding measured against his own teammates'; and his lane result measured against the opponent
-      standing in front of him. A share cannot rise just because the team is winning, and a duel with
-      the enemy laner is a duel whoever else is on the map.</p>
+      share of the damage against his share of the dying; and his lane result measured against the
+      opponent standing in front of him. A share cannot rise just because the team is winning, and a
+      duel with the enemy laner is a duel whoever else is on the map.</p>
+      <p class="xpl-p">Where a share <em>is</em> shaped by circumstance, CAR scores it against
+      expectation instead of deleting it. A top laner on a team that barely touches towers will post
+      a huge slice of a tiny pie; one on a dominant team is buried in a big denominator. So tower
+      pressure is credited as <strong>output above what an average player would post with those same
+      teammates</strong> &mdash; the environment becomes the baseline, not the signal. And a stat only
+      earns a place in a formula if it moves with a player's own good and bad stretches: habits that
+      merely differ from player to player &mdash; however reliably &mdash; describe style, and stay
+      out of the score.</p>
       <p class="xpl-p">Every role is built separately, because the same statistic means different
       things in different seats. Gold difference at ten minutes is close to a clean duel result in the
       top lane and nearly meaningless in the bot lane, where two players and a jungler decide it.</p>
@@ -679,11 +687,14 @@
     z_GD10:           'Laning',
     'z_CS%P15':       'Farm Share',
     'z_GOLD%':        'Gold Share',
+    'z_DMG%':         'Damage Share',
     z_DMG_GOLD_ratio: 'Damage Efficiency',
+    z_DMG_DTH_ratio:  'Damage per Death',
     z_neg_DTH:        'Survival',
     z_KS_pct:         'Kill Share',
     z_KP:             'Fight Presence',
     z_TDPG_share:     'Tower Pressure',
+    z_TDPG_share_oe:  'Tower Pressure',
     z_WCPM_type3:     'Ward Clearing',
     z_CWPM_type3:     'Control Wards',
     z_WPM_type3:      'Vision Created'
@@ -693,10 +704,9 @@
      These are exactly the components each role's formula uses; a role only
      lists its own, so there are never missing-data gaps. */
   const ROLE_COMPONENTS = {
-    Top:     ['z_GD10', 'z_DMG_GOLD_ratio', 'z_TDPG_share'],
-    Jungle:  ['z_CSD10', 'z_GOLD%', 'z_DMG_GOLD_ratio', 'z_neg_DTH',
-              'z_WCPM_type3', 'z_CWPM_type3', 'z_WPM_type3'],
-    Middle:  ['z_CSD10', 'z_CS%P15', 'z_DMG_GOLD_ratio', 'z_neg_DTH', 'z_KS_pct'],
+    Top:     ['z_GD10', 'z_DMG_GOLD_ratio', 'z_TDPG_share_oe'],
+    Jungle:  ['z_CSD10', 'z_GOLD%', 'z_DMG_GOLD_ratio', 'z_neg_DTH'],
+    Middle:  ['z_CSD10', 'z_CS%P15', 'z_DMG_GOLD_ratio', 'z_neg_DTH'],
     ADC:     ['z_CSD10', 'z_CS%P15', 'z_DMG_GOLD_ratio', 'z_neg_DTH', 'z_KS_pct'],
     Support: ['z_GD10', 'z_WPM_type3', 'z_CWPM_type3', 'z_WCPM_type3',
               'z_neg_DTH', 'z_KP']
@@ -970,6 +980,7 @@
         <div class="car-stat"><span class="car-stat-label">CAR / G</span><span class="car-stat-val ${cargColorClass(r.WAR_per_game)}">${fmtSigned(r.WAR_per_game, 2)}</span></div>
         <div class="car-stat"><span class="car-stat-label">GP</span><span class="car-stat-val">${fmtNum(r.GP)}</span></div>
         <div class="car-stat"><span class="car-stat-label">CPS</span><span class="car-stat-val">${fmtNum(r.CPS, 2)}</span></div>
+        <div class="car-stat" title="Share of his team's damage divided by his share of its deaths. Both sides are shares of the same team totals, so team strength cannot inflate it. Above 1.00 = he produces more of the damage than he does the dying."><span class="car-stat-label">DMG / Death</span><span class="car-stat-val">${fmtNum(r.DMG_DTH_ratio, 2)}</span></div>
       </div>
       ${buildPcarCallout(r)}
       ${buildNotableHooks(r)}
@@ -1775,19 +1786,17 @@
   }
 
   // CAR component radar. Each role plots exactly the components its own formula
-  // uses, so the shape is the formula rather than a fixed pentagon: Top is a
-  // triangle, ADC and Middle pentagons, Support a hexagon, and Jungle collapses
-  // its three vision terms into one axis so the polygon stays readable.
+  // uses, so the shape is the formula rather than a fixed pentagon: Top a
+  // triangle, Middle and Jungle squares, ADC a pentagon, Support a hexagon.
   // Single-component axes take their label from Z_FRIENDLY; collapsed axes get
   // a vague label in the same house style.
   const RADAR_AXES = {
-    Top:     [['z_GD10'], ['z_DMG_GOLD_ratio'], ['z_TDPG_share']],
+    Top:     [['z_GD10'], ['z_DMG_GOLD_ratio'], ['z_TDPG_share_oe']],
     ADC:     [['z_CSD10'], ['z_CS%P15'], ['z_DMG_GOLD_ratio'], ['z_neg_DTH'], ['z_KS_pct']],
-    Middle:  [['z_CSD10'], ['z_CS%P15'], ['z_DMG_GOLD_ratio'], ['z_neg_DTH'], ['z_KS_pct']],
+    Middle:  [['z_CSD10'], ['z_CS%P15'], ['z_DMG_GOLD_ratio'], ['z_neg_DTH']],
     Support: [['z_GD10'], ['z_WPM_type3'], ['z_CWPM_type3'], ['z_WCPM_type3'],
               ['z_neg_DTH'], ['z_KP']],
-    Jungle:  [['z_CSD10'], ['z_GOLD%'], ['z_DMG_GOLD_ratio'], ['z_neg_DTH'],
-              { label: 'Vision Control', cols: ['z_WCPM_type3', 'z_CWPM_type3', 'z_WPM_type3'] }]
+    Jungle:  [['z_CSD10'], ['z_GOLD%'], ['z_DMG_GOLD_ratio'], ['z_neg_DTH']]
   };
 
   function radarValuesForPlayer(r) {
@@ -1974,7 +1983,7 @@
 
   /* Bump DSX_V whenever the event dataset is regenerated: returning visitors
      otherwise keep a cached CSV and the page silently renders stale numbers. */
-  const DSX_V = '2026-07-29';
+  const DSX_V = '2026-08-10';
   const DSX = {
     dataUrl: 'data/msi2026_players.csv?v=' + DSX_V,
     minGp: 4,
@@ -1984,6 +1993,7 @@
   /* Short axis labels for the small role-card radars. */
   const DSX_SHORT = {
     'Laning': 'Laning', 'Farm Share': 'Farm', 'Gold Share': 'Gold',
+    'Damage Share': 'Damage', 'Damage per Death': 'Dmg/Death',
     'Damage Efficiency': 'Dmg/Gold', 'Survival': 'Survival', 'Kill Share': 'Kills',
     'Fight Presence': 'Fights', 'Tower Pressure': 'Towers',
     'Ward Clearing': 'Sweeps', 'Control Wards': 'Ctrl Wards',
@@ -2105,7 +2115,10 @@
     // The board: top 10 + bottom 5.
     const host = document.getElementById('dsx-board-table');
     if (host) {
-      const ranked = qualified.slice().sort((a, b) => b.composite - a.composite);
+      // the cross-role board is the one surface whose prose says "ranked by
+      // CAR" — sort by CAR, not the composite (they differ across roles
+      // because CAR subtracts a per-role replacement level)
+      const ranked = qualified.slice().sort((a, b) => Number(b.car) - Number(a.car));
       const top = ranked.slice(0, 10);
       const bottom = ranked.slice(-5);
       const hidden = ranked.length - top.length - bottom.length;

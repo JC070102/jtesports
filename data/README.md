@@ -1,5 +1,13 @@
 # JTE data directory
 
+**2026-08-05 formula release.** Jungle (vision counts removed: they are
+personal habits, not performance — see `docs/BENCHMARKS.md` B6), Top
+(`TDPG_share_oe`: tower share scored against expectation given teammates'
+output, pooled frozen slopes in `engine/_OE_baselines.json` — refit with
+`py tools/fit_oe_baselines.py` after every data refresh, BEFORE the master
+build), Middle (KS_pct deleted: champion pool). `DMG_DTH_ratio` published as
+a standalone statistic. Event CSVs regenerated on the same engine.
+
 Provenance and rebuild notes for every CSV in this folder. All data originates
 from the newmodel OE refresh pipeline (`newmodel/oe_refresh/`, daily refresh;
 this copy covers games through **2026-08-05**).
