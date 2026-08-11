@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Purgatory Files · JTE</title>
+<meta name="description" content="Four players the standings buried in 2026, and the numbers that refuse to. DuDu, Jopa, Bvoy and DARKWINGS, read through the CAR Index.">
+<link rel="icon" type="image/svg+xml" href="../jte-logo.jpg">
+<link rel="stylesheet" href="../style.css?v=sp3">
+<link rel="stylesheet" href="../sp1.css?v=sp3">
+<link rel="stylesheet" href="../article.css?v=sp3">
+<link rel="stylesheet" href="../dissect.css?v=sp3">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+<style>
+/* ── The Purgatory Files: scoped riso-ledger graphics ── */
+.theme-purgatory { --art-accent: var(--accent); --art-accent-deep: #c9241a; }
+.pf-art { display:block; width:100%; height:auto; border:1.5px solid var(--ink);
+  box-shadow:6px 6px 0 rgba(35,44,110,.18); margin-bottom:1.6rem; background:var(--paper); }
+.pf-fig { border:1.5px solid var(--ink); background:var(--paper);
+  box-shadow:6px 6px 0 rgba(35,44,110,.14); padding:1.1rem 1.2rem 1rem; }
+.pf-fig + .pf-fig { margin-top:.9rem; }
+.pf-head { font-family:var(--display); font-weight:700; font-size:.82rem;
+  letter-spacing:.08em; text-transform:uppercase; color:var(--ink);
+  display:flex; justify-content:space-between; gap:1rem; margin-bottom:.75rem; }
+.pf-head .pf-head-r { color:var(--muted); font-weight:500; letter-spacing:.04em; text-transform:none; }
+.pf-rows { display:flex; flex-direction:column; gap:.42rem; }
+.pf-row { display:grid; grid-template-columns:7.2rem 1fr 3.6rem; align-items:center; gap:.7rem; }
+.pf-row .pf-name { font-family:var(--mono); font-size:.8rem; color:var(--ink);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pf-row .pf-name small { color:var(--muted); font-size:.68rem; display:block; line-height:1.1; }
+.pf-track { position:relative; height:14px; background:rgba(35,44,110,.07); }
+.pf-bar { position:absolute; top:0; bottom:0; left:0; background:var(--ink); }
+.pf-bar.neg { background:transparent; border:1.2px solid var(--muted); }
+.pf-row.hot .pf-name { font-weight:500; color:var(--art-accent-deep); }
+.pf-row.hot .pf-bar { background:var(--accent); box-shadow:2px 2px 0 rgba(35,44,110,.35); }
+.pf-row.hot .pf-bar.neg { background:rgba(244,51,37,.12); border-color:var(--accent); }
+.pf-val { font-family:var(--mono); font-size:.8rem; text-align:right; color:var(--ink); }
+.pf-val.pos { color:#0c7c53; } .pf-val.neg { color:var(--art-accent-deep); }
+.pf-row.hot .pf-val { font-weight:500; }
+.pf-zero { border-top:1px dashed var(--border); margin:.5rem 0 .45rem;
+  font-family:var(--mono); font-size:.62rem; color:var(--muted); padding-top:.15rem; }
+.pf-trio { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.9rem; }
+@media (max-width:900px){ .pf-trio { grid-template-columns:1fr; } }
+.pf-trio .pf-fig { box-shadow:4px 4px 0 rgba(35,44,110,.14); padding:.8rem .8rem .7rem; }
+.pf-trio .pf-row { grid-template-columns:5.6rem 1fr 2.9rem; gap:.4rem; }
+.pf-trio .pf-val { font-size:.72rem; }
+.pf-trio .pf-award { display:block; width:max-content; margin:.18rem 0 0; }
+.pf-trio .pf-name { white-space:normal; line-height:1.2; }
+.pf-award { font-family:var(--mono); font-size:.62rem; color:var(--paper);
+  background:var(--accent); padding:.1rem .35rem; margin-left:.4rem; letter-spacing:.05em; }
+.pf-duo { display:grid; grid-template-columns:1fr 1fr; gap:.9rem; }
+@media (max-width:640px){ .pf-duo { grid-template-columns:1fr; } }
+.pf-table { width:100%; border-collapse:collapse; font-family:var(--mono); font-size:.78rem; }
+.pf-table th { text-align:left; font-weight:500; color:var(--muted); font-size:.66rem;
+  text-transform:uppercase; letter-spacing:.08em; padding:.25rem .4rem .35rem; border-bottom:1px solid var(--ink); }
+.pf-table td { padding:.32rem .4rem; border-bottom:1px solid var(--border); color:var(--ink); }
+.pf-table td.r, .pf-table th.r { text-align:right; }
+.pf-game { display:grid; grid-template-columns:9.5rem 1fr; gap:1rem 1.2rem; align-items:start; }
+@media (max-width:560px){ .pf-game { grid-template-columns:1fr; } }
+.pf-game + .pf-game { margin-top:1rem; padding-top:1rem; border-top:1px dashed var(--border); }
+.pf-game-tag { font-family:var(--display); font-weight:700; font-size:1rem; color:var(--ink); line-height:1.25; }
+.pf-game-tag em { font-style:normal; color:var(--art-accent-deep); }
+.pf-game-tag small { display:block; font-family:var(--mono); font-weight:400;
+  font-size:.66rem; color:var(--muted); margin-top:.2rem; }
+.pf-gauges { display:flex; flex-direction:column; gap:.55rem; }
+.pf-gauge-label { display:flex; justify-content:space-between; font-family:var(--mono);
+  font-size:.68rem; color:var(--muted); margin-bottom:.2rem; }
+.pf-gauge-label b { color:var(--ink); font-weight:500; }
+.pf-gauge { position:relative; height:16px; background:rgba(35,44,110,.07); }
+.pf-gauge .fill { position:absolute; top:0; bottom:0; left:0; background:var(--accent); }
+.pf-gauge .tick { position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--ink); }
+.pf-gauge .tick.p90 { background:var(--ink); opacity:.45; }
+.pf-ticknote { font-family:var(--mono); font-size:.62rem; color:var(--muted); margin-top:.3rem; }
+.pf-ledger { display:grid; grid-template-columns:1fr 1fr; gap:.9rem; }
+@media (max-width:640px){ .pf-ledger { grid-template-columns:1fr; } }
+.pf-ledger-cell { border:1.5px solid var(--ink); padding:1rem 1.1rem; background:var(--paper); }
+.pf-ledger-cell.hot { background:rgba(244,51,37,.06); }
+.pf-big { font-family:var(--display); font-weight:800; font-size:2.6rem; line-height:1; color:var(--ink); }
+.pf-ledger-cell.hot .pf-big { color:var(--art-accent-deep); }
+.pf-big-sub { font-family:var(--mono); font-size:.72rem; color:var(--muted); margin-top:.45rem; line-height:1.5; }
+.pf-chips { display:flex; flex-wrap:wrap; gap:.35rem .5rem; margin-top:.6rem; }
+.pf-chip { font-family:var(--mono); font-size:.66rem; border:1px solid var(--border);
+  color:var(--muted); padding:.12rem .4rem; }
+.pf-chip b { color:var(--ink); font-weight:500; }
+.pf-chip.hot { border-color:var(--accent); color:var(--art-accent-deep); }
+.pf-chip.hot b { color:var(--art-accent-deep); }
+</style>
+</head>
+<body class="theme-purgatory">
+
+<header class="mast">
+  <a class="wordmark" href="../">JT<span>E</span></a>
+  <span class="mast-tag">Every number here has an opinion.</span>
+  <a href="https://twitter.com/jt_esports" class="mast-x" target="_blank">Twitter / X ↗</a>
+</header>
+<nav>
+  <ul>
+    <li><a href="../">Home</a></li>
+    <li><a href="../index">Index</a></li>
+    <li><a href="../charts">Charts</a></li>
+    <li><a href="../stories">Stories</a></li>
+    <li><a href="../what-is-car">What is CAR</a></li>
+    <li><a href="../about">About</a></li>
+  </ul>
+</nav>
+
+<article class="article-wrap">
+
+  <header class="article-masthead">
+    <svg class="pf-art" viewBox="0 0 1200 520" role="img" aria-label="Abstract riso print: a red spotlight beam cutting across a field of ink dots, one dot lit inside the beam">
+      <defs>
+        <pattern id="pf-half" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(8)">
+          <circle cx="6" cy="6" r="2.1" fill="#232c6e" opacity="0.22"/>
+        </pattern>
+        <pattern id="pf-half-fine" width="15" height="15" patternUnits="userSpaceOnUse" patternTransform="rotate(-4)">
+          <circle cx="4" cy="4" r="1.2" fill="#232c6e" opacity="0.16"/>
+        </pattern>
+        <filter id="pf-grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="n"/>
+          <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.14  0 0 0 0 0.17  0 0 0 0 0.43  0 0 0 0.05 0"/>
+          <feComposite operator="over" in2="SourceGraphic"/></filter>
+      </defs>
+      <rect width="1200" height="520" fill="#f1f0ea"/>
+      <rect width="1200" height="520" fill="url(#pf-half-fine)"/>
+      <rect y="330" width="1200" height="190" fill="url(#pf-half)"/>
+      <!-- misregistered beam: ink pass offset under the red pass -->
+      <polygon points="118,-20 208,-20 566,520 306,520" fill="#232c6e" opacity="0.28" transform="translate(9,4)"/>
+      <polygon points="118,-20 208,-20 566,520 306,520" fill="#f43325" opacity="0.82"/>
+      <!-- the crowd: unlit ink dots along the floor -->
+      <g fill="#232c6e">
+        <circle cx="70"  cy="452" r="7"/><circle cx="132" cy="470" r="5.4"/><circle cx="187" cy="447" r="6.2"/>
+        <circle cx="255" cy="468" r="4.6"/><circle cx="612" cy="455" r="6.6"/><circle cx="668" cy="472" r="4.8"/>
+        <circle cx="731" cy="450" r="7.2"/><circle cx="795" cy="468" r="5.2"/><circle cx="852" cy="449" r="6"/>
+        <circle cx="918" cy="470" r="4.4"/><circle cx="974" cy="452" r="6.8"/><circle cx="1038" cy="468" r="5"/>
+        <circle cx="1096" cy="448" r="6.4"/><circle cx="1158" cy="466" r="4.6"/><circle cx="540" cy="470" r="4.2"/>
+      </g>
+      <!-- the one the beam finds: red pass misregistered off the ink ring -->
+      <circle cx="425" cy="452" r="16" fill="none" stroke="#232c6e" stroke-width="2.5"/>
+      <circle cx="430" cy="448" r="12.5" fill="#f43325"/>
+      <circle cx="425" cy="452" r="3.2" fill="#f1f0ea"/>
+      <!-- floor rule, double-struck -->
+      <rect x="40" y="492" width="1120" height="2.5" fill="#232c6e"/>
+      <rect x="44" y="497" width="1120" height="1.2" fill="#f43325" opacity="0.75"/>
+      <rect width="1200" height="520" filter="url(#pf-grain)" opacity="0.5" fill="none"/>
+    </svg>
+    <div class="am-kicker"><span class="am-tag">LCK</span><span class="am-tag">LEC</span><span class="am-tag">LCS</span><span>Player spotlights · 2026</span></div>
+    <h1 class="am-title">The Purgatory Files</h1>
+    <p class="am-dek">Four players the standings buried in 2026, and the numbers that refuse to. DuDu, Jopa, Bvoy and DARKWINGS, read through the CAR Index.</p>
+    <div class="am-byline">By <strong>JTE</strong> · The CAR Index · August 2026</div>
+  </header>
+
+  <div class="article-body">
+
+    <p>One of the most difficult aspects of League esports is determining individual skill and prospect level in such a team-confounded game. In basketball, through the box scores and eye tests of isolated matchups, the MVP is calibrated to near-consensus unless there is a legitimate race in contention. Shai Gilgeous-Alexander is a reigning two-time MVP because he is averaging ~32 ppg, and is the main driver behind a dominant OKC offense. It is not a discussion on whether or not any of that is true, they are clear facts that could be seen by a first-time watcher.</p>
+
+    <div class="a-kicker">00 · The awards problem</div>
+
+    <p>In the LCK, they are notorious for giving end-of-year awards in a monotonic fashion driven by teams and not players. The most infamous example is KT Rolster in 2023, where their full roster had been awarded 1st Team All-Pro. Aiming was above Gumayusi and Viper, Lehends was above Keria and Delight, Bdd was above Chovy, all of these selections retrospectively look ridiculous. Below are the chart comparisons of these players and their 2023 CAR to refresh memories.</p>
+
+    <figure class="a-figure a-figure--chart">
+      <div class="pf-trio">
+        <div class="pf-fig">
+          <div class="pf-head">ADC <span class="pf-head-r">CAR · LCK 2023</span></div>
+          <div class="pf-rows">
+            <div class="pf-row hot"><span class="pf-name">Aiming<span class="pf-award">1ST TEAM</span></span><span class="pf-track"><span class="pf-bar" style="width:45%"></span></span><span class="pf-val">+19.6</span></div>
+            <div class="pf-row"><span class="pf-name">Gumayusi</span><span class="pf-track"><span class="pf-bar" style="width:66.1%"></span></span><span class="pf-val">+28.8</span></div>
+            <div class="pf-row"><span class="pf-name">Viper</span><span class="pf-track"><span class="pf-bar" style="width:61.5%"></span></span><span class="pf-val">+26.8</span></div>
+          </div>
+        </div>
+        <div class="pf-fig">
+          <div class="pf-head">Support <span class="pf-head-r">CAR · LCK 2023</span></div>
+          <div class="pf-rows">
+            <div class="pf-row hot"><span class="pf-name">Lehends<span class="pf-award">1ST TEAM</span></span><span class="pf-track"><span class="pf-bar" style="width:0.6%"></span></span><span class="pf-val">0.0</span></div>
+            <div class="pf-row"><span class="pf-name">Keria</span><span class="pf-track"><span class="pf-bar" style="width:87.9%"></span></span><span class="pf-val">+38.3</span></div>
+            <div class="pf-row"><span class="pf-name">Delight</span><span class="pf-track"><span class="pf-bar" style="width:27.3%"></span></span><span class="pf-val">+11.9</span></div>
+          </div>
+        </div>
+        <div class="pf-fig">
+          <div class="pf-head">Mid <span class="pf-head-r">CAR · LCK 2023</span></div>
+          <div class="pf-rows">
+            <div class="pf-row hot"><span class="pf-name">Bdd<span class="pf-award">1ST TEAM</span></span><span class="pf-track"><span class="pf-bar" style="width:27.2%"></span></span><span class="pf-val">+11.9</span></div>
+            <div class="pf-row"><span class="pf-name">Chovy</span><span class="pf-track"><span class="pf-bar" style="width:100%"></span></span><span class="pf-val">+43.6</span></div>
+          </div>
+        </div>
+      </div>
+      <figcaption class="a-fignote">The 2023 All-Pro autopsy. Red rows took 1st Team All-Pro; the bars are full-year CAR, all bars on one scale. Lehends is not a rounding error: his CAR is 0.0 exactly, the definition of a replacement-level season, in the year he was voted the league's best support.</figcaption>
+    </figure>
+
+    <p>This is an extreme case study though, in reality it is just nearly impossible to properly dissect performance while removing team environment from the equation. That is what CAR and my work with the website are doing, but there will never be efficiency in its mission as high as mainstream sports like baseball or basketball. In this attempt at finding underrated players across the leagues, I am going to utilize CAR along with my own viewing as someone who is high-rated and watches all of the leagues.</p>
+
+    <div class="a-kicker">01 · DuDu, the headline case</div>
+
+    <p>The first and most important player I must stress and give kudos to is DuDu. In raw CAR he is sitting only behind Zeus among LCK tops this year, while being on easily the worst team in the league. This does not translate to him necessarily being the second best top laner, but it does mean he is finding significant leverage in lanes and contributes optimally. Below is a graphic showing his laning stats, a feat in itself to have on such a horrendous team.</p>
+
+    <figure class="a-figure a-figure--chart">
+      <div class="pf-fig">
+        <div class="pf-head">Top laners by CAR <span class="pf-head-r">LCK 2026 · 25+ games</span></div>
+        <div class="pf-rows">
+          <div class="pf-row"><span class="pf-name">Zeus<small>Hanwha Life</small></span><span class="pf-track"><span class="pf-bar" style="width:100%"></span></span><span class="pf-val pos">+53.3</span></div>
+          <div class="pf-row hot"><span class="pf-name">DuDu<small>DN SOOPers</small></span><span class="pf-track"><span class="pf-bar" style="width:80.3%"></span></span><span class="pf-val pos">+42.8</span></div>
+          <div class="pf-row"><span class="pf-name">Kiin<small>Gen.G</small></span><span class="pf-track"><span class="pf-bar" style="width:77.9%"></span></span><span class="pf-val pos">+41.5</span></div>
+          <div class="pf-row"><span class="pf-name">PerfecT<small>KT Rolster</small></span><span class="pf-track"><span class="pf-bar" style="width:55%"></span></span><span class="pf-val pos">+29.3</span></div>
+          <div class="pf-row"><span class="pf-name">Rich<small>Kiwoom DRX</small></span><span class="pf-track"><span class="pf-bar" style="width:49%"></span></span><span class="pf-val pos">+26.1</span></div>
+          <div class="pf-row"><span class="pf-name">Siwoo<small>Dplus Kia</small></span><span class="pf-track"><span class="pf-bar" style="width:45.2%"></span></span><span class="pf-val pos">+24.1</span></div>
+          <div class="pf-row"><span class="pf-name">Casting<small>HANJIN BRION</small></span><span class="pf-track"><span class="pf-bar" style="width:23.6%"></span></span><span class="pf-val pos">+12.6</span></div>
+        </div>
+        <div class="pf-zero">below replacement</div>
+        <div class="pf-rows">
+          <div class="pf-row"><span class="pf-name">Kingen<small>Nongshim</small></span><span class="pf-track"><span class="pf-bar neg" style="width:7.9%"></span></span><span class="pf-val neg">-4.2</span></div>
+          <div class="pf-row"><span class="pf-name">Doran<small>T1</small></span><span class="pf-track"><span class="pf-bar neg" style="width:9.9%"></span></span><span class="pf-val neg">-5.3</span></div>
+          <div class="pf-row"><span class="pf-name">Clear<small>BNK FEARX</small></span><span class="pf-track"><span class="pf-bar neg" style="width:15.9%"></span></span><span class="pf-val neg">-8.4</span></div>
+        </div>
+      </div>
+      <figcaption class="a-fignote">DN SOOPers won 26.7% of their games this year, last in the league by a distance. The names either side of him, Zeus and Kiin, play for two of the league's top three teams.</figcaption>
+    </figure>
+
+    <figure class="a-figure a-figure--chart">
+      <div class="pf-fig">
+        <div class="pf-head">Laning, within the role <span class="pf-head-r">z-score vs LCK tops · tower pressure beside</span></div>
+        <div class="pf-rows">
+          <div class="pf-row"><span class="pf-name">Zeus</span><span class="pf-track"><span class="pf-bar" style="width:95.7%"></span></span><span class="pf-val">+1.34</span></div>
+          <div class="pf-row"><span class="pf-name">Kiin</span><span class="pf-track"><span class="pf-bar" style="width:84.3%"></span></span><span class="pf-val">+1.18</span></div>
+          <div class="pf-row"><span class="pf-name">PerfecT</span><span class="pf-track"><span class="pf-bar" style="width:77.9%"></span></span><span class="pf-val">+1.09</span></div>
+          <div class="pf-row hot"><span class="pf-name">DuDu</span><span class="pf-track"><span class="pf-bar" style="width:54.3%"></span></span><span class="pf-val">+0.76</span></div>
+          <div class="pf-row"><span class="pf-name">Siwoo</span><span class="pf-track"><span class="pf-bar" style="width:25.7%"></span></span><span class="pf-val">+0.36</span></div>
+          <div class="pf-row"><span class="pf-name">Casting</span><span class="pf-track"><span class="pf-bar neg" style="width:3.6%"></span></span><span class="pf-val">-0.05</span></div>
+          <div class="pf-row"><span class="pf-name">Rich</span><span class="pf-track"><span class="pf-bar neg" style="width:69.3%"></span></span><span class="pf-val">-0.97</span></div>
+          <div class="pf-row"><span class="pf-name">Kingen</span><span class="pf-track"><span class="pf-bar neg" style="width:97.1%"></span></span><span class="pf-val">-1.36</span></div>
+        </div>
+        <div class="pf-chips">
+          <span class="pf-chip">Tower pressure z, same cohort:</span>
+          <span class="pf-chip hot"><b>DuDu +1.17</b></span>
+          <span class="pf-chip"><b>Kiin +1.15</b></span>
+          <span class="pf-chip"><b>Doran +0.62</b></span>
+          <span class="pf-chip"><b>Casting +0.56</b></span>
+          <span class="pf-chip"><b>Siwoo +0.40</b></span>
+          <span class="pf-chip"><b>Zeus +0.39</b></span>
+        </div>
+      </div>
+      <figcaption class="a-fignote">Bars are gold-diff-at-10 z-scores against the opposing top laner, the cleanest duel stat the game gives us. Every player above DuDu here has a winning team behind him. The chips are Tower Pressure, output scored against what an average top would post with the same teammates: DuDu leads every LCK top on it.</figcaption>
+    </figure>
+
+    <p>An interesting facet to his game is that he is not selfish draft-wise either, compare the shape of his champion pool to a player like Zeus, he is blinding champs like Ambessa or K'Sante and still finding room for advantages in lanes. Thinking about roster changes and where DuDu could improve teams the most and contested top spots in the LCK, T1 will not replace Doran with him but it would basically be a strict improvement to them. Nongshim would also be interesting because Kingen is a more volatile laner than DuDu, and if they did change top laner it would give Diable more draft space and strong-side him.</p>
+
+    <figure class="a-figure a-figure--chart">
+      <div class="pf-duo">
+        <div class="pf-fig">
+          <div class="pf-head">DuDu's pool <span class="pf-head-r">LCK 2026</span></div>
+          <table class="pf-table">
+            <tr><th>Champion</th><th class="r">Games</th><th class="r">GD@10</th></tr>
+            <tr><td>Ambessa</td><td class="r">10</td><td class="r">+13</td></tr>
+            <tr><td>Rumble</td><td class="r">9</td><td class="r">+376</td></tr>
+            <tr><td>Renekton</td><td class="r">8</td><td class="r">+178</td></tr>
+            <tr><td>K'Sante</td><td class="r">7</td><td class="r">-191</td></tr>
+            <tr><td>Gwen</td><td class="r">6</td><td class="r">-190</td></tr>
+          </table>
+        </div>
+        <div class="pf-fig">
+          <div class="pf-head">Zeus's pool <span class="pf-head-r">LCK 2026</span></div>
+          <table class="pf-table">
+            <tr><th>Champion</th><th class="r">Games</th><th class="r">GD@10</th></tr>
+            <tr><td>Gnar</td><td class="r">10</td><td class="r">+234</td></tr>
+            <tr><td>Rumble</td><td class="r">7</td><td class="r">+204</td></tr>
+            <tr><td>Jayce</td><td class="r">7</td><td class="r">+537</td></tr>
+            <tr><td>Yorick</td><td class="r">6</td><td class="r">-49</td></tr>
+            <tr><td>Sion</td><td class="r">6</td><td class="r">+142</td></tr>
+          </table>
+        </div>
+      </div>
+      <figcaption class="a-fignote">Most-played champions with average gold diff at 10 on each. DuDu's Ambessa and K'Sante picks are the classic early-draft blind champions of this meta; the pool of a player who takes the flexible pick early and hands the counter to his teammates.</figcaption>
+    </figure>
+
+    <div class="a-kicker">02 · Jopa, before the market notices</div>
+
+    <p>Moving on to the LEC, Jopa is who I have my eyes on for next year and where he will land. In the CAR tables, he is sitting third among the league's ADCs and is mainly derived from his ability to consistently fulfill his carry duties on SK. Mikyx and the band of his siesta have many weaknesses, especially as games progress, so once Jopa gets in a more stable environment his playstyle may be uncertain.</p>
+
+    <figure class="a-figure a-figure--chart">
+      <div class="pf-fig">
+        <div class="pf-head">ADCs by CAR <span class="pf-head-r">LEC 2026 · 25+ games</span></div>
+        <div class="pf-rows">
+          <div class="pf-row"><span class="pf-name">Upset<small>Fnatic</small></span><span class="pf-track"><span class="pf-bar" style="width:100%"></span></span><span class="pf-val pos">+30.5</span></div>
+          <div class="pf-row"><span class="pf-name">Hans Sama<small>G2</small></span><span class="pf-track"><span class="pf-bar" style="width:79.3%"></span></span><span class="pf-val pos">+24.2</span></div>
+          <div class="pf-row hot"><span class="pf-name">Jopa<small>SK Gaming</small></span><span class="pf-track"><span class="pf-bar" style="width:63.9%"></span></span><span class="pf-val pos">+19.5</span></div>
+          <div class="pf-row"><span class="pf-name">Caliste<small>Karmine Corp</small></span><span class="pf-track"><span class="pf-bar" style="width:49.9%"></span></span><span class="pf-val pos">+15.2</span></div>
+          <div class="pf-row"><span class="pf-name">Supa<small>Movistar KOI</small></span><span class="pf-track"><span class="pf-bar" style="width:19.6%"></span></span><span class="pf-val pos">+6.0</span></div>
+          <div class="pf-row"><span class="pf-name">SamD<small>Natus Vincere</small></span><span class="pf-track"><span class="pf-bar" style="width:14.7%"></span></span><span class="pf-val pos">+4.5</span></div>
+          <div class="pf-row"><span class="pf-name">Paduck<small>Shifters</small></span><span class="pf-track"><span class="pf-bar" style="width:0.8%"></span></span><span class="pf-val">+0.3</span></div>
+        </div>
+        <div class="pf-zero">below replacement</div>
+        <div class="pf-rows">
+          <div class="pf-row"><span class="pf-name">Carzzy<small>Vitality</small></span><span class="pf-track"><span class="pf-bar neg" style="width:0.4%"></span></span><span class="pf-val neg">-0.1</span></div>
+          <div class="pf-row"><span class="pf-name">Ice<small>Heretics</small></span><span class="pf-track"><span class="pf-bar neg" style="width:17.5%"></span></span><span class="pf-val neg">-5.3</span></div>
+          <div class="pf-row"><span class="pf-name">Noah<small>GiantX</small></span><span class="pf-track"><span class="pf-bar neg" style="width:45.4%"></span></span><span class="pf-val neg">-13.8</span></div>
+        </div>
+        <div class="pf-chips">
+          <span class="pf-chip">The SK environment, by CAR:</span>
+          <span class="pf-chip"><b>Mikyx +25.1</b></span>
+          <span class="pf-chip hot"><b>Jopa +19.5</b></span>
+          <span class="pf-chip"><b>Wunder +12.1</b></span>
+          <span class="pf-chip"><b>LIDER -0.3</b></span>
+          <span class="pf-chip"><b>Skeanz -0.8</b></span>
+        </div>
+      </div>
+      <figcaption class="a-fignote">Third among LEC ADCs from a roster sitting 8th of ten, and the chips show the environment he does it in: two of SK's five sit at or below replacement. Supa, the man he should replace, sits thirteen and a half points of CAR below him.</figcaption>
+    </figure>
+
+    <div class="a-kicker">03 · Bvoy, the rock in the flood</div>
+
+    <p>For the LCS there are two players I have in mind who deserve better opportunities and hold plentiful potential. One of these players is on a perilous, disastrous roster that holds zero hope due to the talent surrounding him, while the other has more talent but is still immature in his skill floor. The first being Bvoy, who everyone knows for his Ezreal and his consistency to stay afloat while the rest of SR sinks, has been the main engine for Shopify up until recently. One series summarizes the anatomy of his team, versus FLY in spring.</p>
+
+    <p>Game 1, he is playing his signature Ezreal. He drops a 1400 damage/min BOMB, 45% damage share, he is almost SINGLE-HANDEDLY winning teamfights while Contractz is throwing the game away. If you are not stats-pilled but understand those values, you would still express how hard it is to reach those exact figures even on champions like Ezreal. Anyways, he loses this one.</p>
+
+    <p>Game 2, they are down nearly 3,500 gold by 15 minutes. Berserker could not handle this level of emotional abuse, but Bvoy is a rock. Bvoy tells his team to not panic while he clears Massu and Cryogen every other wave on mid lane. Bvoy carries this game to a win with another 1400 damage/min AND 40% damage share on Corki.</p>
+
+    <figure class="a-figure a-figure--chart">
+      <div class="pf-fig">
+        <div class="pf-head">The FLY series, game by game <span class="pf-head-r">SR vs FlyQuest · 2026-05-03</span></div>
+        <div class="pf-game">
+          <div class="pf-game-tag">G1 · Ezreal<small>result: <em>loss</em></small></div>
+          <div class="pf-gauges">
+            <div>
+              <div class="pf-gauge-label"><span>Damage per minute</span><b>1,400</b></div>
+              <div class="pf-gauge"><span class="fill" style="width:87.5%"></span><span class="tick" style="left:46.7%"></span><span class="tick p90" style="left:70.3%"></span></div>
+            </div>
+            <div>
+              <div class="pf-gauge-label"><span>Damage share</span><b>45.4%</b></div>
+              <div class="pf-gauge"><span class="fill" style="width:90.8%"></span><span class="tick" style="left:55.8%"></span><span class="tick p90" style="left:73.2%"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="pf-game">
+          <div class="pf-game-tag">G2 · Corki<small>result: <em>win</em>, from -3,488 gold at 15:00</small></div>
+          <div class="pf-gauges">
+            <div>
+              <div class="pf-gauge-label"><span>Damage per minute</span><b>1,488</b></div>
+              <div class="pf-gauge"><span class="fill" style="width:93%"></span><span class="tick" style="left:46.7%"></span><span class="tick p90" style="left:70.3%"></span></div>
+            </div>
+            <div>
+              <div class="pf-gauge-label"><span>Damage share</span><b>40.6%</b></div>
+              <div class="pf-gauge"><span class="fill" style="width:81.2%"></span><span class="tick" style="left:55.8%"></span><span class="tick p90" style="left:73.2%"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="pf-ticknote">Solid tick: the average LCS ADC game this season (747 DPM, 27.9% share). Faded tick: the 90th percentile (1,125 DPM, 36.6%). Both of Bvoy's games clear the 90th percentile on both axes.</div>
+      </div>
+      <figcaption class="a-fignote">From the Oracle's Elixir per-game rows. Two games, both beyond the 90th percentile of every ADC performance in the league this year, one of them dragged back from a 3.5k hole. He got one win for it.</figcaption>
+    </figure>
+
+    <div class="a-kicker">04 · DARKWINGS, over-converting</div>
+
+    <p>The second player I want to highlight is DARKWINGS, he currently ranks first among LCS mids in CAR, driven through his damage efficiency that measures his output based on the resources given to him. For DARKWINGS to be this high league-wise, that means he is over-converting the level of resources that are given to him.</p>
+
+    <figure class="a-figure a-figure--chart">
+      <div class="pf-fig">
+        <div class="pf-head">Mids by CAR <span class="pf-head-r">LCS 2026 · 25+ games · damage efficiency beside</span></div>
+        <div class="pf-rows">
+          <div class="pf-row hot"><span class="pf-name">DARKWINGS<small>Sentinels</small></span><span class="pf-track"><span class="pf-bar" style="width:100%"></span></span><span class="pf-val pos">+18.7</span></div>
+          <div class="pf-row"><span class="pf-name">Quad<small>FlyQuest</small></span><span class="pf-track"><span class="pf-bar" style="width:94%"></span></span><span class="pf-val pos">+17.6</span></div>
+          <div class="pf-row"><span class="pf-name">Quid<small>Team Liquid</small></span><span class="pf-track"><span class="pf-bar" style="width:90.4%"></span></span><span class="pf-val pos">+16.9</span></div>
+          <div class="pf-row"><span class="pf-name">Callme<small>Disguised</small></span><span class="pf-track"><span class="pf-bar" style="width:42.8%"></span></span><span class="pf-val pos">+8.0</span></div>
+          <div class="pf-row"><span class="pf-name">Saint<small>LYON</small></span><span class="pf-track"><span class="pf-bar" style="width:22%"></span></span><span class="pf-val pos">+4.1</span></div>
+          <div class="pf-row"><span class="pf-name">Zinie<small>Shopify</small></span><span class="pf-track"><span class="pf-bar" style="width:0.5%"></span></span><span class="pf-val">+0.1</span></div>
+        </div>
+        <div class="pf-zero">below replacement</div>
+        <div class="pf-rows">
+          <div class="pf-row"><span class="pf-name">APA<small>Cloud9</small></span><span class="pf-track"><span class="pf-bar neg" style="width:0.8%"></span></span><span class="pf-val neg">-0.2</span></div>
+          <div class="pf-row"><span class="pf-name">Palafox<small>Dignitas</small></span><span class="pf-track"><span class="pf-bar neg" style="width:3.8%"></span></span><span class="pf-val neg">-0.7</span></div>
+        </div>
+        <div class="pf-chips">
+          <span class="pf-chip">Damage efficiency z, same cohort:</span>
+          <span class="pf-chip hot"><b>DARKWINGS +1.24</b></span>
+          <span class="pf-chip"><b>Quid +1.04</b></span>
+          <span class="pf-chip"><b>Quad +0.92</b></span>
+          <span class="pf-chip"><b>APA +0.49</b></span>
+          <span class="pf-chip"><b>Saint +0.32</b></span>
+        </div>
+      </div>
+      <figcaption class="a-fignote">Damage efficiency is damage share over gold share: output per unit of resources actually given. DARKWINGS leads the mid cohort on it: more damage out of every unit of gold than any mid in the league.</figcaption>
+    </figure>
+
+    <p>The key part to inspect for Sentinels is that Impact is one of the worst laners this year, meaning DARKWINGS needs to both act as a win-condition as well as cover the map when he has priority. Compare this job to someone like Saint or Quid who tend to have winning side lanes, their jobs are relaxed and oriented around supporting plays that come to them.</p>
+
+    <figure class="a-figure a-figure--chart">
+      <div class="pf-fig">
+        <div class="pf-head">Top-lane laning, within the role <span class="pf-head-r">z-score vs LCS tops · 25+ games</span></div>
+        <div class="pf-rows">
+          <div class="pf-row"><span class="pf-name">Castle<small>Disguised</small></span><span class="pf-track"><span class="pf-bar" style="width:100%"></span></span><span class="pf-val">+0.81</span></div>
+          <div class="pf-row"><span class="pf-name">Thanatos<small>Cloud9</small></span><span class="pf-track"><span class="pf-bar" style="width:80.2%"></span></span><span class="pf-val">+0.65</span></div>
+          <div class="pf-row"><span class="pf-name">Morgan<small>Team Liquid</small></span><span class="pf-track"><span class="pf-bar" style="width:43.2%"></span></span><span class="pf-val">+0.35</span></div>
+          <div class="pf-row"><span class="pf-name">Gakgos<small>FlyQuest</small></span><span class="pf-track"><span class="pf-bar neg" style="width:3.7%"></span></span><span class="pf-val">-0.03</span></div>
+          <div class="pf-row"><span class="pf-name">Fudge<small>Shopify</small></span><span class="pf-track"><span class="pf-bar neg" style="width:13.6%"></span></span><span class="pf-val">-0.11</span></div>
+          <div class="pf-row"><span class="pf-name">Dhokla<small>LYON</small></span><span class="pf-track"><span class="pf-bar neg" style="width:45.7%"></span></span><span class="pf-val">-0.37</span></div>
+          <div class="pf-row hot"><span class="pf-name">Impact<small>Sentinels</small></span><span class="pf-track"><span class="pf-bar neg" style="width:49.4%"></span></span><span class="pf-val neg">-0.40</span></div>
+        </div>
+      </div>
+      <figcaption class="a-fignote">Impact is last among qualified LCS tops in lane, which is the map DARKWINGS plays on: every game starts with a side that needs covering.</figcaption>
+    </figure>
+
+    <div class="a-kicker">05 · Purgatory</div>
+
+    <p>None of these players are associated with stardom, not a single one of them has even come close to winning playoffs either. DuDu, across the last three years of the LCK, has accumulated fewer wins than Chovy in 2025 domestically. I also don't believe any of these players will be fully recognized for their efforts, none of them perform as undeniably talented as someone like Peyz on T1 for example.</p>
+
+    <figure class="a-figure a-figure--chart">
+      <div class="pf-ledger">
+        <div class="pf-ledger-cell hot">
+          <div class="pf-big">80 wins</div>
+          <div class="pf-big-sub">DuDu · 2024 + 2025 + 2026 · 253 games, three full LCK seasons on DN SOOPers</div>
+        </div>
+        <div class="pf-ledger-cell">
+          <div class="pf-big">90 wins</div>
+          <div class="pf-big-sub">Chovy · 2025 alone · 121 games, one LCK season on Gen.G</div>
+        </div>
+      </div>
+      <figcaption class="a-fignote">The purgatory ledger. Three years of DuDu's career bank fewer wins than one year of Chovy's. This is what the awards voters are actually counting.</figcaption>
+    </figure>
+
+    <p>The objective for each of them is to find and stay on teams that match their level of effort and strength next year. I know, without a shadow of a doubt, DuDu could replace Doran and be more capable, or that Jopa replacing Supa would be net positive, even Bvoy replacing Tactical AND Zven would be good. None of these changes will happen though, and most of them will be in purgatory for most of their career is my projection, and to me that is extremely unfortunate.</p>
+
+    <div class="a-callout">
+      <span class="a-callout-num">0.0</span>
+      <span class="a-callout-label">Lehends' 2023 CAR, replacement level to the decimal, in the season the LCK voted him its best support. The standings decide who gets seen. They should not get to decide alone.</span>
+    </div>
+
+    <p class="a-fignote" style="margin-top:2.5rem">All figures are from the CAR Index, 2026-08-10 build, and the Oracle's Elixir per-game refresh through 2026-08-05. CAR is league-relative: cross-league numbers are never compared in this piece. Full tables at <a href="../index" style="color:var(--art-accent-deep)">the Index</a>.</p>
+
+  </div>
+
+</article>
+
+<footer>
+  <div class="footer-left">
+    <a class="footer-logo" href="../">JT<span>E</span></a>
+    <span class="footer-note">The CAR Index · empirical pro-League analysis</span>
+  </div>
+  <ul>
+    <li><a href="../">Home</a></li>
+    <li><a href="../index">Index</a></li>
+    <li><a href="../charts">Charts</a></li>
+    <li><a href="../stories">Stories</a></li>
+    <li><a href="../about">About</a></li>
+  </ul>
+</footer>
+
+</body>
+</html>

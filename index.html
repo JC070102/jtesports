@@ -10,6 +10,39 @@
 <link rel="stylesheet" href="style.css?v=sp3">
 <link rel="stylesheet" href="sp1.css?v=sp3">
 <link rel="stylesheet" href="dissect.css?v=sp3">
+<style>
+/* ── The Spotlight: landing hero for the current feature (SP3 riso system) ── */
+.spot-hero { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:2.2rem; align-items:center; padding:3rem 2.5rem 2.6rem; border-bottom:1.5px solid var(--ink); }
+@media (max-width:900px){ .spot-hero { grid-template-columns:1fr; padding:2.2rem 1.4rem; } }
+.spot-kicker { font-family:var(--mono); font-size:.72rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:.9rem; }
+.spot-kicker b { color:var(--paper); background:var(--accent); padding:.14rem .45rem; font-weight:500; margin-right:.5rem; }
+.spot-hed { font-family:var(--display); font-weight:800; font-size:clamp(2.2rem,4.6vw,3.6rem);
+  line-height:1.02; color:var(--ink); letter-spacing:-0.01em; }
+.spot-hed em { font-style:italic; font-family:var(--serif); font-weight:600; color:var(--accent);
+  background-image:linear-gradient(100deg, rgba(244,51,37,.28), rgba(244,51,37,.28));
+  background-repeat:no-repeat; background-size:100% .22em; background-position:0 88%; }
+.spot-dek { font-family:var(--serif); font-size:1.05rem; line-height:1.55; color:var(--ink);
+  max-width:34rem; margin:1.1rem 0 1.4rem; }
+.spot-facts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.7rem; margin-bottom:1.5rem; }
+@media (max-width:640px){ .spot-facts { grid-template-columns:1fr; } }
+.spot-fact { border:1.5px solid var(--ink); background:var(--paper); padding:.7rem .8rem;
+  box-shadow:4px 4px 0 rgba(35,44,110,.14); }
+.spot-fact-k { display:block; font-family:var(--mono); font-size:.6rem; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:.3rem; }
+.spot-fact-v { display:block; font-family:var(--display); font-weight:700; font-size:1.05rem; color:var(--ink); }
+.spot-fact-s { display:block; font-family:var(--mono); font-size:.66rem; line-height:1.45; color:var(--muted); margin-top:.25rem; }
+.spot-cta { display:inline-block; font-family:var(--display); font-weight:700; font-size:.95rem;
+  color:var(--paper); background:var(--ink); border:1.5px solid var(--ink); padding:.65rem 1.2rem;
+  text-decoration:none; box-shadow:4px 4px 0 var(--accent); transition:transform .12s, box-shadow .12s; }
+.spot-cta:hover { transform:translate(2px,2px); box-shadow:2px 2px 0 var(--accent); }
+.spot-art { border:1.5px solid var(--ink); box-shadow:8px 8px 0 rgba(35,44,110,.16); display:block; width:100%; height:auto; }
+.spot-art-cap { font-family:var(--mono); font-size:.62rem; color:var(--muted); margin-top:.5rem; }
+.dsx-band { display:flex; align-items:baseline; gap:1rem; padding:2.4rem 2.5rem .4rem; }
+.dsx-band-label { font-family:var(--display); font-weight:800; font-size:1.35rem; color:var(--ink); }
+.dsx-band-note { font-family:var(--mono); font-size:.7rem; color:var(--muted); }
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
 </head>
@@ -31,8 +64,103 @@
   </ul>
 </nav>
 
-<!-- HOME PAGE — THE DISSECTION (updateable per event; current edition: MSI 2026) -->
+<!-- HOME PAGE — THE SPOTLIGHT (current feature) + THE DISSECTION (MSI 2026) -->
 <div class="page active" id="page-home">
+
+  <section class="spot-hero">
+    <div class="spot-hero-main">
+      <p class="spot-kicker"><b>NEW</b>The Spotlight · player features</p>
+      <h1 class="spot-hed">The standings buried them.<br>The numbers <em>refuse.</em></h1>
+      <p class="spot-dek">The Purgatory Files: DuDu, Jopa, Bvoy and DARKWINGS, four players carrying
+      rosters that cannot carry them back, read through the CAR Index and a season of watching
+      every league. Awards follow standings. The data follows the player.</p>
+      <div class="spot-facts">
+        <div class="spot-fact">
+          <span class="spot-fact-k">The receipts, 2023</span>
+          <span class="spot-fact-v">Lehends</span>
+          <span class="spot-fact-s">0.0 CAR, replacement level to the decimal, in his 1st Team All-Pro season</span>
+        </div>
+        <div class="spot-fact">
+          <span class="spot-fact-k">The headline case</span>
+          <span class="spot-fact-v">DuDu</span>
+          <span class="spot-fact-s">+42.8 CAR, second among LCK tops, with the best tower pressure score of any LCK top</span>
+        </div>
+        <div class="spot-fact">
+          <span class="spot-fact-k">First, quietly</span>
+          <span class="spot-fact-v">DARKWINGS</span>
+          <span class="spot-fact-s">Top of the LCS mid table on the cohort's best damage efficiency</span>
+        </div>
+      </div>
+      <a class="spot-cta" href="writing/purgatory-files.html">Read The Purgatory Files →</a>
+    </div>
+    <figure class="spot-hero-art">
+      <svg class="spot-art" viewBox="0 0 1200 620" role="img" aria-label="Abstract riso print: a red spotlight beam across a field of ink dots, one dot lit inside the beam">
+        <defs>
+          <pattern id="sp-half" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(8)">
+            <circle cx="6" cy="6" r="2.1" fill="#232c6e" opacity="0.22"/>
+          </pattern>
+          <pattern id="sp-half-fine" width="15" height="15" patternUnits="userSpaceOnUse" patternTransform="rotate(-4)">
+            <circle cx="4" cy="4" r="1.2" fill="#232c6e" opacity="0.16"/>
+          </pattern>
+        </defs>
+        <rect width="1200" height="620" fill="#f1f0ea"/>
+        <rect width="1200" height="620" fill="url(#sp-half-fine)"/>
+        <rect y="400" width="1200" height="220" fill="url(#sp-half)"/>
+        <polygon points="128,-20 238,-20 646,620 346,620" fill="#232c6e" opacity="0.28" transform="translate(10,5)"/>
+        <polygon points="128,-20 238,-20 646,620 346,620" fill="#f43325" opacity="0.82"/>
+        <g fill="#232c6e">
+          <circle cx="72"  cy="542" r="8"/><circle cx="140" cy="562" r="6"/><circle cx="200" cy="538" r="7"/>
+          <circle cx="272" cy="560" r="5"/><circle cx="690" cy="545" r="7.4"/><circle cx="752" cy="564" r="5.4"/>
+          <circle cx="820" cy="540" r="8"/><circle cx="890" cy="560" r="5.8"/><circle cx="952" cy="539" r="6.8"/>
+          <circle cx="1022" cy="562" r="5"/><circle cx="1084" cy="542" r="7.6"/><circle cx="1150" cy="560" r="5.6"/>
+          <circle cx="618" cy="563" r="4.8"/>
+        </g>
+        <circle cx="482" cy="542" r="18" fill="none" stroke="#232c6e" stroke-width="2.8"/>
+        <circle cx="488" cy="537" r="14" fill="#f43325"/>
+        <circle cx="482" cy="542" r="3.6" fill="#f1f0ea"/>
+        <rect x="40" y="588" width="1120" height="2.8" fill="#232c6e"/>
+        <rect x="45" y="594" width="1120" height="1.4" fill="#f43325" opacity="0.75"/>
+      </svg>
+      <figcaption class="spot-art-cap">One gets lit. The rest get counted. Two inks, one opinion.</figcaption>
+    </figure>
+  </section>
+
+  <div class="section-header">
+    <span class="section-label">Latest writing</span>
+    <span class="section-link" onclick="showPage('archive')">All pieces →</span>
+  </div>
+
+  <div class="writing-grid">
+    <div class="featured-piece">
+      <div class="piece-meta">
+        <span class="piece-tag league">League</span>
+        <span class="piece-date">August 2026</span>
+      </div>
+      <h2 class="piece-title">The Purgatory Files</h2>
+      <p class="piece-excerpt">Four players the standings buried in 2026, and the numbers that refuse to. DuDu, Jopa, Bvoy and DARKWINGS, every claim corroborated against the CAR Index.</p>
+      <a href="writing/purgatory-files.html" class="read-link">Read essay</a>
+    </div>
+    <div class="sidebar-pieces">
+      <div class="sidebar-piece">
+        <div class="piece-meta">
+          <span class="piece-tag league">League</span>
+          <span class="piece-date">June 2026</span>
+        </div>
+        <h3 class="piece-title">Vitality's Downfall</h3>
+        <p class="piece-excerpt">The LEC's most volatile team, and the fragility that was visible long before their 0-6 playoff collapse. Read through the CAR Index, fight by fight.</p>
+        <a href="writing/vitality-downfall.html" class="read-link">Read essay →</a>
+      </div>
+      <div class="dsx-index-strip">
+        <span class="dsx-index-copy" id="dsx-index-count">The CAR Index: full player and team tables, every tracked league.</span>
+        <a class="dsx-index-cta" onclick="showPage('car')">Explore the index →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="dsx-band">
+    <span class="dsx-band-label">The Dissection · MSI 2026</span>
+    <span class="dsx-band-note">the standing event autopsy, built from tournament games alone</span>
+  </div>
 
   <section class="dsx-hero">
     <div class="dsx-hero-main">
@@ -118,37 +246,6 @@
       <a class="dsx-link" href="data/msi2026_isolated_deaths.csv" download>Download the full ledger</a>.</p>
   </section>
 
-  <div class="section-header">
-    <span class="section-label">Latest writing</span>
-    <span class="section-link" onclick="showPage('archive')">All pieces →</span>
-  </div>
-
-  <div class="writing-grid">
-    <div class="featured-piece">
-      <div class="piece-meta">
-        <span class="piece-tag league">League</span>
-        <span class="piece-date">June 2026</span>
-      </div>
-      <h2 class="piece-title">Vitality's Downfall</h2>
-      <p class="piece-excerpt">The LEC's most volatile team, and the fragility that was visible long before their 0-6 playoff collapse. Read through the CAR Index, fight by fight.</p>
-      <a href="writing/vitality-downfall.html" class="read-link">Read essay</a>
-    </div>
-    <div class="sidebar-pieces">
-      <div class="sidebar-piece">
-        <div class="piece-meta">
-          <span class="piece-tag league">League</span>
-          <span class="piece-date">April 2026</span>
-        </div>
-        <h3 class="piece-title">BFX is Collapsing. Here's How to Fix It.</h3>
-        <p class="piece-excerpt">From beating T1 to a 0-3 start. The damage-share-over-gold-share read that named the carry pool by hand, the same device the CAR Index now runs across every player.</p>
-        <a href="writing/bfx-identity-crisis.html" class="read-link">Read essay →</a>
-      </div>
-      <div class="dsx-index-strip">
-        <span class="dsx-index-copy" id="dsx-index-count">The CAR Index: full player and team tables, every tracked league.</span>
-        <a class="dsx-index-cta" onclick="showPage('car')">Explore the index →</a>
-      </div>
-    </div>
-  </div>
   <div class="about-band">
     <div class="about-left">
       <h2 class="about-hed">Underreported stories,<br><em>surfaced by the data.</em></h2>
@@ -184,6 +281,12 @@
     <button class="filter-btn" data-filter="data">Data</button>
   </div>
   <div class="archive-list">
+    <div class="archive-row" data-category="league data" onclick="window.location='writing/purgatory-files.html'">
+      <span class="piece-date">Aug 2026</span>
+      <span class="piece-tag league">League</span>
+      <span class="archive-row-title">The Purgatory Files</span>
+      <span class="archive-row-arrow">→</span>
+    </div>
     <div class="archive-row" data-category="league gameplay data" onclick="window.location='writing/vitality-downfall.html'">
       <span class="piece-date">Jun 2026</span>
       <span class="piece-tag league">League</span>

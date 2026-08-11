@@ -65,9 +65,9 @@
     <p>Onto their highlights, since this team was unique in their playstyle along with how they came to many of their close victories. Naak Nako had been playing out of his mind for most of the split.</p>
 
     <figure class="a-figure a-figure--chart">
-      <figcaption class="a-figcap">Top laners · Early XP vs Damage Pressure · LEC 2026</figcaption>
+      <figcaption class="a-figcap">Top laners · Laning vs Tower Pressure · LEC 2026</figcaption>
       <div class="a-chart" id="chart-naak"><div class="a-chart-loading">loading…</div></div>
-      <figcaption class="a-fignote">Each top laner's standing within the LEC cohort. Naak Nako sits in the top-right: an early lead that he carries into mid-game pressure.</figcaption>
+      <figcaption class="a-fignote">Each top laner's standing within the LEC cohort. Naak Nako sits in the top-right: an early lead that he converts into structural pressure.</figcaption>
     </figure>
 
     <p>Not to conflate this chart with comprehensive top laner skill, but Naak Nako was truly exceptional in finding individual leads and levying them for further mid-late game pressure. He would always punch above the weight of the matchup. A great example of this is their regular spring season match vs MKOI, where Myrwyn picks K'Sante into Naak Nako's Renekton, an extremely played out matchup that is considered stable or even winning for K'Sante. By 6:34, Naak Nako has collected a solo kill and a 30 CS gap on him, unheard of for this matchup.</p>
@@ -85,9 +85,9 @@
     <p>The peak of Vitality this split was their close victory over G2. Naak Nako got his counterpicks, Carzzy was on his best champs, the team was playing well because they knew they could with the pieces in hand. BUT every game was filled with volatility, and the data supports this clearer than any other team.</p>
 
     <figure class="a-figure a-figure--chart">
-      <figcaption class="a-figcap">Teamfight involvement · across Support and Middle · LEC 2026</figcaption>
+      <figcaption class="a-figcap">Fight presence · Supports · LEC 2026</figcaption>
       <div class="a-chart" id="chart-teamfight"><div class="a-chart-loading">loading…</div></div>
-      <figcaption class="a-fignote">Each role z-scored within itself; 0 is the league average for that role. Both Fleshy and Humanoid sit at the far-low end of their spread.</figcaption>
+      <figcaption class="a-fignote">Each role z-scored within itself; 0 is the league average for that role. Fleshy sits at the far-low end of the support spread.</figcaption>
     </figure>
 
     <p>This stat needs further interpretation to make sense. If Vitality's a bloody team, why are Fleshy and Humanoid so low in teamfight involvement? The answer is that the team DOES NOT prioritize teamfights, the team functions through consecutive skirmishing, disconnected fights that show no coherent planning behind them.</p>
@@ -95,7 +95,7 @@
     <p>This playstyle is exacerbated by Carzzy, the most transparent glass cannon in the LEC.</p>
 
     <figure class="a-figure a-figure--chart">
-      <figcaption class="a-figcap">ADCs · Damage Output vs Survival · LEC 2026</figcaption>
+      <figcaption class="a-figcap">ADCs · Damage Efficiency vs Survival · LEC 2026</figcaption>
       <div class="a-chart" id="chart-carzzy"><div class="a-chart-loading">loading…</div></div>
       <figcaption class="a-fignote">High damage, low survival: Carzzy sits bottom-right, the glass-cannon quadrant.</figcaption>
     </figure>
@@ -242,30 +242,30 @@
 
   /* teamfight-involvement continuum: two role strips, highlighted players */
   function continuum(elId, rows) {
-    var roles = [{ pos: 'Middle', y: 1, hi: 'Humanoid' }, { pos: 'Support', y: 0, hi: 'Fleshy' }];
+    var roles = [{ pos: 'Support', y: 0, hi: 'Fleshy' }];
     var data = [];
     roles.forEach(function (role) {
-      var pool = rows.filter(function (r) { return r.League === 'LEC' && String(r.Year) === '2026' && r.Pos === role.pos && Number(r.GP) >= 25 && num(r.z_KP_residual) !== null; });
+      var pool = rows.filter(function (r) { return r.League === 'LEC' && String(r.Year) === '2026' && r.Pos === role.pos && Number(r.GP) >= 25 && num(r.z_KP) !== null; });
       var base = pool.filter(function (r) { return r.Player !== role.hi; });
       var hi   = pool.filter(function (r) { return r.Player === role.hi; });
       data.push({
-        x: base.map(function (r) { return num(r.z_KP_residual); }), y: base.map(function () { return role.y; }),
+        x: base.map(function (r) { return num(r.z_KP); }), y: base.map(function () { return role.y; }),
         text: base.map(function (r) { return r.Player; }), mode: 'markers', type: 'scatter',
         marker: { size: 9, color: 'rgba(139,130,112,0.8)', line: { width: 0.5, color: 'rgba(23,19,11,0.3)' } },
-        hovertemplate: '<b>%{text}</b> · ' + role.pos + '<br>Teamfight involvement %{x:+.2f}<extra></extra>'
+        hovertemplate: '<b>%{text}</b> · ' + role.pos + '<br>Fight presence %{x:+.2f}<extra></extra>'
       });
       data.push({
-        x: hi.map(function (r) { return num(r.z_KP_residual); }), y: hi.map(function () { return role.y; }),
+        x: hi.map(function (r) { return num(r.z_KP); }), y: hi.map(function () { return role.y; }),
         text: hi.map(function (r) { return r.Player; }), mode: 'markers+text', type: 'scatter',
         textposition: 'top center', textfont: { family: FONT, size: 12, color: INK },
         marker: { size: 16, color: GOLD, line: { width: 1.5, color: INK } },
-        hovertemplate: '<b>%{text}</b> · ' + role.pos + '<br>Teamfight involvement %{x:+.2f}<extra></extra>'
+        hovertemplate: '<b>%{text}</b> · ' + role.pos + '<br>Fight presence %{x:+.2f}<extra></extra>'
       });
     });
     var layout = Object.assign({}, BASE_LAYOUT, {
       margin: { l: 84, r: 24, t: 16, b: 50 },
-      xaxis: { title: { text: 'Teamfight involvement  ·  vs role', font: { size: 11 } }, zeroline: false, gridcolor: GRID, range: [-3, 3] },
-      yaxis: { tickmode: 'array', tickvals: [0, 1], ticktext: ['Support', 'Middle'], range: [-0.6, 1.6], gridcolor: GRID, zeroline: false },
+      xaxis: { title: { text: 'Fight presence  ·  vs role', font: { size: 11 } }, zeroline: false, gridcolor: GRID, range: [-3, 3] },
+      yaxis: { tickmode: 'array', tickvals: [0], ticktext: ['Support'], range: [-0.6, 0.6], gridcolor: GRID, zeroline: false },
       shapes: [{ type: 'line', xref: 'x', yref: 'paper', x0: 0, x1: 0, y0: 0, y1: 1, line: { color: 'rgba(23,19,11,0.32)', width: 1, dash: 'dot' } }]
     });
     Plotly.newPlot(elId, data, layout, CONFIG);
@@ -308,9 +308,9 @@
       });
       var lecTop = rows.filter(function (r) { return inCohort(r, 'LEC', 2026, 'Top'); });
       var lecAdc = rows.filter(function (r) { return inCohort(r, 'LEC', 2026, 'ADC'); });
-      scatter('chart-naak', lecTop, 'z_XPD10', 'z_TLDPS', 'Naak Nako', 'Early XP', 'Damage Pressure');
+      scatter('chart-naak', lecTop, 'z_GD10', 'z_TDPG_share_oe', 'Naak Nako', 'Laning', 'Tower Pressure');
       continuum('chart-teamfight', rows);
-      scatter('chart-carzzy', lecAdc, 'z_DPM_adj', 'z_neg_DTH', 'Carzzy', 'Damage Output', 'Survival');
+      scatter('chart-carzzy', lecAdc, 'z_DMG_GOLD_ratio', 'z_neg_DTH', 'Carzzy', 'Damage Efficiency', 'Survival');
       vsTeam('chart-vsteam', rows);
     },
     error: function () {
