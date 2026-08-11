@@ -70,25 +70,26 @@
   <section class="spot-hero">
     <div class="spot-hero-main">
       <p class="spot-kicker"><b>NEW</b>The Spotlight · player features</p>
-      <h1 class="spot-hed">The standings buried them.<br>The numbers <em>refuse.</em></h1>
-      <p class="spot-dek">The Purgatory Files: DuDu, Jopa, Bvoy and DARKWINGS, four players carrying
-      rosters that cannot carry them back, read through the CAR Index and a season of watching
-      every league. Awards follow standings. The data follows the player.</p>
+      <h1 class="spot-hed">Four players better<br>than their <em>results.</em></h1>
+      <p class="spot-dek">The Purgatory Files: one top laner, one mid, and two ADCs across the LCK,
+      LEC and LCS, each rating far above the roster around him, read through the CAR Index and a
+      season of watching every league. Awards follow standings. The data follows the player.
+      Names inside.</p>
       <div class="spot-facts">
         <div class="spot-fact">
           <span class="spot-fact-k">The receipts, 2023</span>
-          <span class="spot-fact-v">Lehends</span>
-          <span class="spot-fact-s">0.0 CAR, replacement level to the decimal, in his 1st Team All-Pro season</span>
+          <span class="spot-fact-v">0.0 CAR</span>
+          <span class="spot-fact-s">a 1st Team All-Pro season that rated replacement level to the decimal. The voters counted the team</span>
         </div>
         <div class="spot-fact">
           <span class="spot-fact-k">The headline case</span>
-          <span class="spot-fact-v">DuDu</span>
-          <span class="spot-fact-s">+42.8 CAR, second among LCK tops, with the best tower pressure score of any LCK top</span>
+          <span class="spot-fact-v">An LCK top laner</span>
+          <span class="spot-fact-s">second at his role with the league's best tower pressure score, from its last-place team</span>
         </div>
         <div class="spot-fact">
           <span class="spot-fact-k">First, quietly</span>
-          <span class="spot-fact-v">DARKWINGS</span>
-          <span class="spot-fact-s">Top of the LCS mid table on the cohort's best damage efficiency</span>
+          <span class="spot-fact-v">An LCS mid</span>
+          <span class="spot-fact-s">top of his role's table on the cohort's best damage efficiency</span>
         </div>
       </div>
       <a class="spot-cta" href="writing/purgatory-files.html">Read The Purgatory Files →</a>
@@ -137,7 +138,7 @@
         <span class="piece-date">August 2026</span>
       </div>
       <h2 class="piece-title">The Purgatory Files</h2>
-      <p class="piece-excerpt">Four players the standings buried in 2026, and the numbers that refuse to. DuDu, Jopa, Bvoy and DARKWINGS, every claim corroborated against the CAR Index.</p>
+      <p class="piece-excerpt">One top laner, one mid, two ADCs: four seasons better than the rosters around them. Every claim corroborated against the CAR Index, names inside.</p>
       <a href="writing/purgatory-files.html" class="read-link">Read essay</a>
     </div>
     <div class="sidebar-pieces">
@@ -218,33 +219,6 @@
       or <a class="dsx-link" href="data/msi2026_per_game.csv" download>the raw per-game rows</a>.</p>
   </section>
 
-  <section class="dsx-board dsx-coord">
-    <div class="dsx-board-head">
-      <h2 class="dsx-h2">The map doesn't lie</h2>
-      <p class="dsx-p">A new lens, from full kill coordinates: side-lane deaths past 20:00 that
-      <em>started</em> the sequence (no kill anywhere in the prior minute, the first domino) and
-      bought nothing, meaning the victim's team took no kill or objective in the minute after.
-      Everything is per game, minimum six played. The third table is the price tag: first-domino
-      deaths the enemy converted into a dragon or baron inside a minute. 68 of 71 MSI games carry
-      coordinates.</p>
-    </div>
-    <div class="dsx-coord-grid">
-      <div class="dsx-coord-col">
-        <h3 class="dsx-coord-h">Thrown picks, deaths taken</h3>
-        <div id="dsx-coord-deaths" class="dsx-board-table"></div>
-      </div>
-      <div class="dsx-coord-col">
-        <h3 class="dsx-coord-h">Punishers, picks secured</h3>
-        <div id="dsx-coord-picks" class="dsx-board-table"></div>
-      </div>
-      <div class="dsx-coord-col">
-        <h3 class="dsx-coord-h">Deaths that cost an objective</h3>
-        <div id="dsx-coord-obj" class="dsx-board-table"></div>
-      </div>
-    </div>
-    <p class="dsx-board-foot">Computed by <span class="dsx-mono">tools/coord_isolated_deaths.py</span> from the tabesports coordinate feed.
-      <a class="dsx-link" href="data/msi2026_isolated_deaths.csv" download>Download the full ledger</a>.</p>
-  </section>
 
   <div class="about-band">
     <div class="about-left">
@@ -1540,7 +1514,7 @@
     const pad = (hi - lo) * 0.05 || 1;
     const scatter = {
       x, y, text, customdata: rows.map(r => playerKey(r)),
-      mode: 'markers', type: 'scattergl',
+      mode: 'markers', type: 'scatter',
       hovertemplate: '%{text}<extra></extra>',
       marker: { size: 9, color: colors, opacity: 0.78, line: { width: 0.5, color: 'rgba(35,44,110,0.35)' } }
     };
@@ -1654,7 +1628,7 @@
     const pad = (hi - lo) * 0.05 || 1;
     const scatter = {
       x, y, text, customdata: pairs.map(p => p.curr.Player),
-      mode: 'markers', type: 'scattergl',
+      mode: 'markers', type: 'scatter',
       hovertemplate: '%{text}<extra></extra>',
       marker: { size: 9, color: colors, opacity: 0.72, line: { width: 0.5, color: 'rgba(35,44,110,0.3)' } }
     };
@@ -1725,7 +1699,7 @@
     const pad = (hi - lo) * 0.05 || 1;
     const scatter = {
       x, y, text, customdata: rows.map(r => playerKey(r)),
-      mode: 'markers', type: 'scattergl',
+      mode: 'markers', type: 'scatter',
       hovertemplate: '%{text}<extra></extra>',
       marker: { size: 9, color: colors, opacity: 0.78, line: { width: 0.5, color: 'rgba(35,44,110,0.35)' } }
     };
@@ -1817,7 +1791,7 @@
 
     const scatter = {
       x, y, text, customdata: rows.map(r => playerKey(r)),
-      mode: 'markers', type: 'scattergl',
+      mode: 'markers', type: 'scatter',
       hovertemplate: '%{text}<extra></extra>',
       marker: { size: 10, color: color, opacity: 0.78, line: { width: 0.5, color: 'rgba(35,44,110,0.35)' } }
     };
