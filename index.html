@@ -762,19 +762,32 @@
   const Z_FRIENDLY = {
     z_CSD10:          'Laning',
     z_GD10:           'Laning',
-    'z_CS%P15':       'Farm Share',
-    'z_GOLD%':        'Gold Share',
+    'z_CS%P15':       'Economy',
+    'z_GOLD%':        'Economy',
     'z_DMG%':         'Damage Share',
     z_DMG_GOLD_ratio: 'Damage Efficiency',
     z_DMG_DTH_ratio:  'Damage per Death',
     z_neg_DTH:        'Survival',
-    z_KS_pct:         'Kill Share',
+    z_KS_pct:         'Economy',
     z_KP:             'Fight Presence',
     z_TDPG_share:     'Tower Pressure',
     z_TDPG_share_oe:  'Tower Pressure',
-    z_WCPM_type3:     'Ward Clearing',
-    z_CWPM_type3:     'Control Wards',
-    z_WPM_type3:      'Vision Created'
+    z_WPM_net:        'Vision',
+    z_WCPM_type3:     'Vision',
+    z_CWPM_type3:     'Vision',
+    z_WPM_type3:      'Vision'
+  };
+
+  /* Charts axis picker needs every option distinguishable, so the folded
+     display labels carry sub-labels there (and only there). */
+  const CHART_LABELS = {
+    'z_CS%P15':   'Economy · farm share',
+    'z_GOLD%':    'Economy · gold share',
+    z_KS_pct:     'Economy · kill share',
+    z_WPM_net:    'Vision · surviving wards',
+    z_CWPM_type3: 'Vision · control wards',
+    z_WCPM_type3: 'Vision · ward clears',
+    z_WPM_type3:  'Vision · wards placed'
   };
 
   /* Role → z-components to show in the expansion panel, in weight order.
@@ -785,7 +798,21 @@
     Jungle:  ['z_CSD10', 'z_GOLD%', 'z_DMG_GOLD_ratio', 'z_neg_DTH'],
     Middle:  ['z_CSD10', 'z_CS%P15', 'z_DMG_GOLD_ratio', 'z_neg_DTH'],
     ADC:     ['z_CSD10', 'z_CS%P15', 'z_DMG_GOLD_ratio', 'z_neg_DTH', 'z_KS_pct'],
-    Support: ['z_GD10', 'z_WPM_type3', 'z_CWPM_type3', 'z_WCPM_type3',
+    Support: ['z_GD10', 'z_WPM_net', 'z_CWPM_type3', 'z_WCPM_type3',
+              'z_neg_DTH', 'z_KP']
+  };
+
+  /* Expansion-panel display: same components, reader-facing folds. An entry is
+     either a single z-key (label from Z_FRIENDLY) or { label, cols } whose z
+     values are averaged. INVARIANT: every col here must appear in
+     ROLE_COMPONENTS above — that flat list is what verify_deploy gates on. */
+  const PANEL_AXES = {
+    Top:     ['z_GD10', 'z_DMG_GOLD_ratio', 'z_TDPG_share_oe'],
+    Jungle:  ['z_CSD10', 'z_GOLD%', 'z_DMG_GOLD_ratio', 'z_neg_DTH'],
+    Middle:  ['z_CSD10', 'z_CS%P15', 'z_DMG_GOLD_ratio', 'z_neg_DTH'],
+    ADC:     ['z_CSD10', { label: 'Economy', cols: ['z_CS%P15', 'z_KS_pct'] },
+              'z_DMG_GOLD_ratio', 'z_neg_DTH'],
+    Support: ['z_GD10', { label: 'Vision', cols: ['z_WPM_net', 'z_CWPM_type3', 'z_WCPM_type3'] },
               'z_neg_DTH', 'z_KP']
   };
 
@@ -1037,10 +1064,13 @@
     panel.className = 'car-expansion-panel';
 
     const role  = String(r.Pos || 'Middle');
-    const comps = (ROLE_COMPONENTS[role] || []).filter(k => {
-      const v = r[k];
-      return v !== null && v !== undefined && v !== '' && isFinite(Number(v));
-    });
+    const comps = (PANEL_AXES[role] || ROLE_COMPONENTS[role] || []).map(entry => {
+      const cols = typeof entry === 'string' ? [entry] : entry.cols;
+      const vals = cols.map(k => Number(r[k])).filter(v => isFinite(v));
+      if (!vals.length) return null;
+      return { label: typeof entry === 'string' ? (Z_FRIENDLY[entry] || entry) : entry.label,
+               value: vals.reduce((a, b) => a + b, 0) / vals.length };
+    }).filter(Boolean);
     const lowGp = isFinite(Number(r.GP)) && Number(r.GP) < 25;
 
     panel.innerHTML = `
@@ -1065,7 +1095,7 @@
         <div class="car-zbar-section">
           <div class="car-zbar-heading">Component breakdown · ${escapeHtml(role)}</div>
           <div class="car-zbar-list">
-            ${comps.map(k => zbarHtml(k, Number(r[k]))).join('')}
+            ${comps.map(c => zbarHtml(c.label, c.value)).join('')}
           </div>
         </div>
       ` : `<div class="car-exp-note">No role-weighted component data available for this player.</div>`}
@@ -1089,12 +1119,12 @@
     return panel;
   }
 
-  function zbarHtml(key, v) {
+  function zbarHtml(label, v) {
     const n = isFinite(v) ? v : 0;
     const clamped = Math.max(-3, Math.min(3, n));      // clamp to ±3σ
     const pct     = Math.abs(clamped) / 3 * 50;        // up to 50% of container
     const dir     = clamped >= 0 ? 'pos' : 'neg';
-    const name    = Z_FRIENDLY[key] || key;
+    const name    = label;
     const sign    = clamped >= 0 ? '+' : '−';
     const valStr  = sign + Math.abs(clamped).toFixed(2);
     const valCls  = dir === 'pos' ? 'car-val-pos' : 'car-val-neg';
@@ -1739,7 +1769,7 @@
 
   function statOptionsForRole(role) {
     // Only the components the engine actually populates for this role (NaN-safe).
-    return (ROLE_COMPONENTS[role] || []).map(k => ({ key: k, label: Z_FRIENDLY[k] || k }));
+    return (ROLE_COMPONENTS[role] || []).map(k => ({ key: k, label: CHART_LABELS[k] || Z_FRIENDLY[k] || k }));
   }
   function fillStatSelect(el, opts, current) {
     if (!el) return current;
@@ -1869,9 +1899,10 @@
   // a vague label in the same house style.
   const RADAR_AXES = {
     Top:     [['z_GD10'], ['z_DMG_GOLD_ratio'], ['z_TDPG_share_oe']],
-    ADC:     [['z_CSD10'], ['z_CS%P15'], ['z_DMG_GOLD_ratio'], ['z_neg_DTH'], ['z_KS_pct']],
+    ADC:     [['z_CSD10'], { label: 'Economy', cols: ['z_CS%P15', 'z_KS_pct'] },
+              ['z_DMG_GOLD_ratio'], ['z_neg_DTH']],
     Middle:  [['z_CSD10'], ['z_CS%P15'], ['z_DMG_GOLD_ratio'], ['z_neg_DTH']],
-    Support: [['z_GD10'], ['z_WPM_type3'], ['z_CWPM_type3'], ['z_WCPM_type3'],
+    Support: [['z_GD10'], { label: 'Vision', cols: ['z_WPM_net', 'z_CWPM_type3', 'z_WCPM_type3'] },
               ['z_neg_DTH'], ['z_KP']],
     Jungle:  [['z_CSD10'], ['z_GOLD%'], ['z_DMG_GOLD_ratio'], ['z_neg_DTH']]
   };
@@ -2060,7 +2091,7 @@
 
   /* Bump DSX_V whenever the event dataset is regenerated: returning visitors
      otherwise keep a cached CSV and the page silently renders stale numbers. */
-  const DSX_V = '2026-08-10';
+  const DSX_V = '2026-08-11';
   const DSX = {
     dataUrl: 'data/msi2026_players.csv?v=' + DSX_V,
     minGp: 4,
@@ -2069,12 +2100,12 @@
 
   /* Short axis labels for the small role-card radars. */
   const DSX_SHORT = {
-    'Laning': 'Laning', 'Farm Share': 'Farm', 'Gold Share': 'Gold',
+    'Laning': 'Laning', 'Economy': 'Economy', 'Farm Share': 'Farm', 'Gold Share': 'Gold',
     'Damage Share': 'Damage', 'Damage per Death': 'Dmg/Death',
     'Damage Efficiency': 'Dmg/Gold', 'Survival': 'Survival', 'Kill Share': 'Kills',
     'Fight Presence': 'Fights', 'Tower Pressure': 'Towers',
     'Ward Clearing': 'Sweeps', 'Control Wards': 'Ctrl Wards',
-    'Vision Created': 'Vision', 'Vision Control': 'Vision'
+    'Vision Created': 'Vision', 'Vision Control': 'Vision', 'Vision': 'Vision'
   };
 
   /* Hand-drawn SVG pentagon: rings at z = -1 / 0 / +1 / +2 (center = -2),
