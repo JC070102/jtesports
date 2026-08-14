@@ -11,10 +11,23 @@
 <link rel="stylesheet" href="sp1.css?v=sp3">
 <link rel="stylesheet" href="dissect.css?v=sp3">
 <style>
-/* ── The Spotlight: landing hero for the current feature (SP3 riso system) ── */
-.spot-hero { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
-  gap:2.2rem; align-items:center; padding:3rem 2.5rem 2.6rem; border-bottom:1.5px solid var(--ink); }
-@media (max-width:900px){ .spot-hero { grid-template-columns:1fr; padding:2.2rem 1.4rem; } }
+/* ── The Spotlight: landing hero for the current feature (SP3 riso system) ──
+   Desktop-first: the hero is sized to land inside one viewport under the
+   masthead + nav (~132px of chrome), so the fold falls on the teaser table
+   rather than through it. --spot-chrome is the only number to retune if the
+   masthead ever changes height. */
+.spot-hero { --spot-chrome:132px;
+  display:grid; grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);
+  grid-template-rows:1fr auto; gap:2.6rem; align-items:center; align-content:center;
+  min-height:clamp(500px, calc(100vh - var(--spot-chrome)), 720px);
+  padding:2.2rem 2.5rem 1.4rem; border-bottom:1.5px solid var(--ink); }
+@media (max-width:900px){ .spot-hero { grid-template-columns:1fr; min-height:0;
+  padding:2.2rem 1.4rem; } }
+.spot-hero-foot { grid-column:1 / -1; display:flex; justify-content:space-between;
+  align-items:baseline; gap:1rem; border-top:2px solid var(--ink); padding-top:.7rem;
+  font-family:var(--mono); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); }
+.spot-hero-foot-r { color:var(--accent); }
 .spot-kicker { font-family:var(--mono); font-size:.72rem; letter-spacing:.14em;
   text-transform:uppercase; color:var(--accent); margin-bottom:.9rem; }
 .spot-kicker b { color:var(--paper); background:var(--accent); padding:.14rem .45rem; font-weight:500; margin-right:.5rem; }
@@ -23,10 +36,54 @@
 .spot-hed em { font-style:italic; font-family:var(--serif); font-weight:600; color:var(--accent);
   background-image:linear-gradient(100deg, rgba(244,51,37,.28), rgba(244,51,37,.28));
   background-repeat:no-repeat; background-size:100% .22em; background-position:0 88%; }
+/* the title, set as a title: bigger, tighter, the accent word carrying the ink */
+.spot-hed--files { font-size:clamp(2.8rem,6.2vw,5.4rem); line-height:.92; letter-spacing:-.035em;
+  text-transform:none; }
+.spot-hed--files em { font-style:italic; letter-spacing:-.02em; background-size:100% .16em;
+  background-position:0 92%; }
 .spot-dek { font-family:var(--serif); font-size:1.05rem; line-height:1.55; color:var(--ink);
-  max-width:34rem; margin:1.1rem 0 1.4rem; }
-.spot-facts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.7rem; margin-bottom:1.5rem; }
+  max-width:34rem; margin:1.3rem 0 1.6rem; }
+.spot-facts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.7rem; }
 @media (max-width:640px){ .spot-facts { grid-template-columns:1fr; } }
+
+/* ── The redacted preview table: the four seasons, names withheld ── */
+.ptease { position:relative; border:1.5px solid var(--ink); background:var(--paper);
+  box-shadow:8px 8px 0 rgba(35,44,110,.16); padding:1.15rem 1.3rem 1.2rem; overflow:hidden; }
+.ptease::before { content:''; position:absolute; inset:0; pointer-events:none; opacity:.55;
+  background-image:radial-gradient(circle at 2px 2px, rgba(35,44,110,.20) 1.1px, transparent 1.2px);
+  background-size:13px 13px; }
+.ptease > * { position:relative; }
+.ptease-top { display:flex; justify-content:space-between; align-items:baseline; gap:1rem;
+  padding-bottom:.7rem; margin-bottom:.35rem; border-bottom:2px solid var(--ink); }
+.ptease-tag { font-family:var(--mono); font-size:.62rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--accent); }
+.ptease-tag--muted { color:var(--muted); }
+.ptease-row { display:grid; grid-template-columns:minmax(0,1fr) 3.1rem 3.1rem 4.1rem 4.6rem;
+  gap:.5rem; align-items:center; padding:.78rem 0; border-bottom:1px solid rgba(35,44,110,.18);
+  font-family:var(--mono); font-size:.78rem; }
+.ptease-row--head { border-bottom:1px solid var(--ink); padding:.5rem 0 .42rem;
+  font-size:.6rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+.ptease-row:last-of-type { border-bottom:none; }
+.ptease-r { text-align:right; }
+.ptease-redact { font-family:var(--display); font-weight:800; font-size:1.18rem; line-height:1;
+  color:var(--ink); opacity:.5; filter:blur(3.4px); letter-spacing:-.06em;
+  user-select:none; white-space:nowrap; overflow:hidden; }
+.ptease-pos { font-size:.62rem; letter-spacing:.1em; color:var(--ink); }
+.ptease-lg { font-size:.62rem; letter-spacing:.1em; color:var(--muted); }
+.ptease-v { font-weight:500; font-size:.92rem; color:var(--accent); }
+.ptease-t { color:var(--ink); }
+.ptease-t--neg { color:var(--accent); }
+.ptease-foot { font-family:var(--serif); font-size:.82rem; line-height:1.45; color:var(--muted);
+  margin:.75rem 0 0; padding-top:.7rem; border-top:2px solid var(--ink); }
+
+/* ── Below the fold: the claim the hero used to carry ── */
+.spot-below { padding:2.4rem 2.5rem 2.2rem; border-bottom:1.5px solid var(--ink); }
+@media (max-width:900px){ .spot-below { padding:1.8rem 1.4rem; } }
+.spot-below-hed { font-family:var(--display); font-weight:800; letter-spacing:-.015em;
+  font-size:clamp(1.6rem,3vw,2.5rem); line-height:1.05; color:var(--ink); margin:0 0 1.3rem; }
+.spot-below-hed em { font-style:italic; font-family:var(--serif); font-weight:600; color:var(--accent);
+  background-image:linear-gradient(100deg, rgba(244,51,37,.28), rgba(244,51,37,.28));
+  background-repeat:no-repeat; background-size:100% .22em; background-position:0 88%; }
 .spot-fact { border:1.5px solid var(--ink); background:var(--paper); padding:.7rem .8rem;
   box-shadow:4px 4px 0 rgba(35,44,110,.14); }
 .spot-fact-k { display:block; font-family:var(--mono); font-size:.6rem; letter-spacing:.12em;
@@ -70,60 +127,72 @@
   <section class="spot-hero">
     <div class="spot-hero-main">
       <p class="spot-kicker"><b>NEW</b>The Spotlight · player features</p>
-      <h1 class="spot-hed">Four players better<br>than their <em>results.</em></h1>
-      <p class="spot-dek">The Purgatory Files: one top laner, one mid, and two ADCs across the LCK,
-      LEC and LCS, each rating far above the roster around him, read through the CAR Index and a
-      season of watching every league. Awards follow standings. The data follows the player.
-      Names inside.</p>
-      <div class="spot-facts">
-        <div class="spot-fact">
-          <span class="spot-fact-k">The receipts, 2023</span>
-          <span class="spot-fact-v">0.0 CAR</span>
-          <span class="spot-fact-s">a 1st Team All-Pro season that rated replacement level to the decimal. The voters counted the team</span>
-        </div>
-        <div class="spot-fact">
-          <span class="spot-fact-k">The headline case</span>
-          <span class="spot-fact-v">An LCK top laner</span>
-          <span class="spot-fact-s">second at his role with the league's best tower pressure score, from its last-place team</span>
-        </div>
-        <div class="spot-fact">
-          <span class="spot-fact-k">First, quietly</span>
-          <span class="spot-fact-v">An LCS mid</span>
-          <span class="spot-fact-s">top of his role's table on the cohort's best damage efficiency</span>
-        </div>
-      </div>
+      <h1 class="spot-hed spot-hed--files">The <em>Purgatory</em><br>Files</h1>
+      <p class="spot-dek">The most underrated players across the globe, each rating far above the
+      roster around him, read through the CAR Index and a season of watching every league. Awards
+      follow records, the data shows where they are missing.</p>
       <a class="spot-cta" href="writing/purgatory-files.html">Read The Purgatory Files →</a>
     </div>
     <figure class="spot-hero-art">
-      <svg class="spot-art" viewBox="0 0 1200 620" role="img" aria-label="Abstract riso print: a red spotlight beam across a field of ink dots, one dot lit inside the beam">
-        <defs>
-          <pattern id="sp-half" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(8)">
-            <circle cx="6" cy="6" r="2.1" fill="#232c6e" opacity="0.22"/>
-          </pattern>
-          <pattern id="sp-half-fine" width="15" height="15" patternUnits="userSpaceOnUse" patternTransform="rotate(-4)">
-            <circle cx="4" cy="4" r="1.2" fill="#232c6e" opacity="0.16"/>
-          </pattern>
-        </defs>
-        <rect width="1200" height="620" fill="#f1f0ea"/>
-        <rect width="1200" height="620" fill="url(#sp-half-fine)"/>
-        <rect y="400" width="1200" height="220" fill="url(#sp-half)"/>
-        <polygon points="128,-20 238,-20 646,620 346,620" fill="#232c6e" opacity="0.28" transform="translate(10,5)"/>
-        <polygon points="128,-20 238,-20 646,620 346,620" fill="#f43325" opacity="0.82"/>
-        <g fill="#232c6e">
-          <circle cx="72"  cy="542" r="8"/><circle cx="140" cy="562" r="6"/><circle cx="200" cy="538" r="7"/>
-          <circle cx="272" cy="560" r="5"/><circle cx="690" cy="545" r="7.4"/><circle cx="752" cy="564" r="5.4"/>
-          <circle cx="820" cy="540" r="8"/><circle cx="890" cy="560" r="5.8"/><circle cx="952" cy="539" r="6.8"/>
-          <circle cx="1022" cy="562" r="5"/><circle cx="1084" cy="542" r="7.6"/><circle cx="1150" cy="560" r="5.6"/>
-          <circle cx="618" cy="563" r="4.8"/>
-        </g>
-        <circle cx="482" cy="542" r="18" fill="none" stroke="#232c6e" stroke-width="2.8"/>
-        <circle cx="488" cy="537" r="14" fill="#f43325"/>
-        <circle cx="482" cy="542" r="3.6" fill="#f1f0ea"/>
-        <rect x="40" y="588" width="1120" height="2.8" fill="#232c6e"/>
-        <rect x="45" y="594" width="1120" height="1.4" fill="#f43325" opacity="0.75"/>
-      </svg>
-      <figcaption class="spot-art-cap">One gets lit. The rest get counted. Two inks, one opinion.</figcaption>
+      <div class="ptease" role="img" aria-label="Preview table of the four players in the piece, names withheld: a top laner in the LCK at +42.2 CAR on a roster worth +61.3, an ADC in the LEC at +19.9 on +53.9, a mid in the LCS at +18.9 on +68.5, and an ADC in the LCS at +9.8 on a roster worth −11.4.">
+        <div class="ptease-top">
+          <span class="ptease-tag">Four players · 2026</span>
+          <span class="ptease-tag ptease-tag--muted">CAR Index · league-relative</span>
+        </div>
+        <div class="ptease-row ptease-row--head">
+          <span>Player</span><span>Role</span><span>League</span>
+          <span class="ptease-r">CAR</span><span class="ptease-r">His roster</span>
+        </div>
+        <div class="ptease-row">
+          <span class="ptease-redact" aria-hidden="true">█████</span>
+          <span class="ptease-pos">TOP</span><span class="ptease-lg">LCK</span>
+          <span class="ptease-r ptease-v">+42.2</span><span class="ptease-r ptease-t">+61.3</span>
+        </div>
+        <div class="ptease-row">
+          <span class="ptease-redact" aria-hidden="true">████</span>
+          <span class="ptease-pos">ADC</span><span class="ptease-lg">LEC</span>
+          <span class="ptease-r ptease-v">+19.9</span><span class="ptease-r ptease-t">+53.9</span>
+        </div>
+        <div class="ptease-row">
+          <span class="ptease-redact" aria-hidden="true">████████</span>
+          <span class="ptease-pos">MID</span><span class="ptease-lg">LCS</span>
+          <span class="ptease-r ptease-v">+18.9</span><span class="ptease-r ptease-t">+68.5</span>
+        </div>
+        <div class="ptease-row">
+          <span class="ptease-redact" aria-hidden="true">████</span>
+          <span class="ptease-pos">ADC</span><span class="ptease-lg">LCS</span>
+          <span class="ptease-r ptease-v">+9.8</span><span class="ptease-r ptease-t ptease-t--neg">−11.4</span>
+        </div>
+        <p class="ptease-foot">His CAR, against the whole five-man roster he plays on. One of them
+        is carrying a team that adds up to less than nothing.</p>
+      </div>
+      <figcaption class="spot-art-cap">Full-year 2026 figures, starters at 25 games or more. Names in the piece.</figcaption>
     </figure>
+    <div class="spot-hero-foot">
+      <span>The Spotlight · player features</span>
+      <span class="spot-hero-foot-r">The case files, and the index behind them ↓</span>
+    </div>
+  </section>
+
+  <section class="spot-below">
+    <h2 class="spot-below-hed">Four players better than their <em>results.</em></h2>
+    <div class="spot-facts">
+      <div class="spot-fact">
+        <span class="spot-fact-k">The receipts, 2023</span>
+        <span class="spot-fact-v">0.0 CAR</span>
+        <span class="spot-fact-s">a 1st Team All-Pro season that rated replacement level to the decimal. The voters counted the team</span>
+      </div>
+      <div class="spot-fact">
+        <span class="spot-fact-k">The headline case</span>
+        <span class="spot-fact-v">An LCK top laner</span>
+        <span class="spot-fact-s">second at his role with the league's best tower pressure score, from its last-place team</span>
+      </div>
+      <div class="spot-fact">
+        <span class="spot-fact-k">First, quietly</span>
+        <span class="spot-fact-v">An LCS mid</span>
+        <span class="spot-fact-s">top of his role's table on the cohort's best damage efficiency</span>
+      </div>
+    </div>
   </section>
 
   <div class="section-header">
@@ -352,7 +421,8 @@
     </div>
 
     <div class="car-callout">
-      <strong>Team CAR is the sum of its players' CARs</strong>, it is <em>not</em> the team-strength rating.
+      <strong>Team CAR is the sum of its five starters' CARs</strong> &mdash; one per role, the player with
+      the most games for the club at 25 games or more &mdash; and it is <em>not</em> the team-strength rating.
       Teams routinely over- or under-perform the sum of their pieces (synergy, coaching, draft, shot-calling),
       so a high team CAR signals stacked individual talent, not a clean measure of how good the team actually is.
       It also reads more reliably than CAR/G, since some high CAR/G teams reflect incomplete rosters or mid-season changes.
@@ -501,9 +571,39 @@
       top lane and nearly meaningless in the bot lane, where two players and a jungler decide it.</p>
       <p class="xpl-p">The same logic is applied to the <strong>champion itself</strong>. Some champions inflate
       the box score through their kit alone, not through better play, so CAR treats every champion as a park
-      factor and strips that inflation out. What remains is a <strong>champion-neutral</strong> estimate of the
-      player. A utility pick is no longer punished for farming less, and a stat-padding pick is no longer
-      flattered for farming more.</p>
+      factor and strips that inflation out before anything else is computed. What remains is a
+      <strong>champion-neutral</strong> estimate of the player, and it is worth seeing how that is done.</p>
+    </section>
+
+    <section class="xpl-section">
+      <h2 class="xpl-h">How the champion is taken out.</h2>
+      <p class="xpl-p">A support on Nami and a support on Pyke are not playing the same statistical game.
+      One of them places wards because that is the job the kit hands him; the other roams and gets credited
+      for it. Ivern will never post damage numbers, Zyra cannot help posting them. Senna gives up early gold
+      by design. None of that is a judgement about the player, and all of it lands in the box score, so
+      <strong>it is measured and removed before a single component of CAR is computed</strong>.</p>
+      <p class="xpl-p">The estimate is made on the champions, not on the players. For every raw statistic the
+      formulas use — damage per minute, gold and damage share, kill participation, deaths, wards, gold and CS
+      difference in lane, tower damage — the model fits a per-champion effect from every game in the tracked
+      leagues: <em>how much does this champion move this number, on its own?</em> Each effect is fitted
+      <strong>inside its own role, region and season</strong>, because a champion is a different tool in the
+      top lane than in the bot lane, and a different tool in one patch cycle than the next. Thin cells are
+      pulled toward zero: a champion picked six times does not earn a strong correction, it earns a cautious
+      one. Effects are refitted each split and carried forward with the neighbouring splits, so a champion
+      that drifts with the patch drifts in the model too.</p>
+      <p class="xpl-p">Then it is subtracted, player by player, <strong>through the pool he actually played</strong>.
+      A player's correction is the average of his champions' effects across his own games, weighted exactly the
+      way the statistic itself is built — by minutes for a per-minute rate, by his team's kills for a kill share,
+      by games for a lane differential. Play ten games of the champion and you carry ten games of its effect;
+      play it once, and once. That subtraction happens on the raw season totals, <em>before</em> damage
+      efficiency, damage-per-death, kill participation over expectation and the vision terms are derived, so
+      every downstream number is built on champion-neutral inputs rather than patched up afterwards.</p>
+      <p class="xpl-p xpl-p--quiet">The honest limits. A champion's effect is fitted from everyone who played it,
+      which includes the player being corrected, so a player who is effectively the only one on a champion is
+      partly measured against himself. In practice that is rare, and it concentrates in tiny samples: across a
+      league season, about one game in a hundred sits in a champion cell that a single player owns outright.
+      And neutralization deliberately does not credit the pick. Choosing the champion that inflates your numbers
+      is a real skill; it is not the skill CAR is trying to measure.</p>
     </section>
 
     <section class="xpl-section xpl-section--limits">
@@ -682,7 +782,7 @@
   const CAR_TEAMS_URL   = 'https://raw.githubusercontent.com/JC070102/CARmodel/refs/heads/main/site_teams.csv';
   const CAR_HISTORY_URL = 'https://raw.githubusercontent.com/JC070102/CARmodel/refs/heads/main/history_players.csv';
 
-  let carPlayers = [];
+  let carPlayers = [];        // one row per stint, exactly as published
   let carTeams = [];
   let carHistory = [];
   let carLoaded = false;
@@ -904,12 +1004,81 @@
     return [r.Player, r.Team, r.League, r.Year, r.Dataset].join('|');
   }
 
+  /* ── Multi-team seasons: one Index row per player-season ──
+     The published CSV carries one row per stint, so a player who changed teams
+     inside a league-year appeared in the table twice. The Index folds his
+     stints into a single row: CAR, GP and pCAR add (all three are season
+     totals, so CAR still equals CAR/G × GP), every rate and z-component is
+     games-weighted, and the team cell names both clubs.
+
+     Only the Index folds. carPlayers stays per-stint because the team tables,
+     the charts and the career table all key on (player, team) rows. */
+  const SEASON_KEEP = new Set(['Player', 'Pos', 'League', 'Year', 'Dataset', 'Region']);
+  const SEASON_SUM  = new Set(['GP', 'WAR', 'proj_WAR']);
+
+  function seasonKey(r) {
+    return [r.Player, r.Pos, r.League, r.Year, r.Dataset].join('|');
+  }
+
+  function foldPlayerSeasons(rows) {
+    const groups = new Map();
+    rows.forEach(r => {
+      const k = seasonKey(r);
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(r);
+    });
+    const out = [];
+    groups.forEach(g => out.push(g.length === 1 ? g[0] : mergeStints(g)));
+    return out;
+  }
+
+  function mergeStints(rows) {
+    const parts = rows.slice().sort((a, b) => (Number(b.GP) || 0) - (Number(a.GP) || 0));
+    const merged = Object.assign({}, parts[0]);
+    const sum = k => parts.reduce((s, p) => {
+      const v = Number(p[k]);
+      return s + (isFinite(v) ? v : 0);
+    }, 0);
+    const gamesWeighted = k => {
+      let num = 0, den = 0;
+      parts.forEach(p => {
+        const v = Number(p[k]), w = Number(p.GP) || 0;
+        if (isFinite(v) && v !== null && p[k] !== '') { num += v * w; den += w; }
+      });
+      return den > 0 ? num / den : NaN;
+    };
+    Object.keys(parts[0]).forEach(k => {
+      if (SEASON_KEEP.has(k)) return;
+      // a column is numeric only if some stint carries a real number in it;
+      // text columns keep the biggest stint's value
+      if (!parts.some(p => p[k] != null && p[k] !== '' && isFinite(Number(p[k])))) return;
+      merged[k] = SEASON_SUM.has(k) ? sum(k) : gamesWeighted(k);
+    });
+    merged.GP  = sum('GP');
+    merged.WAR = sum('WAR');
+    merged.WAR_per_game = merged.GP > 0 ? merged.WAR / merged.GP : NaN;
+    merged.cross_region_first = parts.some(p => isTruthyFlag(p.cross_region_first));
+    merged.Team = parts.map(p => p.Team).join(' / ');
+    merged.stints = parts.map(p => ({
+      team: p.Team, gp: Number(p.GP), war: Number(p.WAR), key: playerKey(p)
+    }));
+    return merged;
+  }
+
+  function stintTitle(r) {
+    if (!r.stints) return String(r.Team || '');
+    return r.stints.map(s => `${s.team} · ${fmtNum(s.gp)} GP · ${fmtSigned(s.war, 1)} CAR`).join('   |   ');
+  }
+
   /* ── Filter + sort ── */
   function filterPlayers() {
     const f = dashFilters;
     const q = (f.search || '').trim().toLowerCase();
     const minGp = Number(f.minGp) || 0;
-    return carPlayers.filter(r => {
+    // Filter the stints FIRST, then fold what survives. Folding first would let a
+    // season of five 5-game cameos add up past the GP floor and land at the top of
+    // the table on a summed CAR no single stint earned.
+    const stints = carPlayers.filter(r => {
       if (!r.Player) return false;
       if (f.league !== 'All' && String(r.League) !== f.league) return false;
       if (f.year   !== 'All' && String(r.Year)   !== f.year)   return false;
@@ -921,6 +1090,7 @@
       if (q && !String(r.Player).toLowerCase().includes(q))    return false;
       return true;
     });
+    return foldPlayerSeasons(stints);
   }
   function filterTeams() {
     const f = dashTeamFilters;
@@ -1031,7 +1201,11 @@
         <div class="car-td car-td-right car-td-rank">${rank}</div>
         <div class="car-td car-td-player">${escapeHtml(r.Player)}</div>
         <div class="car-td"><span class="car-pos-badge ${roleBadgeClass(r.Pos)}">${escapeHtml(shortRole(r.Pos))}</span></div>
-        <div class="car-td car-td-team">${escapeHtml(r.Team || '·')}</div>
+        <div class="car-td car-td-team" title="${escapeHtml(stintTitle(r))}">${
+          r.stints
+            ? r.stints.map(s => escapeHtml(s.team)).join('<span class="car-team-sep">/</span>')
+            : escapeHtml(r.Team || '·')
+        }</div>
         <div class="car-td"><span class="car-league-badge ${leagueBadgeClass(r.League)}">${escapeHtml(r.League || '·')}</span></div>
         <div class="car-td car-td-right car-td-year">${escapeHtml(String(r.Year == null ? '·' : r.Year))}</div>
         <div class="car-td car-td-right car-td-gp">${fmtNum(r.GP)}${lowGp ? '<span class="car-gp-tilde">~</span>' : ''}</div>
@@ -1082,6 +1256,9 @@
         </div>
         <button class="car-exp-close" aria-label="Close">×</button>
       </div>
+      ${r.stints ? `<div class="car-exp-stints"><span class="car-exp-stints-k">${r.stints.length} teams this season</span>${
+        r.stints.map(s => `<span class="car-exp-stint"><b>${escapeHtml(s.team)}</b> ${fmtNum(s.gp)} GP · ${fmtSigned(s.war, 1)} CAR</span>`).join('')
+      }<span class="car-exp-stints-note">CAR and GP are the season totals; rates are games-weighted.</span></div>` : ''}
       <div class="car-stat-strip">
         <div class="car-stat"><span class="car-stat-label">CAR</span><span class="car-stat-val ${carColorClass(r.WAR)}">${fmtSigned(r.WAR, 1)}</span></div>
         <div class="car-stat"><span class="car-stat-label">CAR / G</span><span class="car-stat-val ${cargColorClass(r.WAR_per_game)}">${fmtSigned(r.WAR_per_game, 2)}</span></div>

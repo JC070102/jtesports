@@ -27,6 +27,18 @@ Chovy moved 72.4 -> 58.9 purely because the pool he is measured against changed.
 If the cup is ever wanted on the site it should arrive as its own cohort, not
 merged into the season.
 
+`refresh_data.py` strips the cup by its raw league label, but that only ever ran
+on the 2026 file: the 2023-2025 per-game inputs come straight from newmodel's
+pipeline, and **39 KeSPA Cup games from December 2025 were sitting inside the
+LCK 2025 cohort** until the 2026-08-13 rebuild. They carried the *2026* rosters,
+so the 2025 season also contained phantom player-seasons (Peyz on T1 with 16 GP,
+Kanavi on Hanwha Life with 15) that fed the career table and the projections.
+`build_new_master.apply_index_exclusions` now drops them on every build: an LCK
+game with no split label is not a season game, because every real LCK split is
+labelled. The rule is scoped to the LCK on purpose -- the development leagues run
+hundreds of legitimately unlabelled games. Effect on the published 2025 LCK
+table: median 4.1 CAR at 25+ GP, Chovy 50.6 -> 41.3, and the substitute rows gone.
+
 | File | What it is | Source |
 |---|---|---|
 | `msi2026_per_game.csv` | Full filtered per-game rows (player + team) for MSI 2026: 71 games, 11 teams, 2026-06-28 to 2026-07-12. Complete timeline coverage. | Raw all-leagues OE drop, `league == "MSI"` |
