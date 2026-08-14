@@ -809,10 +809,16 @@
       return;
     }
     try {
+      // Revalidate every load. The CSVs live in another repo and are republished
+      // without touching this file, and GitHub serves them with max-age=300, so a
+      // plain fetch can hand back a stale table long after a data fix shipped —
+      // an open tab kept showing the old team rosters after the starter-rule
+      // change. `no-cache` costs one conditional request and 304s when nothing moved.
+      const opts = { cache: 'no-cache' };
       const [playersRes, teamsRes, historyRes] = await Promise.all([
-        fetch(CAR_PLAYERS_URL),
-        fetch(CAR_TEAMS_URL),
-        fetch(CAR_HISTORY_URL)
+        fetch(CAR_PLAYERS_URL, opts),
+        fetch(CAR_TEAMS_URL, opts),
+        fetch(CAR_HISTORY_URL, opts)
       ]);
       if (!playersRes.ok || !teamsRes.ok) throw new Error('fetch failed');
       const [playersText, teamsText, historyText] = await Promise.all([
