@@ -58,9 +58,11 @@
 .ptease-tag { font-family:var(--mono); font-size:.62rem; letter-spacing:.14em;
   text-transform:uppercase; color:var(--accent); }
 .ptease-tag--muted { color:var(--muted); }
-.ptease-row { display:grid; grid-template-columns:minmax(0,1fr) 3.1rem 3.1rem 4.1rem 4.6rem;
+.ptease-row { display:grid; grid-template-columns:minmax(0,1fr) 3.1rem 3.1rem 4.1rem 7rem;
   gap:.5rem; align-items:center; padding:.78rem 0; border-bottom:1px solid rgba(35,44,110,.18);
   font-family:var(--mono); font-size:.78rem; }
+/* the two figures are the comparison, so they get air between them */
+.ptease-row > :last-child { padding-left:1.3rem; }
 .ptease-row--head { border-bottom:1px solid var(--ink); padding:.5rem 0 .42rem;
   font-size:.6rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
 .ptease-row:last-of-type { border-bottom:none; }
@@ -70,11 +72,24 @@
   user-select:none; white-space:nowrap; overflow:hidden; }
 .ptease-pos { font-size:.62rem; letter-spacing:.1em; color:var(--ink); }
 .ptease-lg { font-size:.62rem; letter-spacing:.1em; color:var(--muted); }
-.ptease-v { font-weight:500; font-size:.92rem; color:var(--accent); }
-.ptease-t { color:var(--ink); }
-.ptease-t--neg { color:var(--accent); }
+/* his own rating reads positive; the roster beside it reads red wherever it
+   falls short of him, which on these four is every time */
+.ptease-v { font-weight:500; font-size:.92rem; color:#2a7a3a; }
+.ptease-t { font-weight:500; font-size:.92rem; color:var(--accent); }
+.ptease-t--over { color:#2a7a3a; }
 .ptease-foot { font-family:var(--serif); font-size:.82rem; line-height:1.45; color:var(--muted);
   margin:.75rem 0 0; padding-top:.7rem; border-top:2px solid var(--ink); }
+/* on a phone the fixed columns would eat the whole row and squeeze the names to
+   nothing, so the league drops out and the rest tightens */
+@media (max-width:640px){
+  .ptease { padding:.9rem 1rem 1rem; }
+  .ptease-row { grid-template-columns:minmax(0,1fr) 2.6rem 3.4rem 4.4rem; gap:.4rem;
+    font-size:.7rem; padding:.62rem 0; }
+  .ptease-row > :nth-child(3) { display:none; }
+  .ptease-row > :last-child { padding-left:.7rem; }
+  .ptease-redact { font-size:1rem; }
+  .ptease-tag--muted { display:none; }
+}
 
 /* ── Below the fold: the claim the hero used to carry ── */
 .spot-below { padding:2.4rem 2.5rem 2.2rem; border-bottom:1.5px solid var(--ink); }
@@ -134,37 +149,37 @@
       <a class="spot-cta" href="writing/purgatory-files.html">Read The Purgatory Files →</a>
     </div>
     <figure class="spot-hero-art">
-      <div class="ptease" role="img" aria-label="Preview table of the four players in the piece, names withheld: a top laner in the LCK at +42.2 CAR on a roster worth +61.3, an ADC in the LEC at +19.9 on +53.9, a mid in the LCS at +18.9 on +68.5, and an ADC in the LCS at +9.8 on a roster worth −11.4.">
+      <div class="ptease" role="img" aria-label="Preview table of the four players in the piece, names withheld. Each is listed with his own CAR beside the average CAR of his four teammates: a top laner in the LCK at +42.2 against +4.8, an ADC in the LEC at +19.9 against +8.5, a mid in the LCS at +18.9 against +12.4, and an ADC in the LCS at +9.8 against −5.3.">
         <div class="ptease-top">
           <span class="ptease-tag">Four players · 2026</span>
           <span class="ptease-tag ptease-tag--muted">CAR Index · league-relative</span>
         </div>
         <div class="ptease-row ptease-row--head">
           <span>Player</span><span>Role</span><span>League</span>
-          <span class="ptease-r">CAR</span><span class="ptease-r">His roster</span>
+          <span class="ptease-r">CAR</span><span class="ptease-r">Their roster</span>
         </div>
         <div class="ptease-row">
           <span class="ptease-redact" aria-hidden="true">█████</span>
           <span class="ptease-pos">TOP</span><span class="ptease-lg">LCK</span>
-          <span class="ptease-r ptease-v">+42.2</span><span class="ptease-r ptease-t">+61.3</span>
+          <span class="ptease-r ptease-v">+42.2</span><span class="ptease-r ptease-t">+4.8</span>
         </div>
         <div class="ptease-row">
           <span class="ptease-redact" aria-hidden="true">████</span>
           <span class="ptease-pos">ADC</span><span class="ptease-lg">LEC</span>
-          <span class="ptease-r ptease-v">+19.9</span><span class="ptease-r ptease-t">+53.9</span>
+          <span class="ptease-r ptease-v">+19.9</span><span class="ptease-r ptease-t">+8.5</span>
         </div>
         <div class="ptease-row">
           <span class="ptease-redact" aria-hidden="true">████████</span>
           <span class="ptease-pos">MID</span><span class="ptease-lg">LCS</span>
-          <span class="ptease-r ptease-v">+18.9</span><span class="ptease-r ptease-t">+68.5</span>
+          <span class="ptease-r ptease-v">+18.9</span><span class="ptease-r ptease-t">+12.4</span>
         </div>
         <div class="ptease-row">
           <span class="ptease-redact" aria-hidden="true">████</span>
           <span class="ptease-pos">ADC</span><span class="ptease-lg">LCS</span>
-          <span class="ptease-r ptease-v">+9.8</span><span class="ptease-r ptease-t ptease-t--neg">−11.4</span>
+          <span class="ptease-r ptease-v">+9.8</span><span class="ptease-r ptease-t">−5.3</span>
         </div>
-        <p class="ptease-foot">His CAR, against the whole five-man roster he plays on. One of them
-        is carrying a team that adds up to less than nothing.</p>
+        <p class="ptease-foot">Each one's CAR against the average of the four teammates around him.
+        Not one of these rosters rates as high as the man on it.</p>
       </div>
       <figcaption class="spot-art-cap">Full-year 2026 figures, starters at 25 games or more. Names in the piece.</figcaption>
     </figure>
