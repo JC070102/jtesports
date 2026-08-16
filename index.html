@@ -450,6 +450,23 @@
 
 </div>
 
+<!-- SHARE CARD PREVIEW -->
+<div class="sc-overlay" id="sc-overlay" aria-hidden="true" role="dialog" aria-label="Share card">
+  <div class="sc-modal">
+    <div class="sc-head">
+      <span class="sc-title">Share card</span>
+      <button class="sc-x" id="sc-close" type="button" aria-label="Close">×</button>
+    </div>
+    <canvas class="sc-canvas" id="sc-canvas" width="2160" height="2160"
+            role="img" aria-label="Square share card for this player-season"></canvas>
+    <div class="sc-actions">
+      <button class="sc-btn sc-btn--primary" id="sc-download" type="button">Download PNG</button>
+      <button class="sc-btn" id="sc-copy" type="button">Copy image</button>
+      <span class="sc-status" id="sc-status"></span>
+    </div>
+  </div>
+</div>
+
 <!-- CHARTS PAGE -->
 <div class="page" id="page-charts">
   <div class="archive-header">
@@ -1163,6 +1180,267 @@
     });
   }
 
+  /* ══════════════════════════════════════════════
+     SHARE CARD
+     A square image for one player-season, drawn on canvas so the export is
+     pixel-exact and carries the real faces. Everything on it is placed in one
+     frame: his standing inside his own (league, year, role) cohort at 25+ games.
+     Replacement level is that cohort's 25th percentile, so it sits at the
+     quarter mark of every scale here — the ramp and the meters both.
+     ══════════════════════════════════════════════ */
+
+  const SC = { W: 1080, H: 1080, PAD: 60, SCALE: 2 };
+  const SC_INK = '#141a3f', SC_BONE = '#f1f0ea', SC_DIM = '#98a0ca',
+        SC_HAIR = 'rgba(241,240,234,0.16)', SC_ACCENT = '#f43325',
+        SC_TRACK = 'rgba(241,240,234,0.10)', SC_GREY = '#aeaa9b';
+  const SC_REPL_AT = 0.25;
+  const SC_RAMP = [
+    [0.00, [224,  51,  29]],   // alarm, well below replacement
+    [0.25, [244, 112,  60]],   // replacement itself, still hot
+    [0.50, [207, 201, 180]],   // the middle of the role
+    [1.00, [ 94, 227, 157]]    // best in role
+  ];
+
+  function scRamp(p) {
+    p = Math.max(0, Math.min(1, p));
+    for (let i = 1; i < SC_RAMP.length; i++) {
+      if (p <= SC_RAMP[i][0]) {
+        const [p0, c0] = SC_RAMP[i - 1], [p1, c1] = SC_RAMP[i];
+        const t = (p - p0) / (p1 - p0);
+        return `rgb(${c0.map((v, j) => Math.round(v + (c1[j] - v) * t)).join(',')})`;
+      }
+    }
+    return `rgb(${SC_RAMP[SC_RAMP.length - 1][1].join(',')})`;
+  }
+  /* replacement pinned at the quarter mark, the cohort's best at the green end */
+  function scCarPos(car, cohort) {
+    const hi = Math.max(...cohort, car, 1), lo = Math.min(...cohort, car, -1);
+    return car >= 0 ? SC_REPL_AT + (1 - SC_REPL_AT) * (car / hi)
+                    : SC_REPL_AT * (1 - car / lo);
+  }
+  const scRankPos = (rank, n) => (n - rank + 0.5) / n;
+  const scOrd = n => n + (['th','st','nd','rd'][(n % 100 - n % 10 != 10) * (n % 10 < 4) * (n % 10)] || 'th');
+  const SC_ROLE_PLURAL = { Top:'TOPS', Jungle:'JUNGLERS', Middle:'MIDS', ADC:'ADCs', Support:'SUPPORTS' };
+
+  function scFoldedZ(p, cols) {
+    const vals = cols.map(c => Number(p[c])).filter(v => isFinite(v));
+    return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : NaN;
+  }
+
+  /* The cohort is folded player-seasons at a fixed 25 games, whatever the table
+     filter happens to be set to — a rank must not depend on how you were browsing.
+     Components are ranked in that same cohort rather than read off the published
+     z-scores: those are standardised against a wider pool than the role, so a
+     fixed threshold drawn in z-space would mean nothing here. */
+  function shareCardData(r) {
+    const pos = String(r.Pos || '');
+    const cohort = foldPlayerSeasons(carPlayers.filter(p =>
+        p.League === r.League && String(p.Year) === String(r.Year) && p.Pos === pos))
+      .filter(p => Number(p.GP) >= 25 && isFinite(Number(p.WAR)))
+      .sort((a, b) => Number(b.WAR) - Number(a.WAR));
+    const idx = cohort.findIndex(p => seasonKey(p) === seasonKey(r));
+    const rank = idx >= 0 ? idx + 1 : null;
+
+    const comps = (PANEL_AXES[pos] || ROLE_COMPONENTS[pos] || []).map(entry => {
+      const cols  = typeof entry === 'string' ? [entry] : entry.cols;
+      const label = typeof entry === 'string' ? (Z_FRIENDLY[entry] || entry) : entry.label;
+      const mine  = scFoldedZ(r, cols);
+      if (!isFinite(mine)) return null;
+      const vals = cohort.map(p => scFoldedZ(p, cols)).filter(v => isFinite(v));
+      if (!vals.length) return null;
+      return { label, rank: rank ? vals.filter(v => v > mine).length + 1 : null, n: vals.length };
+    }).filter(Boolean);
+
+    return { r, rank, comps, cohortWar: cohort.map(p => Number(p.WAR)) };
+  }
+
+  /* the riso halftone, as a repeating pattern rather than thousands of arcs */
+  function scHalftone(ctx) {
+    const t = document.createElement('canvas');
+    t.width = t.height = 14;
+    const c = t.getContext('2d');
+    c.fillStyle = 'rgba(241,240,234,0.055)';
+    c.beginPath(); c.arc(2, 2, 1.1, 0, Math.PI * 2); c.fill();
+    return ctx.createPattern(t, 'repeat');
+  }
+
+  function scText(ctx, s, x, y, font, color, align) {
+    ctx.font = font; ctx.fillStyle = color;
+    ctx.textAlign = align || 'left'; ctx.textBaseline = 'top';
+    ctx.fillText(s, x, y);
+    return ctx.measureText(s).width;
+  }
+  function scDashedV(ctx, x, y0, y1, color) {
+    ctx.save(); ctx.setLineDash([4, 4]); ctx.strokeStyle = color; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(x, y0); ctx.lineTo(x, y1); ctx.stroke(); ctx.restore();
+  }
+  const BG = w => `${w}px "Bricolage Grotesque", system-ui, sans-serif`;
+  const MO = s => `${s}px "DM Mono", ui-monospace, monospace`;
+
+  function drawShareCard(canvas, d) {
+    const { W, H, PAD, SCALE } = SC;
+    canvas.width = W * SCALE; canvas.height = H * SCALE;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(SCALE, SCALE);
+    ctx.textBaseline = 'top';
+
+    const r = d.r;
+    const car = Number(r.WAR);
+    const col = d.rank ? scRamp(scCarPos(car, d.cohortWar)) : SC_GREY;
+    const inner = W - PAD * 2;
+
+    ctx.fillStyle = SC_INK; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = scHalftone(ctx); ctx.fillRect(0, 0, W, H);
+
+    // ── header: name left, club right, so neither corner sits empty ──
+    let y = PAD;
+    const team = String(r.Team || '');
+    ctx.font = `700 ${BG(32)}`; const teamW = ctx.measureText(team).width;
+    ctx.font = MO(21);
+    const rightW = Math.max(teamW, ctx.measureText(`${r.League} · ${r.Year}`).width);
+
+    let nameSize = 84;
+    ctx.font = `800 ${BG(nameSize)}`;
+    while (ctx.measureText(r.Player).width > inner - rightW - 40 && nameSize > 38) {
+      nameSize -= 2; ctx.font = `800 ${BG(nameSize)}`;
+    }
+    scText(ctx, r.Player, PAD, y, `800 ${BG(nameSize)}`, SC_BONE);
+    scText(ctx, team, W - PAD, y + 2, `700 ${BG(32)}`, SC_BONE, 'right');
+    scText(ctx, `${r.League} · ${r.Year}`, W - PAD, y + 44, MO(21), SC_DIM, 'right');
+
+    const chipY = y + nameSize + 10;
+    ctx.font = `800 ${BG(19)}`;
+    const role = shortRole(r.Pos);
+    const chipW = ctx.measureText(role).width + 22;
+    ctx.fillStyle = SC_ACCENT; ctx.fillRect(PAD, chipY, chipW, 32);
+    scText(ctx, role, PAD + 11, chipY + 6, `800 ${BG(19)}`, SC_BONE);
+
+    y = chipY + 32 + 22;
+    ctx.fillStyle = SC_HAIR; ctx.fillRect(PAD, y, inner, 2);
+
+    // ── the rating, with the three season figures stacked beside it ──
+    y += 34;
+    const heroTop = y;
+    scText(ctx, fmtSigned(car, 1), PAD, y, `800 ${BG(140)}`, col);
+
+    const stats = [
+      ['GAMES', fmtNum(r.GP)],
+      ['CAR / GAME', fmtSigned(r.WAR_per_game, 2)],
+      ['SKILL EST.', fmtSigned(r.proj_WAR, 1)]
+    ];
+    stats.forEach((s, i) => {
+      const sy = heroTop + 6 + i * 46;
+      scText(ctx, s[0], W - PAD - 138, sy + 8, MO(15), SC_DIM, 'right');
+      scText(ctx, s[1], W - PAD, sy, `800 ${BG(36)}`, SC_BONE, 'right');
+    });
+
+    y = heroTop + 140 * 0.86 + 6;
+    const rankTxt = d.rank ? scOrd(d.rank).toUpperCase() : 'UNRANKED';
+    const restTxt = d.rank ? ` OF ${d.cohortWar.length} ${r.League} ${SC_ROLE_PLURAL[r.Pos] || ''}`
+                           : ' UNDER 25 GAMES';
+    const w1 = scText(ctx, rankTxt, PAD, y, `800 ${BG(34)}`, col);
+    scText(ctx, restTxt, PAD + w1, y, `800 ${BG(34)}`, SC_DIM);
+    y += 34 + 28;
+
+    ctx.fillStyle = SC_HAIR; ctx.fillRect(PAD, y, inner, 2);
+
+    // ── the field: one tick per qualified player, his lit ──
+    y += 40;
+    const lo = Math.min(...d.cohortWar, 0, car), hi = Math.max(...d.cohortWar, 0, car);
+    const span = (hi - lo) || 1, gutter = span * 0.07;
+    const xOf = v => PAD + (v - (lo - gutter)) / ((hi + gutter) - (lo - gutter)) * inner;
+    const axisY = y + 80;
+    scText(ctx, fmtSigned(car, 1), Math.min(Math.max(xOf(car), PAD + 34), W - PAD - 34),
+           y, `800 ${BG(26)}`, col, 'center');
+    ctx.fillStyle = 'rgba(241,240,234,0.45)'; ctx.fillRect(PAD, axisY, inner, 1);
+    ctx.fillStyle = 'rgba(241,240,234,0.6)';
+    d.cohortWar.forEach(v => ctx.fillRect(xOf(v) - 1.5, axisY - 30, 3, 30));
+    scDashedV(ctx, xOf(0), axisY - 44, axisY, 'rgba(241,240,234,0.55)');
+    scText(ctx, 'REPLACEMENT', xOf(0), axisY + 11, MO(12.5), SC_DIM, 'center');
+    const mx = xOf(car);
+    ctx.fillStyle = SC_INK; ctx.fillRect(mx - 7.5, axisY - 58, 15, 58);
+    if (d.rank) { ctx.fillStyle = col; ctx.fillRect(mx - 4.5, axisY - 56, 9, 56); }
+    else { ctx.strokeStyle = col; ctx.lineWidth = 3; ctx.strokeRect(mx - 6, axisY - 56, 12, 56); }
+
+    y = axisY + 44;
+    ctx.fillStyle = SC_HAIR; ctx.fillRect(PAD, y, inner, 2);
+
+    // ── the meters, filling whatever room is left above the footer ──
+    const footY   = H - PAD - 22;
+    const meterTop = y + 36;
+    const n = d.comps.length || 1;
+    const step = Math.max(62, Math.min(96, (footY - 34 - meterTop) / n));
+    y = meterTop;
+    d.comps.forEach(c => {
+      const p  = c.rank ? scRankPos(c.rank, c.n) : 0;
+      const cc = c.rank ? scRamp(p) : SC_GREY;
+      scText(ctx, c.label, PAD, y, `700 ${BG(28)}`, SC_BONE);
+      scText(ctx, c.rank ? scOrd(c.rank).toUpperCase() : '—', W - PAD, y, `800 ${BG(28)}`, cc, 'right');
+      ctx.fillStyle = SC_TRACK; ctx.fillRect(PAD, y + 38, inner, 24);
+      ctx.fillStyle = cc; ctx.fillRect(PAD, y + 38, Math.max(inner * p, p > 0 ? 7 : 0), 24);
+      y += step;
+    });
+    // one threshold across every meter, so it reads as a single bar to clear
+    const lastBarBottom = y - step + 62;
+    scDashedV(ctx, PAD + inner * SC_REPL_AT, meterTop + 32, lastBarBottom, 'rgba(241,240,234,0.55)');
+    scText(ctx, 'REPLACEMENT', PAD + inner * SC_REPL_AT, lastBarBottom + 9, MO(12.5), SC_DIM, 'center');
+
+    // ── footer ──
+    scText(ctx, 'jtesports.com', PAD, footY, MO(16), SC_BONE);
+    scText(ctx, `${r.League} ${r.Year} · LEAGUE-RELATIVE`, W - PAD, footY, MO(16), SC_DIM, 'right');
+  }
+
+  const SC_FONT_SPECS = ['800 140px', '800 84px', '800 36px', '800 34px', '800 28px',
+                         '700 32px', '700 28px', '800 26px', '800 19px'];
+  let scFontsReady = null;
+  function scLoadFonts() {
+    if (scFontsReady) return scFontsReady;
+    const jobs = SC_FONT_SPECS.map(s => document.fonts.load(`${s} "Bricolage Grotesque"`))
+      .concat([13, 14, 17, 22].map(s => document.fonts.load(`400 ${s}px "DM Mono"`)));
+    scFontsReady = Promise.all(jobs).catch(() => {});
+    return scFontsReady;
+  }
+
+  async function openShareCard(r) {
+    const overlay = document.getElementById('sc-overlay');
+    const canvas  = document.getElementById('sc-canvas');
+    const status  = document.getElementById('sc-status');
+    if (!overlay || !canvas) return;
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    status.textContent = '';
+    await scLoadFonts();
+    drawShareCard(canvas, shareCardData(r));
+    const base = `${r.Player}-${r.Year}-${r.League}-CAR`.replace(/[^\w.-]+/g, '-');
+    document.getElementById('sc-download').onclick = () => {
+      canvas.toBlob(b => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(b);
+        a.download = base + '.png';
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+        status.textContent = 'Saved ' + a.download;
+      }, 'image/png');
+    };
+    document.getElementById('sc-copy').onclick = () => {
+      if (!navigator.clipboard || !window.ClipboardItem) {
+        status.textContent = 'This browser can’t copy images. Use Download instead.';
+        return;
+      }
+      canvas.toBlob(b => {
+        navigator.clipboard.write([new ClipboardItem({ 'image/png': b })])
+          .then(() => { status.textContent = 'Copied. Paste it straight into a post.'; })
+          .catch(() => { status.textContent = 'Copy was blocked. Use Download instead.'; });
+      }, 'image/png');
+    };
+  }
+  function closeShareCard() {
+    const overlay = document.getElementById('sc-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+  }
+
   /* ── Players table ── */
   function renderPlayers() {
     if (!document.getElementById('car-players-tbody')) return;
@@ -1260,7 +1538,10 @@
           <span class="car-pos-badge ${roleBadgeClass(r.Pos)}">${escapeHtml(shortRole(r.Pos))}</span>
           <span class="car-exp-meta">${escapeHtml(r.Team || '')} · ${escapeHtml(r.League || '')} · ${escapeHtml(String(r.Year || ''))}</span>
         </div>
-        <button class="car-exp-close" aria-label="Close">×</button>
+        <div class="car-exp-acts">
+          <button class="car-share-btn" type="button">Share card</button>
+          <button class="car-exp-close" aria-label="Close">×</button>
+        </div>
       </div>
       ${r.stints ? `<div class="car-exp-stints"><span class="car-exp-stints-k">${r.stints.length} teams this season</span>${
         r.stints.map(s => `<span class="car-exp-stint"><b>${escapeHtml(s.team)}</b> ${fmtNum(s.gp)} GP · ${fmtSigned(s.war, 1)} CAR</span>`).join('')
@@ -1289,6 +1570,10 @@
       e.stopPropagation();
       expandedPlayer = null;
       renderPlayers();
+    });
+    panel.querySelector('.car-share-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      openShareCard(r);
     });
 
     // Animate bars on mount
@@ -1586,6 +1871,15 @@
         if (sym) sym.textContent = open ? '+' : '−';
       });
     }
+
+    // Share-card preview: close on the ×, on the backdrop, and on Escape
+    const scClose = document.getElementById('sc-close');
+    const scOver  = document.getElementById('sc-overlay');
+    if (scClose) scClose.addEventListener('click', closeShareCard);
+    if (scOver)  scOver.addEventListener('click', e => { if (e.target === scOver) closeShareCard(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && scOver && scOver.classList.contains('is-open')) closeShareCard();
+    });
   }
 
   /* ── Hook showPage so the dashboard renders on activation ── */

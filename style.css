@@ -1719,6 +1719,90 @@ footer a:hover { color: var(--ink); }
   padding: 0.5rem 0;
 }
 
+/* ── Share card: the button in the expanded row, and its preview ── */
+.car-exp-acts { display: flex; align-items: center; gap: 0.7rem; }
+
+.car-share-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1.5px solid var(--ink);
+  padding: 0.42rem 0.75rem;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--accent);
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.car-share-btn:hover { transform: translate(1.5px, 1.5px); box-shadow: 1.5px 1.5px 0 var(--accent); }
+
+.sc-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: rgba(20, 26, 63, 0.82);
+  overflow-y: auto;
+}
+.sc-overlay.is-open { display: flex; }
+
+.sc-modal {
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  box-shadow: 10px 10px 0 rgba(35, 44, 110, 0.3);
+  padding: 1.1rem 1.1rem 1.2rem;
+  max-width: min(620px, 100%);
+  width: 100%;
+}
+.sc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
+.sc-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.sc-x {
+  background: none; border: none; cursor: pointer;
+  font-size: 1.35rem; line-height: 1; color: var(--muted); padding: 0 0.2rem;
+}
+.sc-x:hover { color: var(--accent); }
+
+.sc-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border: 1.5px solid var(--ink);
+}
+
+.sc-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin-top: 1rem; }
+.sc-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.sc-btn:hover { background: var(--ink); color: var(--paper); }
+.sc-btn--primary { color: var(--paper); background: var(--ink); box-shadow: 3px 3px 0 var(--accent); }
+.sc-btn--primary:hover { background: var(--accent); border-color: var(--accent); }
+.sc-status {
+  flex: 1 1 12em;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
 /* ── Multi-team seasons (folded stints) ── */
 .car-team-sep {
   color: var(--accent);
