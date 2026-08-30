@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Only URLs that return 200 are listed. The SPA section routes
+     (/charts, /stories, /what-is-car, /about) are served by 404.html
+     and return HTTP 404 to crawlers, so they are deliberately excluded. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://jtesports.com/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://jtesports.com/writing/purgatory-files.html</loc>
+    <lastmod>2026-08-10</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://jtesports.com/writing/vitality-downfall.html</loc>
+    <lastmod>2026-08-10</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://jtesports.com/writing/bfx-identity-crisis.html</loc>
+    <lastmod>2026-07-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://jtesports.com/writing/casting-has-not-evolved.html</loc>
+    <lastmod>2026-07-28</lastmod>
+    <priority>0.8</priority>
+  </url>
+</urlset>

@@ -526,6 +526,10 @@ footer a:hover { color: var(--ink); }
   padding: 1.25rem 2.5rem;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
+  /* the rows are real <a> elements so crawlers see the essays; keep the
+     original flat look rather than inheriting the global link styling */
+  text-decoration: none;
+  color: inherit;
   transition: background 0.15s;
 }
 
