@@ -89,6 +89,41 @@ class SiteContractTests(unittest.TestCase):
                 for field in ("headline", "description", "datePublished", "author", "publisher", "mainEntityOfPage"):
                     self.assertIn(field, article)
 
+    def test_about_exposes_profile_entity_and_social_metadata(self):
+        html = (ROOT / "about/index.html").read_text(encoding="utf-8")
+        for tag in (
+            '<meta property="og:type" content="website">',
+            '<meta property="og:site_name" content="JTE Sports">',
+            '<meta property="og:url" content="https://jtesports.com/about/">',
+            '<meta property="og:title" content="About JTE Sports · Independent esports analytics">',
+            '<meta property="og:description" content="JTE Sports is an independent analytics publication for professional League of Legends, combining the CAR Index with long-form reporting.">',
+            '<meta property="og:image" content="https://jtesports.com/images/twitter-banner.png">',
+            '<meta name="twitter:card" content="summary_large_image">',
+            '<meta name="twitter:site" content="@jt_esports">',
+            '<meta name="twitter:creator" content="@jt_esports">',
+            '<meta name="twitter:title" content="About JTE Sports · Independent esports analytics">',
+            '<meta name="twitter:description" content="JTE Sports is an independent analytics publication for professional League of Legends, combining the CAR Index with long-form reporting.">',
+            '<meta name="twitter:image" content="https://jtesports.com/images/twitter-banner.png">',
+        ):
+            self.assertIn(tag, html)
+        blocks = re.findall(
+            r'<script type="application/ld\+json">\s*(.*?)\s*</script>',
+            html,
+            flags=re.DOTALL,
+        )
+        graphs = [json.loads(block) for block in blocks]
+        entities = [entity for graph in graphs for entity in graph.get("@graph", [graph])]
+        profile = next(data for data in entities if data.get("@type") == "ProfilePage")
+        person = next(data for data in entities if data.get("@type") == "Person")
+        self.assertEqual("https://jtesports.com/about/#profile", profile.get("@id"))
+        self.assertEqual("https://jtesports.com/about/", profile.get("url"))
+        self.assertEqual({"@id": "https://jtesports.com/about/#jte"}, profile.get("mainEntity"))
+        self.assertEqual("https://jtesports.com/about/#jte", person.get("@id"))
+        self.assertEqual("JTE", person.get("name"))
+        self.assertEqual("JTE is pseudonymous.", person.get("description"))
+        self.assertEqual("https://jtesports.com/about/", person.get("url"))
+        self.assertEqual(["https://twitter.com/jt_esports", "https://x.com/jt_esports"], person.get("sameAs"))
+
     def test_article_json_ld_matches_visible_page_contract(self):
         sitemap = ElementTree.parse(ROOT / "sitemap.xml")
         ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
@@ -118,15 +153,32 @@ class SiteContractTests(unittest.TestCase):
                 og_title = re.search(r'<meta property="og:title" content="([^"]+)">', html)
                 og_image = re.search(r'<meta property="og:image" content="([^"]+)">', html)
                 published = re.search(r'<meta property="article:published_time" content="(\d{4}-\d{2}-\d{2})">', html)
+                article_author = re.search(r'<meta property="article:author" content="([^"]+)">', html)
                 self.assertTrue(all((canonical, description, og_title, og_image, published)))
+                twitter_title = re.search(r'<meta name="twitter:title" content="([^"]+)">', html)
+                twitter_description = re.search(r'<meta name="twitter:description" content="([^"]+)">', html)
+                twitter_image = re.search(r'<meta name="twitter:image" content="([^"]+)">', html)
+                self.assertTrue(all((canonical, description, og_title, og_image, published, article_author, twitter_title, twitter_description, twitter_image)))
                 self.assertEqual(og_title.group(1), article.get("headline"))
                 self.assertEqual(description.group(1), article.get("description"))
                 self.assertEqual(published.group(1), article.get("datePublished"))
+                self.assertEqual("https://jtesports.com/about/", article_author.group(1))
                 self.assertEqual(canonical.group(1), article.get("mainEntityOfPage"))
                 self.assertEqual(og_image.group(1), article.get("image"))
-                self.assertEqual({"@type": "Person", "name": "JTE"}, article.get("author"))
+                self.assertEqual(twitter_title.group(1), og_title.group(1))
+                self.assertEqual(twitter_description.group(1), description.group(1))
+                self.assertEqual(twitter_image.group(1), og_image.group(1))
+                self.assertEqual(
+                    {"@id": "https://jtesports.com/about/#jte", "@type": "Person", "name": "JTE", "url": "https://jtesports.com/about/", "sameAs": ["https://twitter.com/jt_esports", "https://x.com/jt_esports"]},
+                    article.get("author"),
+                )
+                self.assertEqual("https://jtesports.com/#org", article.get("publisher", {}).get("@id"))
+                self.assertEqual("Organization", article.get("publisher", {}).get("@type"))
                 self.assertEqual("JTE Sports", article.get("publisher", {}).get("name"))
                 self.assertEqual(SITE_ORIGIN + "/", article.get("publisher", {}).get("url"))
+                self.assertEqual(SITE_ORIGIN + "/jte-logo.jpg", article.get("publisher", {}).get("logo"))
+                self.assertEqual("en", article.get("inLanguage"))
+                self.assertIs(True, article.get("isAccessibleForFree"))
                 self.assertTrue(article.get("headline"))
                 self.assertRegex(article["datePublished"], r"^\d{4}-\d{2}-\d{2}$")
                 self.assertTrue(article["mainEntityOfPage"].startswith(f"{SITE_ORIGIN}/"))
