@@ -1,0 +1,24 @@
+# JTE Sports
+
+> Independent, data-armed analysis and criticism of professional League of Legends, published by JTE Sports. The site includes the CAR Index, supporting charts, methodology, and long-form stories.
+
+## Start here
+
+- [Home](https://jtesports.com/): JTE Sports homepage and latest site updates.
+- [Stories](https://jtesports.com/stories/): Human-readable archive of published long-form analysis.
+- [CAR Index](https://jtesports.com/index/): Player and team evaluations using the CAR model.
+- [Charts](https://jtesports.com/charts/): Visual exploration of published CAR data.
+- [What CAR is and isn't](https://jtesports.com/what-is-car/): Methodology, scope, and limitations of the CAR Index.
+- [About JTE Sports](https://jtesports.com/about/): Site and author information.
+
+## Published stories
+
+- [The Purgatory Files](https://jtesports.com/writing/purgatory-files.html): Four players overlooked by the 2026 standings, examined through the CAR Index.
+- [Vitality's Downfall](https://jtesports.com/writing/vitality-downfall.html): An empirical analysis of Team Vitality's LEC 2026 volatility and playoff collapse.
+- [BFX is Collapsing. Here's How to Fix It.](https://jtesports.com/writing/bfx-identity-crisis.html): An analysis of BNK FEARX's collapse after its strong LCK Cup run, with possible fixes.
+- [Casting Has Not Evolved. It Has Deteriorated.](https://jtesports.com/writing/casting-has-not-evolved.html): Criticism of League of Legends broadcast analysis and casting compared with Counter-Strike.
+
+## Machine-readable data
+
+- [XML sitemap](https://jtesports.com/sitemap.xml): Canonical public URLs and publication metadata.
+- [Robots policy](https://jtesports.com/robots.txt): Crawler access instructions.

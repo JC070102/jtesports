@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JTE Sports · The CAR Index · Underreported stories in pro League</title>
-  <link rel="icon" type="image/svg+xml" href="jte-logo.jpg">
+<link rel="icon" type="image/jpeg" href="/jte-logo.jpg">
 <meta name="description" content="JTE Sports — an interactive analytics publication for pro League of Legends, built around the CAR Index, underreported stories surfaced through empirical analysis.">
 <link rel="canonical" href="https://jtesports.com/">
 <meta property="og:type" content="website">
@@ -41,6 +41,8 @@
   ]
 }
 </script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css?v=sp3">
 <link rel="stylesheet" href="sp1.css?v=sp3">
@@ -150,27 +152,28 @@
 .dsx-band-label { font-family:var(--display); font-weight:800; font-size:1.35rem; color:var(--ink); }
 .dsx-band-note { font-family:var(--mono); font-size:.7rem; color:var(--muted); }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script defer src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
 </head>
 <body>
 
 <header class="mast">
-  <span class="wordmark" onclick="showPage('home')">JT<span>E</span></span>
+  <a class="wordmark" href="/" onclick="showPage('home'); return false;">JT<span>E</span></a>
   <span class="mast-tag">Every number here has an opinion.</span>
   <a href="https://twitter.com/jt_esports" class="mast-x" target="_blank">Twitter / X ↗</a>
 </header>
 <nav>
   <ul>
-    <li><a data-nav="home" onclick="showPage('home')">Home</a></li>
-    <li><a data-nav="car" onclick="showPage('car')">Index</a></li>
-    <li><a data-nav="charts" onclick="showPage('charts')">Charts</a></li>
-    <li><a data-nav="archive" onclick="showPage('archive')">Stories</a></li>
-    <li><a data-nav="explainer" onclick="showPage('explainer')">What is CAR</a></li>
-    <li><a data-nav="about" onclick="showPage('about')">About</a></li>
+    <li><a href="/" data-nav="home" onclick="showPage('home'); return false;">Home</a></li>
+    <li><a href="/index/" data-nav="car" onclick="showPage('car'); return false;">Index</a></li>
+    <li><a href="/charts/" data-nav="charts" onclick="showPage('charts'); return false;">Charts</a></li>
+    <li><a href="/stories/" data-nav="archive" onclick="showPage('archive'); return false;">Stories</a></li>
+    <li><a href="/what-is-car/" data-nav="explainer" onclick="showPage('explainer'); return false;">What is CAR</a></li>
+    <li><a href="/about/" data-nav="about" onclick="showPage('about'); return false;">About</a></li>
   </ul>
 </nav>
 
+<main id="main-content">
 <!-- HOME PAGE — THE SPOTLIGHT (current feature) + THE DISSECTION (MSI 2026) -->
 <div class="page active" id="page-home">
 
@@ -247,7 +250,7 @@
 
   <div class="section-header">
     <span class="section-label">Latest writing</span>
-    <span class="section-link" onclick="showPage('archive')">All pieces →</span>
+    <a class="section-link" href="/stories" onclick="showPage('archive'); return false;">All pieces →</a>
   </div>
 
   <div class="writing-grid">
@@ -272,7 +275,7 @@
       </div>
       <div class="dsx-index-strip">
         <span class="dsx-index-copy" id="dsx-index-count">The CAR Index: full player and team tables, every tracked league.</span>
-        <a class="dsx-index-cta" onclick="showPage('car')">Explore the index →</a>
+        <a class="dsx-index-cta" href="/index" onclick="showPage('car'); return false;">Explore the index →</a>
       </div>
     </div>
   </div>
@@ -392,6 +395,12 @@
       <span class="archive-row-title">BFX is Collapsing. Here's How to Fix It.</span>
       <span class="archive-row-arrow">→</span>
     </a>
+    <a class="archive-row" data-category="league gameplay" href="/writing/casting-has-not-evolved.html">
+      <span class="piece-date">Apr 2026</span>
+      <span class="piece-tag league">League</span>
+      <span class="archive-row-title">Casting Has Not Evolved. It Has Deteriorated.</span>
+      <span class="archive-row-arrow">→</span>
+    </a>
   </div>
 </div>
 
@@ -401,7 +410,7 @@
   <div class="archive-header">
     <h1 class="archive-hed">CAR Index</h1>
     <p class="archive-sub">Contribution Above Replacement, league-relative player evaluation across professional LoL. Every row is a portal: open a player for their skill estimate, components, and the stories the numbers surface.</p>
-    <p class="car-page-note">CAR is a composite performance score measuring a player's output against a freely replaceable player at the same position, on an artificial scale, not a wins total, and not WAR. Figures are not cross-league comparable. <a class="car-whatis" onclick="showPage('explainer')">What is CAR? →</a></p>
+    <p class="car-page-note">CAR is a composite performance score measuring a player's output against a freely replaceable player at the same position, on an artificial scale, not a wins total, and not WAR. Figures are not cross-league comparable. <a class="car-whatis" href="/what-is-car" onclick="showPage('explainer'); return false;">What is CAR? →</a></p>
   </div>
 
   <div class="car-tab-bar">
@@ -711,7 +720,7 @@
       </div>
       <p class="xpl-p xpl-p--quiet">A rookie with a monster split posts a high raw CAR but a shrunk pCAR, the model
       doesn't trust the sample yet. That tension is the engine behind every "is he actually this good" argument.
-      <a class="xpl-link" onclick="showPage('charts')">See it on the record-vs-estimate chart →</a></p>
+      <a class="xpl-link" href="/charts" onclick="showPage('charts'); return false;">See it on the record-vs-estimate chart →</a></p>
     </section>
 
   </div>
@@ -747,6 +756,7 @@
     </table>
   </div>
 </div>
+</main>
 
 <footer>
   <div class="footer-left">
@@ -754,12 +764,12 @@
     <span class="footer-note">JTE Sports · jtesports.com · The CAR Index · empirical pro-League analysis</span>
   </div>
   <ul>
-    <li><a onclick="showPage('home')">Home</a></li>
-    <li><a onclick="showPage('car')">Index</a></li>
-    <li><a onclick="showPage('charts')">Charts</a></li>
-    <li><a onclick="showPage('archive')">Stories</a></li>
-    <li><a onclick="showPage('explainer')">What is CAR</a></li>
-    <li><a onclick="showPage('about')">About</a></li>
+    <li><a href="/" onclick="showPage('home'); return false;">Home</a></li>
+    <li><a href="/index" onclick="showPage('car'); return false;">Index</a></li>
+    <li><a href="/charts" onclick="showPage('charts'); return false;">Charts</a></li>
+    <li><a href="/stories" onclick="showPage('archive'); return false;">Stories</a></li>
+    <li><a href="/what-is-car" onclick="showPage('explainer'); return false;">What is CAR</a></li>
+    <li><a href="/about" onclick="showPage('about'); return false;">About</a></li>
     <li><a href="https://twitter.com/jt_esports" target="_blank">Twitter ↗</a></li>
   </ul>
 </footer>
@@ -771,10 +781,12 @@
     '/what-is-car': 'explainer', '/about': 'about'
   };
   const PAGE_TO_PATH = {
-    home: '/', car: '/index', charts: '/charts', archive: '/stories',
-    explainer: '/what-is-car', about: '/about'
+    home: '/', car: '/index/', charts: '/charts/', archive: '/stories/',
+    explainer: '/what-is-car/', about: '/about/'
   };
   function pageFromPath() {
+    const requested = new URLSearchParams(location.search).get('page');
+    if (requested && PAGE_TO_PATH[requested]) return requested;
     return ROUTES[(location.pathname.replace(/\/+$/, '') || '/')] || 'home';
   }
 
@@ -797,8 +809,12 @@
     void pg.offsetWidth;               // force reflow so the animation restarts
     pg.classList.add('sp1-enter');
     window.scrollTo(0, 0);
-    if (id === 'charts') {
-      requestAnimationFrame(() => renderActiveChart());
+    if (id === 'car' || id === 'charts') {
+      requestAnimationFrame(() => {
+        ensureCarReady().then(() => {
+          if (id === 'charts') renderActiveChart();
+        });
+      });
     }
     if (id === 'explainer') {
       const host = document.getElementById('xpl-bars');
@@ -853,6 +869,8 @@
   let carTeams = [];
   let carHistory = [];
   let carLoaded = false;
+  let carLoadPromise = null;
+  let carUiRendered = false;
 
   function formatCarValue(v) {
     const n = Number(v);
@@ -910,6 +928,30 @@
       console.warn('Could not load CAR data:', e);
       carLoaded = false;
     }
+  }
+
+  async function ensureCarReady() {
+    if (carUiRendered) return;
+    const carPage = document.getElementById('page-car');
+    if (carPage && carPage.classList.contains('active')) renderCarSkeleton();
+    if (!carLoadPromise) {
+      carLoadPromise = loadCarData().finally(() => {
+        if (!carLoaded) carLoadPromise = null;
+      });
+    }
+    await carLoadPromise;
+    if (carUiRendered) return;
+    if (!carLoaded) {
+      renderCarError();
+      return;
+    }
+    populateTableLeagueSelects();
+    populateChartSelects();
+    updateChartControlsMode();
+    renderPlayers();
+    renderTeams();
+    renderIndexStrip();
+    carUiRendered = true;
   }
 
   /* ══════════════════════════════════════════════
@@ -2829,33 +2871,17 @@
   async function initCar() {
     initCarDash();
     initCharts();
-
-    // If the user deep-linked or refreshed onto /#car (not currently supported
-    // by the router, but harmless) or loaded the page while #page-car is
-    // active, show a skeleton until data resolves.
-    const carPage = document.getElementById('page-car');
-    if (carPage && carPage.classList.contains('active')) renderCarSkeleton();
-
-    await loadCarData();
-
-    if (carLoaded) {
-      renderIndexStrip();
-      // Populate data-driven dropdowns before first render.
-      populateTableLeagueSelects();
-      populateChartSelects();
-      updateChartControlsMode();
-      // Pre-render both tables in memory so switching the CAR page is instant.
-      renderPlayers();
-      renderTeams();
-      if (document.getElementById('page-charts')?.classList.contains('active')) renderActiveChart();
-    } else {
-      renderCarError();
+    if (document.getElementById('page-car')?.classList.contains('active') ||
+        document.getElementById('page-charts')?.classList.contains('active')) {
+      void ensureCarReady();
     }
   }
 
-  initCar();
-  initDissection();
-  initCoordLedger();
+  document.addEventListener('DOMContentLoaded', () => {
+    initCar();
+    initDissection();
+    initCoordLedger();
+  });
 </script>
 
 </body>

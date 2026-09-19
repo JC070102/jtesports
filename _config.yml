@@ -1,0 +1,13 @@
+exclude:
+  - tests
+  - engine
+  - data
+  - deploy
+  - notes
+  - tools
+  - preview
+  - docs
+  - .claude
+  - .playwright-mcp
+  - skills-lock.json
+  - flip-divergence-analysis.md

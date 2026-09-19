@@ -14,14 +14,28 @@
 <meta property="og:image" content="https://jtesports.com/images/twitter-banner.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@jt_esports">
-<link rel="icon" type="image/svg+xml" href="../jte-logo.jpg">
+<meta property="article:published_time" content="2026-06-04">
+<link rel="icon" type="image/jpeg" href="../jte-logo.jpg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Vitality's Downfall",
+  "description": "What happened to Vitality? An empirical anatomy of the LEC's most volatile team and their 0-6 playoff collapse.",
+  "datePublished": "2026-06-04",
+  "author": {"@type": "Person", "name": "JTE"},
+  "publisher": {"@type": "Organization", "name": "JTE Sports", "url": "https://jtesports.com/"},
+  "image": "https://jtesports.com/images/twitter-banner.png",
+  "mainEntityOfPage": "https://jtesports.com/writing/vitality-downfall.html"
+}
+</script>
 <link rel="stylesheet" href="../style.css?v=sp3">
 <link rel="stylesheet" href="../sp1.css?v=sp3">
 <link rel="stylesheet" href="../article.css?v=sp3">
 <link rel="stylesheet" href="../dissect.css?v=sp3">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script defer src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
 </head>
 <body class="theme-vitality">
 
@@ -41,15 +55,16 @@
   </ul>
 </nav>
 
+<main>
 <article class="article-wrap">
 
   <header class="article-masthead">
-    <img class="am-crest-ghost" src="../images/vitality-crest.png" alt="" aria-hidden="true">
-    <img class="am-crest" src="../images/vitality-crest.png" alt="Team Vitality crest">
+    <img class="am-crest-ghost" src="../images/vitality-crest.webp" alt="" aria-hidden="true" width="1000" height="1242" decoding="async">
+    <img class="am-crest" src="../images/vitality-crest.webp" alt="Team Vitality crest" width="1000" height="1242" decoding="async">
     <div class="am-kicker"><span class="am-tag">LEC</span><span class="am-tag">2026</span><span>Team profile</span></div>
     <h1 class="am-title">Vitality's Downfall</h1>
     <p class="am-dek">What happened to Vitality? An empirical anatomy of the LEC's most volatile team, and the fragility that was visible long before playoffs.</p>
-    <div class="am-byline">By <strong>JTE</strong> · The CAR Index</div>
+    <div class="am-byline">By <strong>JTE</strong> · The CAR Index · <time datetime="2026-06-04">June 4, 2026</time></div>
   </header>
 
   <div class="article-body">
@@ -64,7 +79,7 @@
 
     <figure class="a-figure">
       <figcaption class="a-figcap">Series bans · Vitality vs Karmine Corp · LEC Versus</figcaption>
-      <div class="a-shot-frame"><img src="../images/vit-kc-bans.png" alt="Champion select and series bans, Vitality versus Karmine Corp"></div>
+      <div class="a-shot-frame"><img src="../images/vit-kc-bans.webp" alt="Champion select and series bans, Vitality versus Karmine Corp" width="1435" height="265" loading="lazy" decoding="async"></div>
     </figure>
 
     <p>Of course Seraphine and Braum is not an actual bot lane, but if inspected further you'll see more nuance to how Vitality arrived at this conclusion. Ashe Seraphine had already shown to be a staple, and its power is amplified specifically with Xin Zhao due to his kit synergizing with enchanter steroids. The biggest issue is their urgency to pick K'Sante, if they had wrapped Xin Zhao with Ashe Seraphine as their first three picks, Naak Nako would have 1 of either Ornn, K'Sante, and Sion to be their weakside tank. Instead they were left with a swift loss due to draft.</p>
@@ -88,7 +103,7 @@
 
     <figure class="a-figure">
       <figcaption class="a-figcap">Vitality vs Movistar KOI · spring season</figcaption>
-      <div class="a-shot-frame"><img src="../images/vit-mkoi-teamfight.png" alt="In-game teamfight, Vitality versus Movistar KOI"></div>
+      <div class="a-shot-frame"><img src="../images/vit-mkoi-teamfight.webp" alt="In-game teamfight, Vitality versus Movistar KOI" width="740" height="654" loading="lazy" decoding="async"></div>
     </figure>
 
     <p>The peak of Vitality this split was their close victory over G2. Naak Nako got his counterpicks, Carzzy was on his best champs, the team was playing well because they knew they could with the pieces in hand. BUT every game was filled with volatility, and the data supports this clearer than any other team.</p>
@@ -171,6 +186,7 @@
   </div>
 
 </article>
+</main>
 
 <footer>
   <div class="footer-left">
@@ -188,7 +204,7 @@
 
 <script>
 /* ── Vitality article, four live 1:1 charts off the published CAR contract ── */
-(function () {
+window.addEventListener('DOMContentLoaded', function () {
   var CSV  = 'https://raw.githubusercontent.com/JC070102/CARmodel/refs/heads/main/site_players.csv';
   var GOLD = '#c9962e', INK = '#17130b', MUTE = '#8b8270', POS = '#2f7a4c', RED = '#c2302a', GRID = 'rgba(23,19,11,0.08)';
   var FONT = 'DM Mono, monospace';
@@ -328,7 +344,7 @@
       });
     }
   });
-})();
+});
 </script>
 
 </body>
